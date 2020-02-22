@@ -41,8 +41,6 @@ class Window {
     bool isOpen() { return mWindow.isOpen(); }
 };
 
-
-
 struct Rectangle {
     float width, height;
     float positionX, positionY;
@@ -104,7 +102,7 @@ class Camera {
         mRect.setSize(sf::Vector2f(rectangle.width, rectangle.height));
 
         // Lets suppose camera is always on screen center
-        mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mWindowCenter-mGlobalPosition));
+        mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mGlobalPosition-mWindowCenter));
         mRect.setFillColor(sf::Color::Green);
 
         draw(&mRect);
@@ -132,16 +130,16 @@ int main() {
 
         constexpr float CAMERA_SPEED = 1.0;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
-            camera.setGlobalPosition(camera.getGlobalPositionX(), camera.getGlobalPositionY()+CAMERA_SPEED);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
             camera.setGlobalPosition(camera.getGlobalPositionX(), camera.getGlobalPositionY()-CAMERA_SPEED);
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
+            camera.setGlobalPosition(camera.getGlobalPositionX(), camera.getGlobalPositionY()+CAMERA_SPEED);
+        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
-            camera.setGlobalPosition(camera.getGlobalPositionX()+CAMERA_SPEED, camera.getGlobalPositionY());
+            camera.setGlobalPosition(camera.getGlobalPositionX()-CAMERA_SPEED, camera.getGlobalPositionY());
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
-            camera.setGlobalPosition(camera.getGlobalPositionX()-CAMERA_SPEED, camera.getGlobalPositionY());
+            camera.setGlobalPosition(camera.getGlobalPositionX()+CAMERA_SPEED, camera.getGlobalPositionY());
         }
 
         window.clear();
