@@ -162,22 +162,9 @@ class Camera {
         draw(circle);
     }
 
-    sf::Vector2f getScaledScreenCoordinates(sf::Vector2f screenCoordinates) {
-/*
-        1 - distancia1
-        
-        scale < 1
-
-        scale > 1
-             1 - d1
-            s2 - d2
-
-            d2 = s2 * d1
-*/
-        screenCoordinates = {screenCoordinates.x*mScale, screenCoordinates.y*mScale};
-
-        return screenCoordinates;
-    }
+    // sf::Vector2f getScaledScreenCoordinates(sf::Vector2f screenCoordinates) {
+    //     return {screenCoordinates.x*mScale, screenCoordinates.y*mScale};
+    // }
 
     sf::Vector2f getScreenCoordinates(Rectangle rectangle) {
         sf::Vector2f screenCoordinates;
@@ -185,13 +172,14 @@ class Camera {
             const Rectangle fixedEntityHitbox = mFixedEntityPtr->getHitbox();
             const sf::Vector2f globalPosition = {fixedEntityHitbox.positionX, fixedEntityHitbox.positionY};
 
-            screenCoordinates = sf::Vector2f(rectangle.positionX, rectangle.positionY) - (globalPosition-mWindowCenter);
+            screenCoordinates = sf::Vector2f(rectangle.positionX*mScale, rectangle.positionY*mScale) - (globalPosition*mScale-mWindowCenter);
         }
         else {
-            screenCoordinates = sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mGlobalPosition-mWindowCenter);
+            screenCoordinates = sf::Vector2f(rectangle.positionX*mScale, rectangle.positionY*mScale) - (mGlobalPosition*mScale-mWindowCenter);
         }
 
-        return getScaledScreenCoordinates(screenCoordinates);
+        // return getScaledScreenCoordinates(screenCoordinates);
+        return screenCoordinates;
     }
 
     void drawRectangle(const Rectangle rectangle) {
@@ -202,7 +190,8 @@ class Camera {
 
         mRect.setFillColor(sf::Color(0,0,0,0));
         mRect.setOutlineColor(sf::Color::Red);
-        mRect.setOutlineThickness(2);
+        const float thickness = (2*mScale > 0.8)? 2*mScale:0.8;
+        mRect.setOutlineThickness(thickness);
 
         draw(mRect);
     }
