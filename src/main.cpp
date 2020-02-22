@@ -58,6 +58,9 @@ class Entity {
         mHitbox.positionY = y;
     }
 
+    float getHitboxPositionX() { return mHitbox.positionX; }
+    float getHitboxPositionY() { return mHitbox.positionY; }
+
     virtual void update() {}
 
     inline Rectangle getHitbox() { return mHitbox; }
@@ -80,6 +83,7 @@ class Camera {
     sf::Vector2u mWindowSize;
     sf::Vector2f mGlobalPosition;
     sf::Vector2f mWindowCenter;
+    Entity* mFixedEntityPtr;
 
     private:
     inline void draw(sf::Drawable& drawable) {
@@ -93,6 +97,7 @@ class Camera {
     public:
     Camera() {
         mWindowPtr = nullptr;
+        mFixedEntityPtr = nullptr;
         mGlobalPosition = {0, 0};
         mWindowSize = {0, 0};
         mWindowCenter = {0, 0};
@@ -102,9 +107,25 @@ class Camera {
         mGlobalPosition = {posX, posY};
     }
 
-    float getGlobalPositionX() const { return mGlobalPosition.x; }
+    void fixToEntity(Entity* entity) {
+        mFixedEntityPtr = entity;
+    }
 
-    float getGlobalPositionY() const { return mGlobalPosition.y; }
+    float getGlobalPositionX() const { 
+        if (mFixedEntityPtr) {
+            return mFixedEntityPtr->getHitbox().positionX;
+        }
+
+        return mGlobalPosition.x; 
+    }
+
+    float getGlobalPositionY() const { 
+        if (mFixedEntityPtr) {
+            return mFixedEntityPtr->getHitbox().positionY;
+        }
+
+        return mGlobalPosition.y; 
+    }
 
     void setWindow(Window* window) { 
         if (!window) {
@@ -130,7 +151,15 @@ class Camera {
         mRect.setSize(sf::Vector2f(rectangle.width, rectangle.height));
 
         // Lets suppose camera is always on screen center
-        mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mGlobalPosition-mWindowCenter));
+
+        if (mFixedEntityPtr) {
+            const sf::Vector2f globalPosition (mFixedEntityPtr->getHitbox().positionX, mFixedEntityPtr->getHitbox().positionY);
+            mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (globalPosition-mWindowCenter));
+        }
+        else {
+            mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mGlobalPosition-mWindowCenter));
+        }
+
         mRect.setFillColor(sf::Color(0,0,0,0));
         mRect.setOutlineColor(sf::Color::Red);
         mRect.setOutlineThickness(2);
@@ -158,18 +187,8 @@ int main() {
     while (game.getIsRunning() && window.isOpen()) {
         window.handleWindowEvents();
 
-        constexpr float CAMERA_SPEED = 1.0;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
-            camera.setGlobalPosition(camera.getGlobalPositionX(), camera.getGlobalPositionY()-CAMERA_SPEED);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
-            camera.setGlobalPosition(camera.getGlobalPositionX(), camera.getGlobalPositionY()+CAMERA_SPEED);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
-            camera.setGlobalPosition(camera.getGlobalPositionX()-CAMERA_SPEED, camera.getGlobalPositionY());
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
-            camera.setGlobalPosition(camera.getGlobalPositionX()+CAMERA_SPEED, camera.getGlobalPositionY());
+        for (auto entity : entities) {
+            entity.update();
         }
 
         window.clear();
