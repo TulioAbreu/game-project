@@ -1,17 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-class Game {
-    bool mIsRunning;
-
-    public:
-    Game() = default;
-    virtual ~Game() = default;
-
-    void setIsRunning(const bool value) { mIsRunning = value; }
-    bool getIsRunning() const { return mIsRunning; }
-};
-
 class Window {
     sf::Event mEvent;
     sf::RectangleShape mRect;
@@ -46,25 +35,69 @@ struct Rectangle {
     float positionX, positionY;
 };
 
+class Entity {
+    private:
+    Rectangle mHitbox;
+
+    public:
+    Entity() {
+        mHitbox = {0, 0, 0, 0};
+    }
+
+    Entity(float width, float height, float posX, float posY) {
+        mHitbox = {width, height, posX, posY};
+    }
+
+    void setHitboxSize(float width, float height) {
+        mHitbox.width = width;
+        mHitbox.height = height;
+    }
+
+    void setHitboxPosition(float x, float y) {
+        mHitbox.positionX = x;
+        mHitbox.positionY = y;
+    }
+
+    float getHitboxPositionX() { return mHitbox.positionX; }
+    float getHitboxPositionY() { return mHitbox.positionY; }
+
+    virtual void update() {}
+
+    inline Rectangle getHitbox() { return mHitbox; }
+};
+
+class Game {
+    bool mIsRunning;
+
+    public:
+    Game() = default;
+    virtual ~Game() = default;
+
+    void setIsRunning(const bool value) { mIsRunning = value; }
+    bool getIsRunning() const { return mIsRunning; }
+};
+
 class Camera {
     sf::RenderWindow* mWindowPtr;
     sf::RectangleShape mRect;
     sf::Vector2u mWindowSize;
     sf::Vector2f mGlobalPosition;
     sf::Vector2f mWindowCenter;
+    Entity* mFixedEntityPtr;
 
     private:
-    inline void draw(sf::Drawable* drawable) {
+    inline void draw(sf::Drawable& drawable) {
         if (!mWindowPtr) {
             return;
         }
 
-        mWindowPtr->draw(*drawable);
+        mWindowPtr->draw(drawable);
     }
 
     public:
     Camera() {
         mWindowPtr = nullptr;
+        mFixedEntityPtr = nullptr;
         mGlobalPosition = {0, 0};
         mWindowSize = {0, 0};
         mWindowCenter = {0, 0};
@@ -74,9 +107,25 @@ class Camera {
         mGlobalPosition = {posX, posY};
     }
 
-    float getGlobalPositionX() const { return mGlobalPosition.x; }
+    void fixToEntity(Entity* entity) {
+        mFixedEntityPtr = entity;
+    }
 
-    float getGlobalPositionY() const { return mGlobalPosition.y; }
+    float getGlobalPositionX() const { 
+        if (mFixedEntityPtr) {
+            return mFixedEntityPtr->getHitbox().positionX;
+        }
+
+        return mGlobalPosition.x; 
+    }
+
+    float getGlobalPositionY() const { 
+        if (mFixedEntityPtr) {
+            return mFixedEntityPtr->getHitbox().positionY;
+        }
+
+        return mGlobalPosition.y; 
+    }
 
     void setWindow(Window* window) { 
         if (!window) {
@@ -94,7 +143,7 @@ class Camera {
         circle.setRadius(5);
         circle.setPosition(mWindowCenter);
 
-        draw(&circle);
+        draw(circle);
     }
 
     void drawRectangle(const Rectangle rectangle) {
@@ -102,10 +151,19 @@ class Camera {
         mRect.setSize(sf::Vector2f(rectangle.width, rectangle.height));
 
         // Lets suppose camera is always on screen center
-        mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mGlobalPosition-mWindowCenter));
-        mRect.setFillColor(sf::Color::Green);
+        if (mFixedEntityPtr) {
+            const sf::Vector2f globalPosition (mFixedEntityPtr->getHitbox().positionX, mFixedEntityPtr->getHitbox().positionY);
+            mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (globalPosition-mWindowCenter));
+        }
+        else {
+            mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mGlobalPosition-mWindowCenter));
+        }
 
-        draw(&mRect);
+        mRect.setFillColor(sf::Color(0,0,0,0));
+        mRect.setOutlineColor(sf::Color::Red);
+        mRect.setOutlineThickness(2);
+
+        draw(mRect);
     }
 };
 
@@ -122,15 +180,19 @@ int main() {
     camera.setWindow(&window);
     camera.setGlobalPosition(0, 0);
 
-    std::vector<Rectangle> rectangles = {
-        {200, 200, 0, 0},
-        {10, 10, 100, 100},
-        {10, 10, 320, 240},
-        {50, 50, 200, 300}
+    std::vector<Entity> entities = {
+        Entity(200, 200, 0, 0),
+        Entity(10, 10, 100, 100),
+        Entity(10, 10, 320, 240),
+        Entity(50, 50, 200, 300)
     };
 
     while (game.getIsRunning() && window.isOpen()) {
         window.handleWindowEvents();
+
+        for (auto entity : entities) {
+            entity.update();
+        }
 
         constexpr float CAMERA_SPEED = 1.0;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
@@ -147,8 +209,8 @@ int main() {
         }
 
         window.clear();
-        for (auto rect : rectangles) {
-            camera.drawRectangle(rect);
+        for (auto entity : entities) {
+            camera.drawRectangle(entity.getHitbox());
         }
         camera.drawCameraPosition();
         window.display();
