@@ -41,6 +41,8 @@ class Window {
     bool isOpen() { return mWindow.isOpen(); }
 };
 
+
+
 struct Rectangle {
     float width, height;
     float positionX, positionY;
@@ -49,36 +51,43 @@ struct Rectangle {
 class Camera {
     sf::RenderWindow* mWindowPtr;
     sf::RectangleShape mRect;
-    float mGlobalPositionX, mGlobalPositionY;
-    float mWindowWidth, mWindowHeight;
+    sf::Vector2u mWindowSize;
+    sf::Vector2f mGlobalPosition;
     sf::Vector2f mWindowCenter;
+
+    private:
+    inline void draw(sf::Drawable* drawable) {
+        if (!mWindowPtr) {
+            return;
+        }
+
+        mWindowPtr->draw(*drawable);
+    }
 
     public:
     Camera() {
-        mGlobalPositionX = 0;
-        mGlobalPositionY = 0;
-        mWindowHeight = 0;
-        mWindowWidth = 0;
+        mWindowPtr = nullptr;
+        mGlobalPosition = {0, 0};
+        mWindowSize = {0, 0};
         mWindowCenter = {0, 0};
     }
  
     void setGlobalPosition(const float posX, const float posY) { 
-        mGlobalPositionX = posX;
-        mGlobalPositionY = posY;
+        mGlobalPosition = {posX, posY};
     }
 
-    float getGlobalPositionX() const { return mGlobalPositionX; }
+    float getGlobalPositionX() const { return mGlobalPosition.x; }
 
-    float getGlobalPositionY() const { return mGlobalPositionY; }
+    float getGlobalPositionY() const { return mGlobalPosition.y; }
 
     void setWindow(Window* window) { 
+        if (!window) {
+            return;
+        }
+
         mWindowPtr = &window->mWindow;
-
-        const sf::Vector2u winSize = mWindowPtr->getSize();
-        mWindowWidth = winSize.x;
-        mWindowHeight = winSize.y;
-
-        mWindowCenter = sf::Vector2f(mWindowWidth/2.f, mWindowHeight/2.f);
+        mWindowSize = mWindowPtr->getSize();
+        mWindowCenter = {mWindowSize.x*0.5f, mWindowSize.y*0.5f};
     }
 
     void drawCameraPosition() {
@@ -87,7 +96,7 @@ class Camera {
         circle.setRadius(5);
         circle.setPosition(mWindowCenter);
 
-        mWindowPtr->draw(circle);
+        draw(&circle);
     }
 
     void drawRectangle(const Rectangle rectangle) {
@@ -95,9 +104,10 @@ class Camera {
         mRect.setSize(sf::Vector2f(rectangle.width, rectangle.height));
 
         // Lets suppose camera is always on screen center
-        mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mWindowCenter-sf::Vector2f(mGlobalPositionX, mGlobalPositionY)));
+        mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mWindowCenter-mGlobalPosition));
         mRect.setFillColor(sf::Color::Green);
-        mWindowPtr->draw(mRect);
+
+        draw(&mRect);
     }
 };
 
@@ -106,15 +116,15 @@ int main() {
     game.setIsRunning(true);
 
     Window window (640, 480, "GameProject");
-
     Camera camera;
     camera.setWindow(&window);
-
-    camera.setGlobalPosition(640.f/2.f, 480.f/2.f);
+    camera.setGlobalPosition(0, 0);
 
     std::vector<Rectangle> rectangles = {
+        {200, 200, 0, 0},
         {10, 10, 100, 100},
-        {10, 10, 320, 240}
+        {10, 10, 320, 240},
+        {50, 50, 200, 300}
     };
 
     while (game.getIsRunning() && window.isOpen()) {
