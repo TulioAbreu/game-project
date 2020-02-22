@@ -113,7 +113,11 @@ int main() {
     Game game;
     game.setIsRunning(true);
 
-    Window window (640, 480, "GameProject");
+    constexpr int WINDOW_WIDTH = 640;
+    constexpr int WINDOW_HEIGHT = 480;
+    constexpr char WINDOW_TITLE[] = "GameProject";
+
+    Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     Camera camera;
     camera.setWindow(&window);
     camera.setGlobalPosition(0, 0);
