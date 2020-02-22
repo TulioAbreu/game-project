@@ -1,17 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-class Game {
-    bool mIsRunning;
-
-    public:
-    Game() = default;
-    virtual ~Game() = default;
-
-    void setIsRunning(const bool value) { mIsRunning = value; }
-    bool getIsRunning() const { return mIsRunning; }
-};
-
 class Window {
     sf::Event mEvent;
     sf::RectangleShape mRect;
@@ -44,6 +33,45 @@ class Window {
 struct Rectangle {
     float width, height;
     float positionX, positionY;
+};
+
+class Entity {
+    private:
+    Rectangle mHitbox;
+
+    public:
+    Entity() {
+        mHitbox = {0, 0, 0, 0};
+    }
+
+    Entity(float width, float height, float posX, float posY) {
+        mHitbox = {width, height, posX, posY};
+    }
+
+    void setHitboxSize(float width, float height) {
+        mHitbox.width = width;
+        mHitbox.height = height;
+    }
+
+    void setHitboxPosition(float x, float y) {
+        mHitbox.positionX = x;
+        mHitbox.positionY = y;
+    }
+
+    virtual void update() {}
+
+    inline Rectangle getHitbox() { return mHitbox; }
+};
+
+class Game {
+    bool mIsRunning;
+
+    public:
+    Game() = default;
+    virtual ~Game() = default;
+
+    void setIsRunning(const bool value) { mIsRunning = value; }
+    bool getIsRunning() const { return mIsRunning; }
 };
 
 class Camera {
@@ -118,11 +146,11 @@ int main() {
     camera.setWindow(&window);
     camera.setGlobalPosition(0, 0);
 
-    std::vector<Rectangle> rectangles = {
-        {200, 200, 0, 0},
-        {10, 10, 100, 100},
-        {10, 10, 320, 240},
-        {50, 50, 200, 300}
+    std::vector<Entity> entities = {
+        Entity(200, 200, 0, 0),
+        Entity(10, 10, 100, 100),
+        Entity(10, 10, 320, 240),
+        Entity(50, 50, 200, 300)
     };
 
     while (game.getIsRunning() && window.isOpen()) {
@@ -143,8 +171,8 @@ int main() {
         }
 
         window.clear();
-        for (auto rect : rectangles) {
-            camera.drawRectangle(rect);
+        for (auto entity : entities) {
+            camera.drawRectangle(entity.getHitbox());
         }
         camera.drawCameraPosition();
         window.display();
