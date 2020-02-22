@@ -82,12 +82,12 @@ class Camera {
     sf::Vector2f mWindowCenter;
 
     private:
-    inline void draw(sf::Drawable* drawable) {
+    inline void draw(sf::Drawable& drawable) {
         if (!mWindowPtr) {
             return;
         }
 
-        mWindowPtr->draw(*drawable);
+        mWindowPtr->draw(drawable);
     }
 
     public:
@@ -122,7 +122,7 @@ class Camera {
         circle.setRadius(5);
         circle.setPosition(mWindowCenter);
 
-        draw(&circle);
+        draw(circle);
     }
 
     void drawRectangle(const Rectangle rectangle) {
@@ -131,9 +131,11 @@ class Camera {
 
         // Lets suppose camera is always on screen center
         mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mGlobalPosition-mWindowCenter));
-        mRect.setFillColor(sf::Color::Green);
+        mRect.setFillColor(sf::Color(0,0,0,0));
+        mRect.setOutlineColor(sf::Color::Red);
+        mRect.setOutlineThickness(2);
 
-        draw(&mRect);
+        draw(mRect);
     }
 };
 
