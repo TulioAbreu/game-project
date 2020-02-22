@@ -81,12 +81,21 @@ class Camera {
         mWindowCenter = sf::Vector2f(mWindowWidth/2.f, mWindowHeight/2.f);
     }
 
+    void drawCameraPosition() {
+        sf::CircleShape circle;
+        circle.setFillColor(sf::Color::Red);
+        circle.setRadius(5);
+        circle.setPosition(mWindowCenter);
+
+        mWindowPtr->draw(circle);
+    }
+
     void drawRectangle(const Rectangle rectangle) {
         // Lets start with 1.0 scale
         mRect.setSize(sf::Vector2f(rectangle.width, rectangle.height));
 
         // Lets suppose camera is always on screen center
-        mRect.setPosition(sf::Vector2f(mGlobalPositionX, mGlobalPositionY) - sf::Vector2f(rectangle.positionX, rectangle.positionY));
+        mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mWindowCenter-sf::Vector2f(mGlobalPositionX, mGlobalPositionY)));
         mRect.setFillColor(sf::Color::Green);
         mWindowPtr->draw(mRect);
     }
@@ -129,6 +138,7 @@ int main() {
         for (auto rect : rectangles) {
             camera.drawRectangle(rect);
         }
+        camera.drawCameraPosition();
         window.display();
     }
 
