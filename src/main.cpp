@@ -78,6 +78,7 @@ class Game {
 };
 
 class Camera {
+    float mScale;
     sf::RenderWindow* mWindowPtr;
     sf::RectangleShape mRect;
     sf::Vector2u mWindowSize;
@@ -94,8 +95,13 @@ class Camera {
         mWindowPtr->draw(drawable);
     }
 
+    sf::Vector2f getScaledSize(const Rectangle rectangle) {
+        return {rectangle.width*mScale, rectangle.height*mScale};
+    }
+
     public:
     Camera() {
+        mScale = 1;
         mWindowPtr = nullptr;
         mFixedEntityPtr = nullptr;
         mGlobalPosition = {0, 0};
@@ -127,6 +133,16 @@ class Camera {
         return mGlobalPosition.y; 
     }
 
+    void setScale(float value) { 
+        if (value < 0.01) { 
+            mScale = 0.01; 
+            return;
+        }
+        mScale = value; 
+    }
+
+    float getScale() { return mScale; }
+
     void setWindow(Window* window) { 
         if (!window) {
             return;
@@ -146,18 +162,43 @@ class Camera {
         draw(circle);
     }
 
-    void drawRectangle(const Rectangle rectangle) {
-        // Lets start with 1.0 scale
-        mRect.setSize(sf::Vector2f(rectangle.width, rectangle.height));
+    sf::Vector2f getScaledScreenCoordinates(sf::Vector2f screenCoordinates) {
+/*
+        1 - distancia1
+        
+        scale < 1
 
-        // Lets suppose camera is always on screen center
+        scale > 1
+             1 - d1
+            s2 - d2
+
+            d2 = s2 * d1
+*/
+        screenCoordinates = {screenCoordinates.x*mScale, screenCoordinates.y*mScale};
+
+        return screenCoordinates;
+    }
+
+    sf::Vector2f getScreenCoordinates(Rectangle rectangle) {
+        sf::Vector2f screenCoordinates;
         if (mFixedEntityPtr) {
-            const sf::Vector2f globalPosition (mFixedEntityPtr->getHitbox().positionX, mFixedEntityPtr->getHitbox().positionY);
-            mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (globalPosition-mWindowCenter));
+            const Rectangle fixedEntityHitbox = mFixedEntityPtr->getHitbox();
+            const sf::Vector2f globalPosition = {fixedEntityHitbox.positionX, fixedEntityHitbox.positionY};
+
+            screenCoordinates = sf::Vector2f(rectangle.positionX, rectangle.positionY) - (globalPosition-mWindowCenter);
         }
         else {
-            mRect.setPosition(sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mGlobalPosition-mWindowCenter));
+            screenCoordinates = sf::Vector2f(rectangle.positionX, rectangle.positionY) - (mGlobalPosition-mWindowCenter);
         }
+
+        return getScaledScreenCoordinates(screenCoordinates);
+    }
+
+    void drawRectangle(const Rectangle rectangle) {
+        mRect.setSize(getScaledSize(rectangle));
+
+        // Lets suppose camera is always on screen center
+        mRect.setPosition(getScreenCoordinates(rectangle));
 
         mRect.setFillColor(sf::Color(0,0,0,0));
         mRect.setOutlineColor(sf::Color::Red);
@@ -195,6 +236,7 @@ int main() {
         }
 
         constexpr float CAMERA_SPEED = 1.0;
+        constexpr float ZOOM_SPEED = 0.01;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
             camera.setGlobalPosition(camera.getGlobalPositionX(), camera.getGlobalPositionY()-CAMERA_SPEED);
         }
@@ -206,6 +248,13 @@ int main() {
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
             camera.setGlobalPosition(camera.getGlobalPositionX()+CAMERA_SPEED, camera.getGlobalPositionY());
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+            camera.setScale(camera.getScale()+ZOOM_SPEED);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+            camera.setScale(camera.getScale()-ZOOM_SPEED);
         }
 
         window.clear();
