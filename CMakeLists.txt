@@ -3,7 +3,10 @@ project (gameProject)
 add_executable (gameProject 
     src/main.cpp
 
+    src/rectangle.hpp
     src/window.hpp
+    src/camera.hpp
+    src/entity.hpp
 )
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 17)

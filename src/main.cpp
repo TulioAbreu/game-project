@@ -2,42 +2,9 @@
 #include <vector>
 
 #include "window.hpp"
+#include "camera.hpp"
+#include "entity.hpp"
 
-struct Rectangle {
-    float width, height;
-    float positionX, positionY;
-};
-
-class Entity {
-    private:
-    Rectangle mHitbox;
-
-    public:
-    Entity() {
-        mHitbox = {0, 0, 0, 0};
-    }
-
-    Entity(float width, float height, float posX, float posY) {
-        mHitbox = {width, height, posX, posY};
-    }
-
-    void setHitboxSize(float width, float height) {
-        mHitbox.width = width;
-        mHitbox.height = height;
-    }
-
-    void setHitboxPosition(float x, float y) {
-        mHitbox.positionX = x;
-        mHitbox.positionY = y;
-    }
-
-    float getHitboxPositionX() { return mHitbox.positionX; }
-    float getHitboxPositionY() { return mHitbox.positionY; }
-
-    virtual void update() {}
-
-    inline Rectangle getHitbox() { return mHitbox; }
-};
 
 class Game {
     bool mIsRunning;
@@ -50,118 +17,6 @@ class Game {
     bool getIsRunning() const { return mIsRunning; }
 };
 
-class Camera {
-    float mScale;
-    sf::RenderWindow* mWindowPtr;
-    sf::RectangleShape mRect;
-    sf::Vector2u mWindowSize;
-    sf::Vector2f mGlobalPosition;
-    sf::Vector2f mWindowCenter;
-    Entity* mFixedEntityPtr;
-
-    private:
-    inline void draw(sf::Drawable& drawable) {
-        if (!mWindowPtr) {
-            return;
-        }
-
-        mWindowPtr->draw(drawable);
-    }
-
-    sf::Vector2f getScaledSize(const Rectangle rectangle) {
-        return {rectangle.width*mScale, rectangle.height*mScale};
-    }
-
-    public:
-    Camera() {
-        mScale = 1;
-        mWindowPtr = nullptr;
-        mFixedEntityPtr = nullptr;
-        mGlobalPosition = {0, 0};
-        mWindowSize = {0, 0};
-        mWindowCenter = {0, 0};
-    }
- 
-    void setGlobalPosition(const float posX, const float posY) { 
-        mGlobalPosition = {posX, posY};
-    }
-
-    void fixToEntity(Entity* entity) {
-        mFixedEntityPtr = entity;
-    }
-
-    float getGlobalPositionX() const { 
-        if (mFixedEntityPtr) {
-            return mFixedEntityPtr->getHitbox().positionX;
-        }
-
-        return mGlobalPosition.x; 
-    }
-
-    float getGlobalPositionY() const { 
-        if (mFixedEntityPtr) {
-            return mFixedEntityPtr->getHitbox().positionY;
-        }
-
-        return mGlobalPosition.y; 
-    }
-
-    void setScale(float value) { 
-        if (value < 0.01) { 
-            mScale = 0.01; 
-            return;
-        }
-        mScale = value; 
-    }
-
-    float getScale() { return mScale; }
-
-    void setWindow(Window* window) { 
-        if (!window) {
-            return;
-        }
-
-        mWindowPtr = &window->mWindow;
-        mWindowSize = mWindowPtr->getSize();
-        mWindowCenter = {mWindowSize.x*0.5f, mWindowSize.y*0.5f};
-    }
-
-    void drawCameraPosition() {
-        sf::CircleShape circle;
-        circle.setFillColor(sf::Color::Red);
-        circle.setRadius(5);
-        circle.setPosition(mWindowCenter);
-
-        draw(circle);
-    }
-
-    sf::Vector2f getScreenCoordinates(Rectangle rectangle) {
-        sf::Vector2f screenCoordinates;
-        if (mFixedEntityPtr) {
-            const Rectangle fixedEntityHitbox = mFixedEntityPtr->getHitbox();
-            const sf::Vector2f globalPosition = {fixedEntityHitbox.positionX, fixedEntityHitbox.positionY};
-
-            screenCoordinates = sf::Vector2f(rectangle.positionX*mScale, rectangle.positionY*mScale) - (globalPosition*mScale-mWindowCenter);
-        }
-        else {
-            screenCoordinates = sf::Vector2f(rectangle.positionX*mScale, rectangle.positionY*mScale) - (mGlobalPosition*mScale-mWindowCenter);
-        }
-
-        return screenCoordinates;
-    }
-
-    void drawRectangle(const Rectangle rectangle) {
-        mRect.setSize(getScaledSize(rectangle));
-        mRect.setPosition(getScreenCoordinates(rectangle));
-
-        mRect.setFillColor(sf::Color(0,0,0,0));
-        mRect.setOutlineColor(sf::Color::Red);
-        const float thickness = (2*mScale > 0.8)? 2*mScale:0.8;
-        mRect.setOutlineThickness(thickness);
-
-        draw(mRect);
-    }
-};
 
 class Entities {
     // TODO: implement a more sophisticated data structure 
