@@ -162,10 +162,6 @@ class Camera {
         draw(circle);
     }
 
-    // sf::Vector2f getScaledScreenCoordinates(sf::Vector2f screenCoordinates) {
-    //     return {screenCoordinates.x*mScale, screenCoordinates.y*mScale};
-    // }
-
     sf::Vector2f getScreenCoordinates(Rectangle rectangle) {
         sf::Vector2f screenCoordinates;
         if (mFixedEntityPtr) {
@@ -178,14 +174,11 @@ class Camera {
             screenCoordinates = sf::Vector2f(rectangle.positionX*mScale, rectangle.positionY*mScale) - (mGlobalPosition*mScale-mWindowCenter);
         }
 
-        // return getScaledScreenCoordinates(screenCoordinates);
         return screenCoordinates;
     }
 
     void drawRectangle(const Rectangle rectangle) {
         mRect.setSize(getScaledSize(rectangle));
-
-        // Lets suppose camera is always on screen center
         mRect.setPosition(getScreenCoordinates(rectangle));
 
         mRect.setFillColor(sf::Color(0,0,0,0));
