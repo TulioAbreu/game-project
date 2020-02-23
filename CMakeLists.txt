@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 2.5)
 project (gameProject)
 add_executable (gameProject 
     src/main.cpp
+
+    src/window.hpp
 )
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 17)
