@@ -190,6 +190,37 @@ class Camera {
     }
 };
 
+class Entities {
+    // TODO: implement a more sophisticated data structure 
+    private:
+    std::vector<Entity> entities;
+
+    public:
+    size_t size() {
+        return entities.size();
+    }
+
+    Entity at(int index) {
+        return entities.at(index);
+    }
+
+    void add(Entity entity) {
+        entities.push_back(entity);
+    }
+
+    bool remove(int index) {
+        if (entities.empty()) {
+            return false;
+        } 
+        if (index < 0 && index >= entities.size()) {
+            return false;
+        }
+
+        entities.erase(entities.begin() + index);
+        return true;
+    }
+};
+
 int main() {
     Game game;
     game.setIsRunning(true);
@@ -203,18 +234,17 @@ int main() {
     camera.setWindow(&window);
     camera.setGlobalPosition(0, 0);
 
-    std::vector<Entity> entities = {
-        Entity(200, 200, 0, 0),
-        Entity(10, 10, 100, 100),
-        Entity(10, 10, 320, 240),
-        Entity(50, 50, 200, 300)
-    };
+    Entities entities;
+    entities.add(Entity(200, 200, 0, 0));
+    entities.add(Entity(10, 10, 100, 100));
+    entities.add(Entity(10, 10, 320, 240));
+    entities.add(Entity(50, 50, 200, 300));
 
     while (game.getIsRunning() && window.isOpen()) {
         window.handleWindowEvents();
 
-        for (auto entity : entities) {
-            entity.update();
+        for (int i = 0; i < entities.size(); ++i) {
+            entities.at(i).update();
         }
 
         constexpr float CAMERA_SPEED = 1.0;
@@ -240,9 +270,10 @@ int main() {
         }
 
         window.clear();
-        for (auto entity : entities) {
-            camera.drawRectangle(entity.getHitbox());
+        for (int i = 0; i < entities.size(); ++i) {
+            camera.drawRectangle(entities.at(i).getHitbox());
         }
+
         camera.drawCameraPosition();
         window.display();
     }
