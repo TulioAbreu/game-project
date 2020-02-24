@@ -102,6 +102,14 @@ public:
         }
         mCamera.drawCameraPosition();
     }
+
+    Camera& getCamera() {
+        return mCamera;
+    }
+
+    Entities& getEntities() {
+        return mEntities;
+    }
 };
 
 int main() {
