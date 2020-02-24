@@ -24,28 +24,16 @@ class Camera {
         mWindowCenter = {0, 0};
     }
  
-    void setGlobalPosition(const float posX, const float posY) { 
-        mGlobalPosition = {posX, posY};
+    void setGlobalPosition(const Vector2f position) {
+        mGlobalPosition = position;
+    }
+
+    Vector2f getGlobalPosition() const {
+        return mGlobalPosition;
     }
 
     void fixToEntity(Entity* entity) {
         mFixedEntityPtr = entity;
-    }
-
-    float getGlobalPositionX() const { 
-        if (mFixedEntityPtr) {
-            return mFixedEntityPtr->getHitbox().positionX;
-        }
-
-        return mGlobalPosition.x; 
-    }
-
-    float getGlobalPositionY() const { 
-        if (mFixedEntityPtr) {
-            return mFixedEntityPtr->getHitbox().positionY;
-        }
-
-        return mGlobalPosition.y; 
     }
 
     void setScale(float value) { 
@@ -58,24 +46,25 @@ class Camera {
 
     float getScale() { return mScale; }
 
-    bool isRectangleVisible(const Rectangle rect, const Vector2i contextSize) const {
+    inline Rectangle getVisionRectangle(const Vector2f contextSize) const {
         // TODO: Scale must be applied here
-        const float halfContextWidth = contextSize.x / 2.f;
-        const float halfContextHeight = contextSize.y / 2.f;
+        const Vector2f scaledContextSize = contextSize * (1.f/mScale);
+        const Vector2f halfScaledContextSize = scaledContextSize * 0.5f;
 
-        const Rectangle visionRect = {
-            contextSize.x,
-            contextSize.y,
-            mGlobalPosition.x-halfContextWidth,
-            mGlobalPosition.y-halfContextHeight};
-
-        return visionRect.intersects(rect);
+        return {(float) scaledContextSize.x-2,
+                (float) scaledContextSize.y-2,
+                (mGlobalPosition.x-halfScaledContextSize.x)+1,
+                (mGlobalPosition.y-halfScaledContextSize.y)+1};
     }
 
-    inline Rectangle getRelativeRectangle(Rectangle rectangle, const Vector2i halfContextSize) {
+    bool isRectangleVisible(const Rectangle rect, const Vector2f contextSize) const {
+        return getVisionRectangle(contextSize).intersects(rect);
+    }
+
+    inline Rectangle getRelativeRectangle(Rectangle rectangle, const Vector2f halfContextSize) {
         // TODO: Scale must be applied here
         return {rectangle.width*mScale, rectangle.height*mScale,
-                rectangle.positionX-(mGlobalPosition.x-halfContextSize.x), rectangle.positionY-(mGlobalPosition.y-halfContextSize.y)};
+                rectangle.positionX*mScale-(mGlobalPosition.x*mScale-halfContextSize.x), rectangle.positionY*mScale-(mGlobalPosition.y*mScale-halfContextSize.y)};
     }
 };
 
