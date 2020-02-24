@@ -1,41 +1,26 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
-#include <SFML/Graphics.hpp>
-#include "window.hpp"
 #include "rectangle.hpp"
+#include "vector2.hpp"
 #include "entity.hpp"
-
 
 class Camera {
     float mScale;
-    sf::RenderWindow* mWindowPtr;
-    sf::RectangleShape mRect;
-    sf::Vector2u mWindowSize;
-    sf::Vector2f mGlobalPosition;
-    sf::Vector2f mWindowCenter;
+    Vector2f mGlobalPosition;
+    Vector2f mWindowCenter;
     Entity* mFixedEntityPtr;
 
     private:
-    inline void draw(sf::Drawable& drawable) {
-        if (!mWindowPtr) {
-            return;
-        }
-
-        mWindowPtr->draw(drawable);
-    }
-
-    sf::Vector2f getScaledSize(const Rectangle rectangle) {
+    Vector2f getScaledSize(const Rectangle rectangle) {
         return {rectangle.width*mScale, rectangle.height*mScale};
     }
 
     public:
     Camera() {
         mScale = 1;
-        mWindowPtr = nullptr;
         mFixedEntityPtr = nullptr;
         mGlobalPosition = {0, 0};
-        mWindowSize = {0, 0};
         mWindowCenter = {0, 0};
     }
  
@@ -73,50 +58,24 @@ class Camera {
 
     float getScale() { return mScale; }
 
-    void setWindow(Window* window) { 
-        if (!window) {
-            return;
-        }
+    bool isRectangleVisible(const Rectangle rect, const Vector2i contextSize) const {
+        // TODO: Scale must be applied here
+        const float halfContextWidth = contextSize.x / 2.f;
+        const float halfContextHeight = contextSize.y / 2.f;
 
-        mWindowPtr = &window->mWindow;
-        mWindowSize = mWindowPtr->getSize();
-        mWindowCenter = {mWindowSize.x*0.5f, mWindowSize.y*0.5f};
+        const Rectangle visionRect = {
+            contextSize.x,
+            contextSize.y,
+            mGlobalPosition.x-halfContextWidth,
+            mGlobalPosition.y-halfContextHeight};
+
+        return visionRect.intersects(rect);
     }
 
-    void drawCameraPosition() {
-        sf::CircleShape circle;
-        circle.setFillColor(sf::Color::Red);
-        circle.setRadius(5);
-        circle.setPosition(mWindowCenter);
-
-        draw(circle);
-    }
-
-    sf::Vector2f getScreenCoordinates(Rectangle rectangle) {
-        sf::Vector2f screenCoordinates;
-        if (mFixedEntityPtr) {
-            const Rectangle fixedEntityHitbox = mFixedEntityPtr->getHitbox();
-            const sf::Vector2f globalPosition = {fixedEntityHitbox.positionX, fixedEntityHitbox.positionY};
-
-            screenCoordinates = sf::Vector2f(rectangle.positionX*mScale, rectangle.positionY*mScale) - (globalPosition*mScale-mWindowCenter);
-        }
-        else {
-            screenCoordinates = sf::Vector2f(rectangle.positionX*mScale, rectangle.positionY*mScale) - (mGlobalPosition*mScale-mWindowCenter);
-        }
-
-        return screenCoordinates;
-    }
-
-    void drawRectangle(const Rectangle rectangle) {
-        mRect.setSize(getScaledSize(rectangle));
-        mRect.setPosition(getScreenCoordinates(rectangle));
-
-        mRect.setFillColor(sf::Color(0,0,0,0));
-        mRect.setOutlineColor(sf::Color::Red);
-        const float thickness = (2*mScale > 0.8)? 2*mScale:0.8;
-        mRect.setOutlineThickness(thickness);
-
-        draw(mRect);
+    inline Rectangle getRelativeRectangle(Rectangle rectangle, const Vector2i halfContextSize) {
+        // TODO: Scale must be applied here
+        return {rectangle.width*mScale, rectangle.height*mScale,
+                rectangle.positionX-(mGlobalPosition.x-halfContextSize.x), rectangle.positionY-(mGlobalPosition.y-halfContextSize.y)};
     }
 };
 
