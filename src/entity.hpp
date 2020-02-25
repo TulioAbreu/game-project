@@ -38,6 +38,9 @@ class Entity {
     float getHitboxPositionY() { return mHitbox.positionY; }
 
     virtual void update() {}
+    virtual void onCollision(Collision collision) {
+        std::cout << "Called on collision!" << std::endl;
+    }
 
     inline Rectangle& getHitbox() { return mHitbox; }
 };
