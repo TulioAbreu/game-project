@@ -4,7 +4,8 @@
 #include "window.hpp"
 #include "camera.hpp"
 #include "entity.hpp"
-
+#include "scene.hpp"
+#include "entities.hpp"
 
 class Game {
     bool mIsRunning;
@@ -17,66 +18,6 @@ class Game {
     bool getIsRunning() const { return mIsRunning; }
 };
 
-
-class Entities {
-    // TODO: implement a more sophisticated data structure 
-    private:
-    std::vector<Entity> entities;
-
-    public:
-    size_t size() {
-        return entities.size();
-    }
-
-    Entity at(int index) {
-        return entities.at(index);
-    }
-
-    void add(Entity entity) {
-        entities.push_back(entity);
-    }
-
-    bool remove(int index) {
-        if (entities.empty()) {
-            return false;
-        } 
-        if (index < 0 && index >= entities.size()) {
-            return false;
-        }
-
-        entities.erase(entities.begin() + index);
-        return true;
-    }
-};
-
-class Scene {
-private:
-    Entities mEntities;
-
-    void readSceneFile() {
-        // This is just a placeholder
-        mEntities.add(Entity(200, 200, 0, 0));
-        mEntities.add(Entity(10, 10, 100, 100));
-        mEntities.add(Entity(10, 10, -100, -100));
-
-        mEntities.add(Entity(10, 10, 310, 0));
-        mEntities.add(Entity(50, 50, 200, 300));
-    }
-public:
-    Scene() {
-        readSceneFile();
-    }
-
-    void update() {
-        for (int i = 0; i < mEntities.size(); ++i) {
-            mEntities.at(i).update();
-        }
-    }
-
-    Entities& getEntities() {
-        return mEntities;
-    }
-};
 
 int main() {
     Game game;
