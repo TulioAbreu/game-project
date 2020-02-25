@@ -10,6 +10,8 @@ add_executable (gameProject
     src/entity.hpp
     src/vector2.hpp
     src/scene.hpp
+    src/physics_engine.hpp
+    src/physics.hpp
 )
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 17)

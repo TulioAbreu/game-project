@@ -61,7 +61,7 @@ class Camera {
         return getVisionRectangle(contextSize).intersects(rect);
     }
 
-    inline Rectangle getRelativeRectangle(Rectangle rectangle, const Vector2f halfContextSize) {
+    inline Rectangle getRelativeRectangle(const Rectangle rectangle, const Vector2f halfContextSize) const {
         // TODO: Scale must be applied here
         return {rectangle.width*mScale, rectangle.height*mScale,
                 rectangle.positionX*mScale-(mGlobalPosition.x*mScale-halfContextSize.x), rectangle.positionY*mScale-(mGlobalPosition.y*mScale-halfContextSize.y)};

@@ -6,18 +6,25 @@
 class Entities {
     // TODO: implement a more sophisticated data structure 
     private:
-    std::vector<Entity> entities;
+    std::vector<Entity*> entities;
 
     public:
+    ~Entities() {
+        for (int i = 0; i < entities.size(); ++i) {
+            delete entities[i];
+        }
+        entities.clear();
+    }
+
     size_t size() {
         return entities.size();
     }
 
-    Entity at(int index) {
-        return entities.at(index);
+    Entity* at(int index) {
+        return entities[index];
     }
 
-    void add(Entity entity) {
+    void add(Entity* entity) {
         entities.push_back(entity);
     }
 

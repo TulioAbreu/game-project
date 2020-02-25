@@ -6,6 +6,7 @@
 #include "entity.hpp"
 #include "scene.hpp"
 #include "entities.hpp"
+#include "physics_engine.hpp"
 
 class Game {
     bool mIsRunning;
@@ -29,7 +30,8 @@ int main() {
 
     Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     Scene scene;
-    Entities* entitiesPtr = &scene.getEntities();
+    Entities* entitiesPtr = scene.getEntities();
+    PhysicsEngine physicsEngine;
 
     Camera* mainCamera = new Camera();
     mainCamera->setGlobalPosition({320, 240});
@@ -41,8 +43,9 @@ int main() {
         window.handleWindowEvents();
 
         for (int i = 0; i < entitiesPtr->size(); ++i) {
-            entitiesPtr->at(i).update();
+            entitiesPtr->at(i)->update();
         }
+        physicsEngine.update(entitiesPtr, 1.f/60.f);  // TODO: Replace this placeholder deltaTime
 
         const float CAMERA_SPEED = 1;
         const float ZOOM_SPEED = 0.01;
@@ -69,7 +72,8 @@ int main() {
         window.clear();
 
         for (int i = 0; i < entitiesPtr->size(); ++i) {
-            Rectangle currentEntityRect = entitiesPtr->at(i).getHitbox();
+            const Rectangle currentEntityRect = entitiesPtr->at(i)->getHitbox();
+
             if (mainCamera->isRectangleVisible(currentEntityRect, contextSize)) {
                 window.drawRectangle(mainCamera->getRelativeRectangle(currentEntityRect, halfContextSize));
             }
