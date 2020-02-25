@@ -28,18 +28,32 @@ private:
     }
 
     inline void queueCollisions(Entities* entities) {
+        for (size_t i = 0; i < entities->size(); ++i) {
+            for (size_t j = 0; j < entities->size(); ++j) {
+                if (i == j) { continue; }
+                
+                Entity* e1Ptr = entities->at(i);
+                Entity* e2Ptr = entities->at(j);
 
+                if (e1Ptr->getHitbox().intersects(e2Ptr->getHitbox())) {
+                    collisions.push({e1Ptr, e2Ptr});
+                }
+            }
+        }
     }
 
-    inline void solveCollisions(Entities* entities) {
-
+    inline void solveCollisions() {
+        for (size_t i = 0; i < collisions.size(); ++i) {
+            const Collision currentCollision = collisions.front();
+            collisions.pop();
+        }
     }
 
 public:
     void update(Entities* entities, float deltaTime) {
         updateKinematics(entities, deltaTime);
         queueCollisions(entities);
-        solveCollisions(entities);
+        solveCollisions();
     }
 };
 

@@ -20,8 +20,6 @@ class Entity {
     Entity(float width, float height, float posX, float posY) {
         mHitbox = {width, height, posX, posY};
         mPhysics = {true, {0, 0}, {0, 0}, &mHitbox };
-        std::cout << &mHitbox << std::endl;
-        std::cout << mPhysics.hitbox << std::endl;
     }
 
     void setHitboxSize(float width, float height) {
