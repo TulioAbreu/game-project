@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "rectangle.hpp"
 
 class Window {
     sf::Event mEvent;
@@ -31,6 +32,18 @@ class Window {
     void display() { mWindow.display(); }
 
     bool isOpen() { return mWindow.isOpen(); }
+
+    void drawRectangle(const Rectangle rect) {
+        sf::RectangleShape dRect;
+        dRect.setPosition(rect.positionX, rect.positionY);
+        dRect.setSize(sf::Vector2f(rect.width, rect.height));
+
+        dRect.setOutlineColor(sf::Color::Red);
+        dRect.setOutlineThickness(1);
+        dRect.setFillColor(sf::Color(0, 0, 0, 0));
+
+        mWindow.draw(dRect);
+    }
 };
 
 

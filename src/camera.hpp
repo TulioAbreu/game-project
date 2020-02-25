@@ -1,66 +1,39 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
-#include <SFML/Graphics.hpp>
-#include "window.hpp"
 #include "rectangle.hpp"
+#include "vector2.hpp"
 #include "entity.hpp"
-
 
 class Camera {
     float mScale;
-    sf::RenderWindow* mWindowPtr;
-    sf::RectangleShape mRect;
-    sf::Vector2u mWindowSize;
-    sf::Vector2f mGlobalPosition;
-    sf::Vector2f mWindowCenter;
+    Vector2f mGlobalPosition;
+    Vector2f mWindowCenter;
     Entity* mFixedEntityPtr;
 
     private:
-    inline void draw(sf::Drawable& drawable) {
-        if (!mWindowPtr) {
-            return;
-        }
-
-        mWindowPtr->draw(drawable);
-    }
-
-    sf::Vector2f getScaledSize(const Rectangle rectangle) {
+    Vector2f getScaledSize(const Rectangle rectangle) {
         return {rectangle.width*mScale, rectangle.height*mScale};
     }
 
     public:
     Camera() {
         mScale = 1;
-        mWindowPtr = nullptr;
         mFixedEntityPtr = nullptr;
         mGlobalPosition = {0, 0};
-        mWindowSize = {0, 0};
         mWindowCenter = {0, 0};
     }
  
-    void setGlobalPosition(const float posX, const float posY) { 
-        mGlobalPosition = {posX, posY};
+    void setGlobalPosition(const Vector2f position) {
+        mGlobalPosition = position;
+    }
+
+    Vector2f getGlobalPosition() const {
+        return mGlobalPosition;
     }
 
     void fixToEntity(Entity* entity) {
         mFixedEntityPtr = entity;
-    }
-
-    float getGlobalPositionX() const { 
-        if (mFixedEntityPtr) {
-            return mFixedEntityPtr->getHitbox().positionX;
-        }
-
-        return mGlobalPosition.x; 
-    }
-
-    float getGlobalPositionY() const { 
-        if (mFixedEntityPtr) {
-            return mFixedEntityPtr->getHitbox().positionY;
-        }
-
-        return mGlobalPosition.y; 
     }
 
     void setScale(float value) { 
@@ -73,50 +46,25 @@ class Camera {
 
     float getScale() { return mScale; }
 
-    void setWindow(Window* window) { 
-        if (!window) {
-            return;
-        }
+    inline Rectangle getVisionRectangle(const Vector2f contextSize) const {
+        // TODO: Scale must be applied here
+        const Vector2f scaledContextSize = contextSize * (1.f/mScale);
+        const Vector2f halfScaledContextSize = scaledContextSize * 0.5f;
 
-        mWindowPtr = &window->mWindow;
-        mWindowSize = mWindowPtr->getSize();
-        mWindowCenter = {mWindowSize.x*0.5f, mWindowSize.y*0.5f};
+        return {(float) scaledContextSize.x-2,
+                (float) scaledContextSize.y-2,
+                (mGlobalPosition.x-halfScaledContextSize.x)+1,
+                (mGlobalPosition.y-halfScaledContextSize.y)+1};
     }
 
-    void drawCameraPosition() {
-        sf::CircleShape circle;
-        circle.setFillColor(sf::Color::Red);
-        circle.setRadius(5);
-        circle.setPosition(mWindowCenter);
-
-        draw(circle);
+    bool isRectangleVisible(const Rectangle rect, const Vector2f contextSize) const {
+        return getVisionRectangle(contextSize).intersects(rect);
     }
 
-    sf::Vector2f getScreenCoordinates(Rectangle rectangle) {
-        sf::Vector2f screenCoordinates;
-        if (mFixedEntityPtr) {
-            const Rectangle fixedEntityHitbox = mFixedEntityPtr->getHitbox();
-            const sf::Vector2f globalPosition = {fixedEntityHitbox.positionX, fixedEntityHitbox.positionY};
-
-            screenCoordinates = sf::Vector2f(rectangle.positionX*mScale, rectangle.positionY*mScale) - (globalPosition*mScale-mWindowCenter);
-        }
-        else {
-            screenCoordinates = sf::Vector2f(rectangle.positionX*mScale, rectangle.positionY*mScale) - (mGlobalPosition*mScale-mWindowCenter);
-        }
-
-        return screenCoordinates;
-    }
-
-    void drawRectangle(const Rectangle rectangle) {
-        mRect.setSize(getScaledSize(rectangle));
-        mRect.setPosition(getScreenCoordinates(rectangle));
-
-        mRect.setFillColor(sf::Color(0,0,0,0));
-        mRect.setOutlineColor(sf::Color::Red);
-        const float thickness = (2*mScale > 0.8)? 2*mScale:0.8;
-        mRect.setOutlineThickness(thickness);
-
-        draw(mRect);
+    inline Rectangle getRelativeRectangle(Rectangle rectangle, const Vector2f halfContextSize) {
+        // TODO: Scale must be applied here
+        return {rectangle.width*mScale, rectangle.height*mScale,
+                rectangle.positionX*mScale-(mGlobalPosition.x*mScale-halfContextSize.x), rectangle.positionY*mScale-(mGlobalPosition.y*mScale-halfContextSize.y)};
     }
 };
 

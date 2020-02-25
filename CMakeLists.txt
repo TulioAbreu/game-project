@@ -7,6 +7,7 @@ add_executable (gameProject
     src/window.hpp
     src/camera.hpp
     src/entity.hpp
+    src/vector2.hpp
 )
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 17)
