@@ -22,6 +22,10 @@ class Entity {
         mPhysics = {true, {0, 0}, {0, 0}, &mHitbox };
     }
 
+    void setKinematic(bool value) {
+        mPhysics.isKinematic = value;
+    }
+
     void setHitboxSize(float width, float height) {
         mHitbox.size = {width, height};
     }
