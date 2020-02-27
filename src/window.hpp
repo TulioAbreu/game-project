@@ -36,7 +36,7 @@ class Window {
     void drawRectangle(const Rectangle rect) {
         sf::RectangleShape dRect;
         dRect.setPosition(rect.position.x, rect.position.y);
-        dRect.setSize(sf::Vector2f(rect.width, rect.height));
+        dRect.setSize(sf::Vector2f(rect.size.x, rect.size.y));
 
         dRect.setOutlineColor(sf::Color::Red);
         dRect.setOutlineThickness(1);

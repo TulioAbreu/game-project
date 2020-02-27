@@ -13,7 +13,7 @@ class Camera {
 
     private:
     Vector2f getScaledSize(const Rectangle rectangle) {
-        return {rectangle.width*mScale, rectangle.height*mScale};
+        return rectangle.size*mScale;
     }
 
     public:
@@ -51,8 +51,8 @@ class Camera {
         const Vector2f scaledContextSize = contextSize * (1.f/mScale);
         const Vector2f halfScaledContextSize = scaledContextSize * 0.5f;
 
-        return {(float) scaledContextSize.x-2,
-                (float) scaledContextSize.y-2,
+        return {{(float) scaledContextSize.x-2,
+                (float) scaledContextSize.y-2},
                 {(mGlobalPosition.x-halfScaledContextSize.x)+1,
                 (mGlobalPosition.y-halfScaledContextSize.y)+1}};
     }
@@ -62,9 +62,8 @@ class Camera {
     }
 
     inline Rectangle getRelativeRectangle(const Rectangle rectangle, const Vector2f halfContextSize) const {
-        // TODO: Scale must be applied here
-        return {rectangle.width*mScale, rectangle.height*mScale,
-                {rectangle.position.x*mScale-(mGlobalPosition.x*mScale-halfContextSize.x), rectangle.position.y*mScale-(mGlobalPosition.y*mScale-halfContextSize.y)}};
+        return {rectangle.size*mScale,
+                rectangle.position*mScale - (mGlobalPosition*mScale - halfContextSize)};
     }
 };
 
