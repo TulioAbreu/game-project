@@ -42,6 +42,7 @@ private:
 
     enum Direction {NONE = 0, NORTH, EAST, SOUTH, WEST};
     Direction getCollisionDirection(Physics* obj1, Physics* obj2) {
+        // TODO: Implement this
         return NORTH;
     }
 
@@ -69,13 +70,13 @@ private:
                 std::cout << " After = " << kinematic->hitbox->position.y << std::endl;
             } break; 
             case EAST: {
-                
+                // TODO: Implement this
             } break; 
             case SOUTH: {
-                
+                // TODO: Implement this
             } break; 
             case WEST: {
-                
+                // TODO: Implement this
             } break;
         }
     }
