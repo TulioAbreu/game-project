@@ -53,8 +53,8 @@ class Camera {
 
         return {(float) scaledContextSize.x-2,
                 (float) scaledContextSize.y-2,
-                (mGlobalPosition.x-halfScaledContextSize.x)+1,
-                (mGlobalPosition.y-halfScaledContextSize.y)+1};
+                {(mGlobalPosition.x-halfScaledContextSize.x)+1,
+                (mGlobalPosition.y-halfScaledContextSize.y)+1}};
     }
 
     bool isRectangleVisible(const Rectangle rect, const Vector2f contextSize) const {
@@ -64,7 +64,7 @@ class Camera {
     inline Rectangle getRelativeRectangle(const Rectangle rectangle, const Vector2f halfContextSize) const {
         // TODO: Scale must be applied here
         return {rectangle.width*mScale, rectangle.height*mScale,
-                rectangle.positionX*mScale-(mGlobalPosition.x*mScale-halfContextSize.x), rectangle.positionY*mScale-(mGlobalPosition.y*mScale-halfContextSize.y)};
+                {rectangle.position.x*mScale-(mGlobalPosition.x*mScale-halfContextSize.x), rectangle.position.y*mScale-(mGlobalPosition.y*mScale-halfContextSize.y)}};
     }
 };
 

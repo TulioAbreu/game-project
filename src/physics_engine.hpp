@@ -18,8 +18,7 @@ private:
 
             physics.speed = physics.speed + physics.acceleration;
 
-            physics.hitbox->positionX += physics.speed.x;
-            physics.hitbox->positionY += physics.speed.y;
+            physics.hitbox->position = physics.hitbox->position + physics.speed;
         }
     }
 
