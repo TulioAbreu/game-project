@@ -9,11 +9,15 @@ private:
 
     void readSceneFile() {
         // This is just a placeholder
-        mEntities.add(new Entity(200, 200, 0, 0));
-        mEntities.add(new Entity(10, 10, 100, 100));
-        mEntities.add(new Entity(10, 10, -100, -100));
-        mEntities.add(new Entity(10, 10, 310, 0));
-        mEntities.add(new Entity(50, 50, 200, 300));
+        Entity* newEntity = nullptr;
+ 
+        newEntity = new Entity(200, 200, 0, 0);
+        newEntity->setKinematic(false);
+        mEntities.add(newEntity);
+
+        newEntity = new Entity(10, 10, 100, 100);
+        newEntity->getPhysicsData().acceleration = {0.5, 0.5};
+        mEntities.add(newEntity);
     }
 public:
     Scene() {
