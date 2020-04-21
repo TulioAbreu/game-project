@@ -40,6 +40,18 @@ class Window {
         SDL_Quit();
     }
 
+    void handleWindowEvents() {
+        SDL_Event event;
+        while (SDL_PollEvent(&event) > 0) {
+            switch (event.type) {
+                case SDL_QUIT: {
+                    close();
+                } break;
+            } 
+        }
+    }
+
+
     void clear() {
         SDL_SetRenderDrawColor(mWinRenderer, 0, 0, 0, 255);
         SDL_RenderClear(mWinRenderer);

@@ -133,6 +133,7 @@ int main() {
     const Vector2f halfContextSize = contextSize*0.5f;
 
     while (game.getIsRunning() && window.isOpen()) {
+        window.handleWindowEvents();
 
         for (size_t i = 0; i < entitiesPtr->size(); ++i) {
             entitiesPtr->at(i).update();
@@ -140,14 +141,6 @@ int main() {
 
         handleKeyboard(mainCamera);
 
-        SDL_Event event;
-        while (SDL_PollEvent(&event) > 0) {
-            switch (event.type) {
-                case SDL_QUIT: {
-                    window.close();
-                } break;
-            } 
-        }
         window.clear();
 
         for (size_t i = 0; i < entitiesPtr->size(); ++i) {
