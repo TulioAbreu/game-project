@@ -1,4 +1,5 @@
 #include <vector>
+#include <SDL2/SDL.h>
 
 #include "window.hpp"
 #include "camera.hpp"
@@ -35,7 +36,7 @@ class Entities {
         entities.push_back(entity);
     }
 
-    bool remove(int index) {
+    bool remove(size_t index) {
         if (entities.empty()) {
             return false;
         } 
@@ -67,7 +68,7 @@ class Scene {
     }
 
     void update() {
-        for (int i = 0; i < mEntities.size(); ++i) {
+        for (size_t i = 0; i < mEntities.size(); ++i) {
             mEntities.at(i).update();
         }
     }
@@ -96,37 +97,50 @@ int main() {
     const Vector2f halfContextSize = contextSize*0.5f;
 
     while (game.getIsRunning() && window.isOpen()) {
-        window.handleWindowEvents();
 
-        for (int i = 0; i < entitiesPtr->size(); ++i) {
+        for (size_t i = 0; i < entitiesPtr->size(); ++i) {
             entitiesPtr->at(i).update();
         }
 
         const float CAMERA_SPEED = 1;
         const float ZOOM_SPEED = 0.01;
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
-        //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
-        // }
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
-        //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, +CAMERA_SPEED));
-        // }
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
-        //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(-CAMERA_SPEED, 0));
-        // }
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
-        //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
-        // }
+        window.handleWindowEvents();
 
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-        //     mainCamera->setScale(mainCamera->getScale() + ZOOM_SPEED);
-        // }
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-        //     mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
-        // }
+        SDL_Event event;
+
+
+        while (SDL_PollEvent(&event) > 0) {
+            switch (event.type) {
+                case SDL_QUIT: {
+                    window.close();
+                } break;
+                case SDL_KEYDOWN: {
+                    if (event.key.keysym.sym == SDLK_UP) {
+                        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
+                    }
+                    if (event.key.keysym.sym == SDLK_DOWN) {
+                        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, +CAMERA_SPEED));
+                    }
+                    if (event.key.keysym.sym == SDLK_LEFT) {
+                        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(-CAMERA_SPEED, 0));
+                    }
+                    if (event.key.keysym.sym == SDLK_RIGHT) {
+                        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
+                    }
+
+                    if (event.key.keysym.sym == SDLK_w) {
+                        mainCamera->setScale(mainCamera->getScale() + ZOOM_SPEED);
+                    }
+                    if (event.key.keysym.sym == SDLK_s) {
+                        mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
+                    }
+                }
+            } 
+        }
 
         window.clear();
 
-        for (int i = 0; i < entitiesPtr->size(); ++i) {
+        for (size_t i = 0; i < entitiesPtr->size(); ++i) {
             Rectangle currentEntityRect = entitiesPtr->at(i).getHitbox();
             if (mainCamera->isRectangleVisible(currentEntityRect, contextSize)) {
                 window.drawRectangle(mainCamera->getRelativeRectangle(currentEntityRect, halfContextSize));
