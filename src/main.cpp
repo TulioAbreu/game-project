@@ -78,6 +78,42 @@ class Scene {
     }
 };
 
+void handleKeyboard(Camera* mainCamera) {
+    const float CAMERA_SPEED = 1;
+    const float ZOOM_SPEED = 1;
+
+    const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+    if (!keyboardState) {
+        std::cerr << "[ERROR] Could not get keyboard state!" << std::endl;
+        return;
+    }
+    
+    if (keyboardState[SDL_SCANCODE_UP]) {
+        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
+    }
+
+    if (keyboardState[SDL_SCANCODE_DOWN]) {
+        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, +CAMERA_SPEED));
+    }
+
+    if (keyboardState[SDL_SCANCODE_LEFT]) {
+        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(-CAMERA_SPEED, 0));
+    }
+
+    if (keyboardState[SDL_SCANCODE_RIGHT]) {
+        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
+    }
+
+    if (keyboardState[SDL_SCANCODE_W]) {
+         mainCamera->setScale(mainCamera->getScale() + ZOOM_SPEED);
+    }
+
+    if (keyboardState[SDL_SCANCODE_S]) {
+        mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
+    }
+
+}
+
 int main() {
     Game game;
     game.setIsRunning(true);
@@ -102,42 +138,16 @@ int main() {
             entitiesPtr->at(i).update();
         }
 
-        const float CAMERA_SPEED = 1;
-        const float ZOOM_SPEED = 0.01;
-        window.handleWindowEvents();
+        handleKeyboard(mainCamera);
 
         SDL_Event event;
-
-
         while (SDL_PollEvent(&event) > 0) {
             switch (event.type) {
                 case SDL_QUIT: {
                     window.close();
                 } break;
-                case SDL_KEYDOWN: {
-                    if (event.key.keysym.sym == SDLK_UP) {
-                        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
-                    }
-                    if (event.key.keysym.sym == SDLK_DOWN) {
-                        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, +CAMERA_SPEED));
-                    }
-                    if (event.key.keysym.sym == SDLK_LEFT) {
-                        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(-CAMERA_SPEED, 0));
-                    }
-                    if (event.key.keysym.sym == SDLK_RIGHT) {
-                        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
-                    }
-
-                    if (event.key.keysym.sym == SDLK_w) {
-                        mainCamera->setScale(mainCamera->getScale() + ZOOM_SPEED);
-                    }
-                    if (event.key.keysym.sym == SDLK_s) {
-                        mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
-                    }
-                }
             } 
         }
-
         window.clear();
 
         for (size_t i = 0; i < entitiesPtr->size(); ++i) {

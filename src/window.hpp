@@ -40,9 +40,6 @@ class Window {
         SDL_Quit();
     }
 
-    void handleWindowEvents() {
-    }
-
     void clear() {
         SDL_SetRenderDrawColor(mWinRenderer, 0, 0, 0, 255);
         SDL_RenderClear(mWinRenderer);
@@ -53,7 +50,6 @@ class Window {
     bool isOpen() { return mIsOpen; }
 
     void drawRectangle(const Rectangle rect) {
-        // TODO: Float/Integer conversion is causing some Input Delay
         SDL_Rect sdlRect = {
            (int)rect.positionX,
            (int)rect.positionY,
