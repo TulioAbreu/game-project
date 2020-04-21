@@ -1,5 +1,5 @@
-#include <SFML/Graphics.hpp>
 #include <vector>
+#include <SDL2/SDL.h>
 
 #include "window.hpp"
 #include "camera.hpp"
@@ -36,7 +36,7 @@ class Entities {
         entities.push_back(entity);
     }
 
-    bool remove(int index) {
+    bool remove(size_t index) {
         if (entities.empty()) {
             return false;
         } 
@@ -50,7 +50,7 @@ class Entities {
 };
 
 class Scene {
-private:
+    private:
     Entities mEntities;
 
     void readSceneFile() {
@@ -62,13 +62,13 @@ private:
         mEntities.add(Entity(10, 10, 310, 0));
         mEntities.add(Entity(50, 50, 200, 300));
     }
-public:
+    public:
     Scene() {
         readSceneFile();
     }
 
     void update() {
-        for (int i = 0; i < mEntities.size(); ++i) {
+        for (size_t i = 0; i < mEntities.size(); ++i) {
             mEntities.at(i).update();
         }
     }
@@ -77,6 +77,42 @@ public:
         return mEntities;
     }
 };
+
+void handleKeyboard(Camera* mainCamera) {
+    const float CAMERA_SPEED = 1;
+    const float ZOOM_SPEED = 1;
+
+    const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+    if (!keyboardState) {
+        std::cerr << "[ERROR] Could not get keyboard state!" << std::endl;
+        return;
+    }
+    
+    if (keyboardState[SDL_SCANCODE_UP]) {
+        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
+    }
+
+    if (keyboardState[SDL_SCANCODE_DOWN]) {
+        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, +CAMERA_SPEED));
+    }
+
+    if (keyboardState[SDL_SCANCODE_LEFT]) {
+        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(-CAMERA_SPEED, 0));
+    }
+
+    if (keyboardState[SDL_SCANCODE_RIGHT]) {
+        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
+    }
+
+    if (keyboardState[SDL_SCANCODE_W]) {
+         mainCamera->setScale(mainCamera->getScale() + ZOOM_SPEED);
+    }
+
+    if (keyboardState[SDL_SCANCODE_S]) {
+        mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
+    }
+
+}
 
 int main() {
     Game game;
@@ -99,35 +135,15 @@ int main() {
     while (game.getIsRunning() && window.isOpen()) {
         window.handleWindowEvents();
 
-        for (int i = 0; i < entitiesPtr->size(); ++i) {
+        for (size_t i = 0; i < entitiesPtr->size(); ++i) {
             entitiesPtr->at(i).update();
         }
 
-        const float CAMERA_SPEED = 1;
-        const float ZOOM_SPEED = 0.01;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
-            mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
-            mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, +CAMERA_SPEED));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
-            mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(-CAMERA_SPEED, 0));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
-            mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-            mainCamera->setScale(mainCamera->getScale() + ZOOM_SPEED);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-            mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
-        }
+        handleKeyboard(mainCamera);
 
         window.clear();
 
-        for (int i = 0; i < entitiesPtr->size(); ++i) {
+        for (size_t i = 0; i < entitiesPtr->size(); ++i) {
             Rectangle currentEntityRect = entitiesPtr->at(i).getHitbox();
             if (mainCamera->isRectangleVisible(currentEntityRect, contextSize)) {
                 window.drawRectangle(mainCamera->getRelativeRectangle(currentEntityRect, halfContextSize));

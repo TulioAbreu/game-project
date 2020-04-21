@@ -1,48 +1,82 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include <SFML/Graphics.hpp>
+#include <SDL2/SDL.h>
 #include <string>
 #include "rectangle.hpp"
 
+#include <iostream>
+
 class Window {
-    sf::Event mEvent;
-    sf::RectangleShape mRect;
+    bool mIsOpen;
 
     public:
-    sf::RenderWindow mWindow;
+    SDL_Window* mWindow;
+    SDL_Renderer* mWinRenderer;
+    SDL_Event event;
+    SDL_Rect sdlRect;
 
     public:
-    Window(int width, int height, std::string title) : mWindow(sf::VideoMode(width, height), title) {
-        mWindow.setFramerateLimit(60);
-    }
-    virtual ~Window() = default;
+    Window(int width, int height, std::string title) {
+        SDL_Init(SDL_INIT_VIDEO);
+        mWindow = SDL_CreateWindow(
+            title.c_str(),
+            SDL_WINDOWPOS_UNDEFINED,
+            SDL_WINDOWPOS_UNDEFINED,
+            width,
+            height,
+            SDL_WINDOW_OPENGL
+        );
 
-    void handleWindowEvents() {
-        while (mWindow.pollEvent(mEvent)) {
-            if (mEvent.type == sf::Event::Closed) {
-                // TODO: Maybe add some kind of callback to window class?
-                mWindow.close();
-            }
+        if (mWindow == NULL) {
+            std::cerr << "Failed to open a window." << std::endl;
+            mIsOpen = false;
+        }
+        else {
+            mIsOpen = true;
+            mWinRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         }
     }
 
-    void clear() { mWindow.clear(); }
+    virtual ~Window() {
+        SDL_DestroyWindow(mWindow);
+        SDL_Quit();
+    }
 
-    void display() { mWindow.display(); }
+    void handleWindowEvents() {
+        while (SDL_PollEvent(&event) > 0) {
+            switch (event.type) {
+                case SDL_QUIT: {
+                    close();
+                } break;
+            } 
+        }
+    }
 
-    bool isOpen() { return mWindow.isOpen(); }
+
+    void clear() {
+        SDL_SetRenderDrawColor(mWinRenderer, 0, 0, 0, 255);
+        SDL_RenderClear(mWinRenderer);
+    }
+
+    void display() { SDL_RenderPresent(mWinRenderer); }
+
+    bool isOpen() { return mIsOpen; }
 
     void drawRectangle(const Rectangle rect) {
-        sf::RectangleShape dRect;
-        dRect.setPosition(rect.positionX, rect.positionY);
-        dRect.setSize(sf::Vector2f(rect.width, rect.height));
+        sdlRect = {
+           (int)rect.positionX,
+           (int)rect.positionY,
+           (int)rect.width,
+           (int)rect.height 
+        };
 
-        dRect.setOutlineColor(sf::Color::Red);
-        dRect.setOutlineThickness(1);
-        dRect.setFillColor(sf::Color(0, 0, 0, 0));
-
-        mWindow.draw(dRect);
+        SDL_SetRenderDrawColor(mWinRenderer, 255, 0, 0, 100);
+        SDL_RenderFillRect(mWinRenderer, &sdlRect);
+    }
+    
+    void close() {
+        mIsOpen = false;
     }
 };
 
