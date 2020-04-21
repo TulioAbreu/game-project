@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include <vector>
 
 #include "window.hpp"
@@ -50,7 +49,7 @@ class Entities {
 };
 
 class Scene {
-private:
+    private:
     Entities mEntities;
 
     void readSceneFile() {
@@ -62,7 +61,7 @@ private:
         mEntities.add(Entity(10, 10, 310, 0));
         mEntities.add(Entity(50, 50, 200, 300));
     }
-public:
+    public:
     Scene() {
         readSceneFile();
     }
@@ -105,25 +104,25 @@ int main() {
 
         const float CAMERA_SPEED = 1;
         const float ZOOM_SPEED = 0.01;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
-            mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
-            mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, +CAMERA_SPEED));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
-            mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(-CAMERA_SPEED, 0));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
-            mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
-        }
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
+        //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
+        // }
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
+        //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, +CAMERA_SPEED));
+        // }
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
+        //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(-CAMERA_SPEED, 0));
+        // }
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
+        //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
+        // }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-            mainCamera->setScale(mainCamera->getScale() + ZOOM_SPEED);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-            mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
-        }
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+        //     mainCamera->setScale(mainCamera->getScale() + ZOOM_SPEED);
+        // }
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+        //     mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
+        // }
 
         window.clear();
 
