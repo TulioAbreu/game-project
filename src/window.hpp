@@ -13,6 +13,8 @@ class Window {
     public:
     SDL_Window* mWindow;
     SDL_Renderer* mWinRenderer;
+    SDL_Event event;
+    SDL_Rect sdlRect;
 
     public:
     Window(int width, int height, std::string title) {
@@ -35,13 +37,13 @@ class Window {
             mWinRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         }
     }
+
     virtual ~Window() {
         SDL_DestroyWindow(mWindow);
         SDL_Quit();
     }
 
     void handleWindowEvents() {
-        SDL_Event event;
         while (SDL_PollEvent(&event) > 0) {
             switch (event.type) {
                 case SDL_QUIT: {
@@ -62,7 +64,7 @@ class Window {
     bool isOpen() { return mIsOpen; }
 
     void drawRectangle(const Rectangle rect) {
-        SDL_Rect sdlRect = {
+        sdlRect = {
            (int)rect.positionX,
            (int)rect.positionY,
            (int)rect.width,
