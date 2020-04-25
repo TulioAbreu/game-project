@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include "rectangle.hpp"
-
+#include "log.hpp"
 #include <iostream>
 
 class Window {
@@ -29,12 +29,14 @@ class Window {
         );
 
         if (mWindow == NULL) {
-            std::cerr << "Failed to open a window." << std::endl;
+            std::cout << ERROR_PREFIX << "SDL/Window: Failed to open a window." << std::endl;
             mIsOpen = false;
         }
         else {
+            std::cout << LOG_PREFIX << "SDL/Window: Success" << std::endl;
             mIsOpen = true;
             mWinRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+            SDL_SetRenderDrawBlendMode(mWinRenderer, SDL_BLENDMODE_BLEND);
         }
     }
 
