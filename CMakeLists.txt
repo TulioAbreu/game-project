@@ -7,9 +7,12 @@ add_executable (gameProject
     src/camera.hpp
     src/entity.hpp
     src/vector2.hpp
+    src/keyboard.hpp
+    src/log.hpp
+    src/entity-container.hpp
 )
 
-set_property(TARGET gameProject PROPERTY CXX_STANDARD 17)
+set_property(TARGET gameProject PROPERTY CXX_STANDARD 20)
 
 find_package(SDL2 REQUIRED)
 include_directories(gameProject ${SDL2_INCLUDE_DIRS})
