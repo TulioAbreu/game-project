@@ -81,7 +81,7 @@ class Scene {
 
 void handleKeyboard(Keyboard* keyboard, Camera* mainCamera) {
     const float CAMERA_SPEED = 1;
-    const float ZOOM_SPEED = 1;
+    const float ZOOM_SPEED = 0.01;
     
     if (keyboard->isKeyPressed("UP")) {
         mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
@@ -106,10 +106,6 @@ void handleKeyboard(Keyboard* keyboard, Camera* mainCamera) {
     if (keyboard->isKeyPressed("S")) {
         mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
     }
-    if (keyboard->isKeyPressed("Y")) {
-        mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
-    }
-
 }
 
 #include "log.hpp"
