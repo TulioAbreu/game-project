@@ -1,6 +1,7 @@
 #include <vector>
 #include <SDL2/SDL.h>
 
+#include "keyboard.hpp"
 #include "window.hpp"
 #include "camera.hpp"
 #include "entity.hpp"
@@ -78,42 +79,40 @@ class Scene {
     }
 };
 
-void handleKeyboard(Camera* mainCamera) {
+void handleKeyboard(Keyboard* keyboard, Camera* mainCamera) {
     const float CAMERA_SPEED = 1;
     const float ZOOM_SPEED = 1;
-
-    const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
-    if (!keyboardState) {
-        std::cerr << "[ERROR] Could not get keyboard state!" << std::endl;
-        return;
-    }
     
-    if (keyboardState[SDL_SCANCODE_UP]) {
+    if (keyboard->isKeyPressed("UP")) {
         mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
     }
 
-    if (keyboardState[SDL_SCANCODE_DOWN]) {
+    if (keyboard->isKeyPressed("DOWN")) {
         mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, +CAMERA_SPEED));
     }
 
-    if (keyboardState[SDL_SCANCODE_LEFT]) {
+    if (keyboard->isKeyPressed("LEFT")) {
         mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(-CAMERA_SPEED, 0));
     }
 
-    if (keyboardState[SDL_SCANCODE_RIGHT]) {
+    if (keyboard->isKeyPressed("RIGHT")) {
         mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
     }
 
-    if (keyboardState[SDL_SCANCODE_W]) {
+    if (keyboard->isKeyPressed("W")) {
          mainCamera->setScale(mainCamera->getScale() + ZOOM_SPEED);
     }
 
-    if (keyboardState[SDL_SCANCODE_S]) {
+    if (keyboard->isKeyPressed("S")) {
+        mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
+    }
+    if (keyboard->isKeyPressed("Y")) {
         mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
     }
 
 }
 
+#include "log.hpp"
 int main() {
     Game game;
     game.setIsRunning(true);
@@ -123,6 +122,7 @@ int main() {
     const char WINDOW_TITLE[] = "GameProject";
 
     Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
+    Keyboard keyboard;
     Scene scene;
     Entities* entitiesPtr = &scene.getEntities();
 
@@ -139,7 +139,7 @@ int main() {
             entitiesPtr->at(i).update();
         }
 
-        handleKeyboard(mainCamera);
+        handleKeyboard(&keyboard, mainCamera);
 
         window.clear();
 
