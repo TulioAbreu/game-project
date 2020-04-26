@@ -25,15 +25,23 @@ class Scene {
     private:
     Entities mEntities;
 
-    void readSceneFile(std::string filepath) {
+    std::string getFileContent(std::string filepath) {
         std::ifstream file (filepath);
         if (!file.is_open()) {
             std::cout << ERROR_PREFIX << "Could not open file => " << filepath << std::endl;
+            return "";
+        }
+        std::string fileContent((std::istreambuf_iterator<char>(file)),
+                                 std::istreambuf_iterator<char>());
+        file.close();
+        return fileContent;
+    }
+
+    void readSceneFile(std::string filepath) {
+        std::string sceneStr = getFileContent(filepath);
+        if (sceneStr == "") {
             return;
         }
-        std::string sceneStr((std::istreambuf_iterator<char>(file)),
-                               std::istreambuf_iterator<char>());
-        file.close();
 
         auto sceneStrVec = split(sceneStr, '\n');
         for (auto sceneStrElement : sceneStrVec) {
