@@ -49,6 +49,8 @@ void handleKeyboard(Keyboard* keyboard, Camera* mainCamera) {
     }
 }
 
+#define PATH(filepath) std::string("../data/") + std::string(filepath)
+
 #include "log.hpp"
 int main() {
     Game game;
@@ -60,7 +62,7 @@ int main() {
 
     Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     Keyboard keyboard;
-    Scene scene;
+    Scene scene (PATH("scenes/01.scene"));
     Entities* entitiesPtr = &scene.getEntities();
 
     Camera* mainCamera = new Camera();
