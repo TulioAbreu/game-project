@@ -37,6 +37,19 @@ class Scene {
         return fileContent;
     }
 
+    Vector2f ParseVector2f(std::string valueStr) {
+        auto values = split(valueStr, ' ');
+        return {std::stof(values[0]), std::stof(values[1])};
+    }
+
+    Vector2f ParseSize(std::string valueStr) {
+        return ParseVector2f(valueStr);
+    }
+
+    Vector2f ParsePosition(std::string valueStr) {
+        return ParseVector2f(valueStr);
+    }
+
     void readSceneFile(std::string filepath) {
         std::string sceneStr = getFileContent(filepath);
         if (sceneStr == "") {
@@ -63,12 +76,10 @@ class Scene {
                 const std::string attributeValueStr = attributeValueVec[1];
 
                 if (attributeTitleStr == "size") {
-                    auto values = split(attributeValueStr, ' ');
-                    size = {std::stof(values[0]), std::stof(values[1])};
+                    size = ParseSize(attributeValueStr);
                 }
                 else if (attributeTitleStr == "position") {
-                    auto values = split(attributeValueStr, ' ');
-                    position = {std::stof(values[0]), std::stof(values[1])};
+                    position = ParsePosition(attributeValueStr);
                 }
             }
             mEntities.add(Entity(size.x, size.y, position.x, position.y));
