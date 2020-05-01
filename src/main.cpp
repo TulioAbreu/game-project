@@ -52,7 +52,45 @@ void handleKeyboard(Keyboard* keyboard, Camera* mainCamera) {
 #define PATH(filepath) std::string("../data/") + std::string(filepath)
 
 #include "log.hpp"
+#include <boost/python.hpp>
+using namespace boost::python;
+
+std::string getFileContent(std::string filepath) {
+    std::ifstream file (filepath);
+    if (!file.is_open()) {
+        std::cout << ERROR_PREFIX << "Could not open file => " << filepath << std::endl;
+        return "";
+    }
+    std::string fileContent((std::istreambuf_iterator<char>(file)),
+                                std::istreambuf_iterator<char>());
+    file.close();
+    return fileContent;
+}
+
+
 int main() {
+    try {
+        Py_Initialize();
+
+        object main_module((
+            handle<>(borrowed(PyImport_AddModule("__main__")))
+        ));
+
+        std::string hello = getFileContent("../data/worlds.py");
+
+        object main_namespace = main_module.attr("__dict__");
+
+        handle<> ignored(( PyRun_String( hello.c_str(),
+                                        Py_file_input,
+                                        main_namespace.ptr(),
+                                        main_namespace.ptr() ) ));
+    } catch(error_already_set) {
+        PyErr_Print();
+    }
+    return 0;
+}
+
+int main1() {
     Game game;
     game.setIsRunning(true);
 
