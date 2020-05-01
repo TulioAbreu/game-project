@@ -5,10 +5,13 @@ OBJS = ./src/*.cpp
 CC = g++
 
 #INCLUDE_PATHS specifies the additional include paths we'll need
-INCLUDE_PATHS = -IE:\SDL2\include\SDL2
+LUA_INCLUDE_PATH = "-IC:/Program Files (x86)/Lua/5.1/include"
+
+INCLUDE_PATHS = -IE:/SDL2/include/SDL2  $(LUA_INCLUDE_PATH)
 
 #LIBRARY_PATHS specifies the additional library paths we'll need
-LIBRARY_PATHS = -LE:\SDL2\lib
+LUA_LIB_PATH = "C:\Program Files (x86)\Lua\5.1\lib"
+LIBRARY_PATHS = -LE:\SDL2\lib -L$(LUA_LIB_PATH)
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
