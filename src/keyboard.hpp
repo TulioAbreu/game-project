@@ -1,7 +1,7 @@
 #ifndef KEYBOARD_HPP
 #define KEYBOARD_HPP
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <map>
 #include <string>
 #include "log.hpp"
