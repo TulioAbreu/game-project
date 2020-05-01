@@ -1,7 +1,7 @@
 #ifndef KEYBOARD_HPP
 #define KEYBOARD_HPP
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <map>
 #include <string>
 #include "log.hpp"
@@ -32,10 +32,10 @@ public:
             std::cout << ERROR_PREFIX << "Keyboard/SDL Error: Could not get keyboard state." << std::endl;
             return false;
         }
-        if (!mKeyboardMap.contains(keyName)) {
-            std::cout << WARNING_PREFIX << "Keyboard: Specified keyName was not found. (keyName='" << keyName << "')" << std::endl;
-            return false;
-        }
+        // if (!mKeyboardMap.contains(keyName)) {
+        //     std::cout << WARNING_PREFIX << "Keyboard: Specified keyName was not found. (keyName='" << keyName << "')" << std::endl;
+        //     return false;
+        // }
 
         return keyboardState[mKeyboardMap.at(keyName)];
     }

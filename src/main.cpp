@@ -1,5 +1,7 @@
+#define SDL_MAIN_HANDLED
+
 #include <vector>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "keyboard.hpp"
 #include "window.hpp"
