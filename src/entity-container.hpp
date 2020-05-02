@@ -33,6 +33,15 @@ class Entities {
         entities.erase(entities.begin() + index);
         return true;
     }
+
+    Entity* getEntityByID(int id) {
+        for (auto& entity : entities) {
+            if (entity.getID() == id) {
+                return &entity;
+            }
+        }
+        return nullptr;
+    }
 };
 
 #endif

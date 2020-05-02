@@ -67,6 +67,8 @@ class Entity {
     }
 
     inline Rectangle getHitbox() { return mHitbox; }
+
+    int getID() { return mID; }
 };
 
 int Entity::nextEntityID = 0;
