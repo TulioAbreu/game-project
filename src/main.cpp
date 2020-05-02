@@ -57,8 +57,8 @@ int main() {
     Game game;
     game.setIsRunning(true);
 
-    const int WINDOW_WIDTH = 1900;
-    const int WINDOW_HEIGHT = 1080;
+    const int WINDOW_WIDTH = 640;
+    const int WINDOW_HEIGHT = 480;
     const char WINDOW_TITLE[] = "GameProject";
 
     Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);

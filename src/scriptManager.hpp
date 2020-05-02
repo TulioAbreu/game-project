@@ -7,17 +7,34 @@ extern "C" {
     #include <lua5.1/lua.h>
     #include <lua5.1/lualib.h>
 };
-
 #include "log.hpp"
 
+#define LUA_REGISTERFUNCTION(state, functionName, function) \
+    lua_pushcfunction(state, function);                     \
+    lua_setglobal(state, functionName);
 
-int lua_setEntityPositionX(lua_State* mLuaState) {
-    LOG("Entity X Position was set to 0");
+
+int lua_log(lua_State* mLuaState) {
+    if (lua_gettop(mLuaState) >= 0) {
+        LOG(std::string(lua_tostring(mLuaState, -1)));
+    }
     return 1;
 }
 
+int lua_logWarning(lua_State* mLuaState) {
+    if (lua_gettop(mLuaState) >= 0) {
+        LOG_WARNING(std::string(lua_tostring(mLuaState, -1)));
+    }
+    return 1;
+}
 
-// TODO: Singleton
+int lua_logError(lua_State* mLuaState) {
+    if (lua_gettop(mLuaState) >= 0) {
+        LOG_ERROR(std::string(lua_tostring(mLuaState, -1)));
+    }
+    return 1;
+}
+
 class Script {
 private:
     static lua_State* mLuaState;
@@ -42,10 +59,16 @@ private:
         }
         return true;
     }
+
 public:
     Script(std::string filePath, std::string name) {
         if (!mIsLibLoaded) {
             luaL_openlibs(mLuaState);
+
+            LUA_REGISTERFUNCTION(mLuaState, "log", lua_log);
+            LUA_REGISTERFUNCTION(mLuaState, "logWarning", lua_logWarning);
+            LUA_REGISTERFUNCTION(mLuaState, "logError", lua_logError);
+
             mIsLibLoaded = true;
         }
 
@@ -83,14 +106,6 @@ public:
         loadFunction(mName + "_OnStart");
         lua_pushnumber(mLuaState, entityId);
         runFunction(1);
-
-        // loadFunction("monster_OnStart");
-        // lua_pushnumber(mLuaState, entityId);
-        // runFunction(1);
-
-        // lua_getglobal(mLuaState, "monster_onStart");
-        // lua_pcall(mLuaState, 1, 1, 0);
-        // lua_pop(mLuaState, 1);
     }
 
     void onUpdate(int entityId) {
@@ -98,14 +113,15 @@ public:
         lua_pushnumber(mLuaState, entityId);
         runFunction(1);
     }
+
+    void onDestroy(int entityID) {
+        loadFunction(mName + "_OnDestroy");
+        lua_pushnumber(mLuaState, entityID);
+        runFunction(1);
+    }
 };
 
 lua_State* Script::mLuaState = luaL_newstate();
 bool Script::mIsLibLoaded = false;
-
-// void exposeFunction() {
-//     lua_pushcfunction(mLuaState, resetPlayerPosition);
-//     lua_setglobal(mLuaState, "resetPlayerPosition");
-// }
 
 #endif

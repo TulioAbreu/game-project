@@ -40,6 +40,13 @@ class Entity {
         }
     }
 
+    ~Entity() {
+        for (auto script : mScripts) {
+            script->onDestroy(mID);
+        }
+
+    }
+
     void setHitboxSize(float width, float height) {
         mHitbox.width = width;
         mHitbox.height = height;
