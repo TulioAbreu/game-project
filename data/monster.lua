@@ -4,10 +4,6 @@ function monster_OnStart(id)
     return 563
 end
 
-
 function monster_OnUpdate(id)
-    for i=1,50 do
-        print("Khello")
-    end
+    print("Khello from id = ".. id)
 end
-
