@@ -9,10 +9,6 @@ extern "C" {
 };
 #include "log.hpp"
 
-#define LUA_REGISTERFUNCTION(state, functionName, function) \
-    lua_pushcfunction(state, function);                     \
-    lua_setglobal(state, functionName);
-
 
 int lua_log(lua_State* mLuaState) {
     if (lua_gettop(mLuaState) >= 0) {
@@ -60,14 +56,19 @@ private:
         return true;
     }
 
+    static void registerFunction(lua_State* luaState, std::string functionName, lua_CFunction f) {
+        lua_pushcfunction(luaState, f);
+        lua_setglobal(luaState, functionName.c_str());
+    }
+
 public:
     Script(std::string filePath, std::string name) {
         if (!mIsLibLoaded) {
             luaL_openlibs(mLuaState);
 
-            LUA_REGISTERFUNCTION(mLuaState, "log", lua_log);
-            LUA_REGISTERFUNCTION(mLuaState, "logWarning", lua_logWarning);
-            LUA_REGISTERFUNCTION(mLuaState, "logError", lua_logError);
+            registerFunction(mLuaState, "log", lua_log);
+            registerFunction(mLuaState, "logWarning", lua_logWarning);
+            registerFunction(mLuaState, "logError", lua_logError);
 
             mIsLibLoaded = true;
         }
