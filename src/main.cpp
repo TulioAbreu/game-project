@@ -3,6 +3,7 @@
 #include <vector>
 #include <SDL2/SDL.h>
 
+#include "scriptManager.hpp"
 #include "keyboard.hpp"
 #include "window.hpp"
 #include "camera.hpp"
@@ -53,6 +54,17 @@ void handleKeyboard(Keyboard* keyboard, Camera* mainCamera) {
 
 #include "log.hpp"
 int main() {
+    Script scriptPlayer("../data/monster.lua", "player");
+    Script scriptMonster("../data/player.lua", "monster");
+
+    scriptMonster.onStart(2);
+    scriptPlayer.onStart(1);
+
+    scriptMonster.onUpdate(2);
+    scriptPlayer.onUpdate(1);
+
+    return 0;
+
     Game game;
     game.setIsRunning(true);
 
