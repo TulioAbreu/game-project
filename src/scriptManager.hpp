@@ -56,6 +56,14 @@ private:
         return true;
     }
 
+    static void loadLuaLibraries(lua_State* luaState) {
+        luaL_openlibs(mLuaState);
+
+        registerFunction(mLuaState, "log", lua_log);
+        registerFunction(mLuaState, "logWarning", lua_logWarning);
+        registerFunction(mLuaState, "logError", lua_logError);
+    }
+
     static void registerFunction(lua_State* luaState, std::string functionName, lua_CFunction f) {
         lua_pushcfunction(luaState, f);
         lua_setglobal(luaState, functionName.c_str());
@@ -64,12 +72,7 @@ private:
 public:
     Script(std::string filePath, std::string name) {
         if (!mIsLibLoaded) {
-            luaL_openlibs(mLuaState);
-
-            registerFunction(mLuaState, "log", lua_log);
-            registerFunction(mLuaState, "logWarning", lua_logWarning);
-            registerFunction(mLuaState, "logError", lua_logError);
-
+            loadLuaLibraries(mLuaState);
             mIsLibLoaded = true;
         }
 
@@ -88,37 +91,31 @@ public:
         mIsReady = true;
     }
 
-    // lua_getglobal(L, "start");
-    // lua_pushnumber(L, 5);
-    // lua_pcall(L, 1, 1, 0);
-    // cout << "The return value of the function was " << lua_tostring(L, -1) << endl;
-    // lua_pop(L,1);
-
     void loadFunction(std::string functionName) {
         lua_getglobal(mLuaState, functionName.c_str());
     }
 
-    void runFunction(int argsLen) {
+    void lua_executeFunction(int argsLen) {
         lua_pcall(mLuaState, argsLen, 1, 0);
         lua_pop(mLuaState, 1);
     }
 
-    void onStart(int entityId) {
+    void onStart(int entityID) {
         loadFunction(mName + "_OnStart");
-        lua_pushnumber(mLuaState, entityId);
-        runFunction(1);
+        lua_pushnumber(mLuaState, entityID);
+        lua_executeFunction(1);
     }
 
-    void onUpdate(int entityId) {
+    void onUpdate(int entityID) {
         loadFunction(mName + "_OnUpdate");
-        lua_pushnumber(mLuaState, entityId);
-        runFunction(1);
+        lua_pushnumber(mLuaState, entityID);
+        lua_executeFunction(1);
     }
 
     void onDestroy(int entityID) {
         loadFunction(mName + "_OnDestroy");
         lua_pushnumber(mLuaState, entityID);
-        runFunction(1);
+        lua_executeFunction(1);
     }
 };
 
