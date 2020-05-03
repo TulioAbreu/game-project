@@ -1,11 +1,21 @@
+local isWalkingLeft = true
+
 function monster_OnStart(id)
-    log("Monster started!")
-    return 563
+    setEntityPositionY(id, -100)
 end
 
 function monster_OnUpdate(id)
-    local hitboxWidth = getEntityWidth(id)
-    if hitboxWidth < 1000 then
-        setEntityWidth(id, hitboxWidth + 10)
+    local posY = getEntityPositionY(id)
+    if isWalkingLeft then
+        setEntityPositionY(id, (posY + 30))
+
+        if posY > 300 then
+            isWalkingLeft = false
+        end
+    else
+        setEntityPositionY(id, (posY - 30))
+        if posY < -300 then
+            isWalkingLeft = true
+        end
     end
 end
