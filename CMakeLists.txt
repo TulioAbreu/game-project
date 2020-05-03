@@ -4,14 +4,17 @@ add_executable (gameProject
     src/main.cpp
     src/rectangle.hpp
     src/window.hpp
+    src/singleton.hpp
     src/camera.hpp
     src/entity.hpp
+    src/entity.cpp
     src/vector2.hpp
     src/keyboard.hpp
     src/log.hpp
     src/entity-container.hpp
     src/scriptManager.hpp
-)
+    src/scriptManager.cpp
+    )
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 20)
 

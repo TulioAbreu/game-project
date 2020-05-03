@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <SDL2/SDL.h>
-
+#include "log.hpp"
 #include "scriptManager.hpp"
 #include "keyboard.hpp"
 #include "window.hpp"
@@ -10,6 +10,7 @@
 #include "entity.hpp"
 #include "scene.hpp"
 #include "entity-container.hpp"
+
 
 class Game {
     bool mIsRunning;
@@ -52,7 +53,6 @@ void handleKeyboard(Keyboard* keyboard, Camera* mainCamera) {
     }
 }
 
-#include "log.hpp"
 int main() {
     Game game;
     game.setIsRunning(true);
@@ -64,7 +64,8 @@ int main() {
     Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     Keyboard keyboard;
     Scene scene;
-    Entities* entitiesPtr = &scene.getEntities();
+
+    Entities* gEntities = (Entities*) Entities::getInstance();
 
     Camera* mainCamera = new Camera();
     mainCamera->setGlobalPosition({320, 240});
@@ -72,19 +73,20 @@ int main() {
     const Vector2f contextSize = {WINDOW_WIDTH, WINDOW_HEIGHT};
     const Vector2f halfContextSize = contextSize*0.5f;
 
+
     while (game.getIsRunning() && window.isOpen()) {
         window.handleWindowEvents();
 
-        for (size_t i = 0; i < entitiesPtr->size(); ++i) {
-            entitiesPtr->at(i).update();
+        for (size_t i = 0; i < gEntities->size(); ++i) {
+            gEntities->at(i).update();
         }
 
         handleKeyboard(&keyboard, mainCamera);
 
         window.clear();
 
-        for (size_t i = 0; i < entitiesPtr->size(); ++i) {
-            Rectangle currentEntityRect = entitiesPtr->at(i).getHitbox();
+        for (size_t i = 0; i < gEntities->size(); ++i) {
+            Rectangle currentEntityRect = gEntities->at(i).getHitbox();
             if (mainCamera->isRectangleVisible(currentEntityRect, contextSize)) {
                 window.drawRectangle(mainCamera->getRelativeRectangle(currentEntityRect, halfContextSize));
             }

@@ -5,9 +5,9 @@
 #include <string>
 #include <iostream>
 
-std::string ERROR_PREFIX = "\033[1;31m\[ERROR]\033[0m ";
-std::string WARNING_PREFIX = "\033[1;33m\[WARNING]\033[0m ";
-std::string LOG_PREFIX = "\033[1;37m\[LOG]\033[0m ";
+#define ERROR_PREFIX "\033[1;31m\[ERROR]\033[0m "
+#define WARNING_PREFIX "\033[1;33m\[WARNING]\033[0m "
+#define LOG_PREFIX "\033[1;37m\[LOG]\033[0m "
 
 #define LOG_MACRO(PREFIX, STREAM) std::cout << PREFIX << STREAM << std::endl
 #define LOG_ERROR(STREAM) LOG_MACRO(ERROR_PREFIX, STREAM)

@@ -4,5 +4,5 @@ function monster_OnStart(id)
 end
 
 function monster_OnUpdate(id)
-    log('Khello from id = ' .. id .. '.')
+    setEntityWidth(id, 500)
 end

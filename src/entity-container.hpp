@@ -3,13 +3,16 @@
 
 #include <vector>
 #include "entity.hpp"
+#include "singleton.hpp"
 
-class Entities {
+class Entities: public Singleton<Entities> {
+private:
     // TODO: implement a more sophisticated data structure 
-    private:
     std::vector<Entity> entities;
 
-    public:
+public:
+    Entities() = default;
+
     size_t size() {
         return entities.size();
     }
