@@ -46,14 +46,15 @@ int lua_logError(lua_State* mLuaState) {
 int lua_getEntityWidth(lua_State* mLuaState) {
     const size_t argsLen = lua_gettop(mLuaState);
     const size_t REQUIRED_ARGS_LEN = 1;
-
-    if (argsLen >= REQUIRED_ARGS_LEN) {
-        const int entityID = lua_tonumber(mLuaState, 1);
-
-        Entity* entity = gEntities->getEntityByID(entityID);
-        const int entityWidth = entity->getHitboxWidth();
-        lua_pushnumber(mLuaState, entityWidth);
+    if (argsLen != REQUIRED_ARGS_LEN) {
+        return 0;
     }
+
+    const int entityID = lua_tonumber(mLuaState, 1);
+
+    Entity* entity = gEntities->getEntityByID(entityID);
+    const int entityWidth = entity->getHitboxWidth();
+    lua_pushnumber(mLuaState, entityWidth);
 
     return 1;
 }
@@ -61,18 +62,18 @@ int lua_getEntityWidth(lua_State* mLuaState) {
 int lua_setEntityWidth(lua_State* mLuaState) {
     const size_t argsLen = lua_gettop(mLuaState);
     const size_t REQUIRED_ARGS_LEN = 2;
-
-    if (argsLen >= REQUIRED_ARGS_LEN) {
-        const int entityID = lua_tonumber(mLuaState, 1);
-        const int width = lua_tonumber(mLuaState, 2);
-
-        Entity* entity = gEntities->getEntityByID(entityID);
-        entity->setHitboxWidth(width);
+    if (argsLen != REQUIRED_ARGS_LEN) {
+        return 0;
     }
+
+    const int entityID = lua_tonumber(mLuaState, 1);
+    const int width = lua_tonumber(mLuaState, 2);
+
+    Entity* entity = gEntities->getEntityByID(entityID);
+    entity->setHitboxWidth(width);
 
     return 1;
 }
-
 
 bool Script::loadFile() {
     if (luaL_loadfile(mLuaState, mFilePath.c_str())) {
