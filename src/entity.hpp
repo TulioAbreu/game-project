@@ -18,19 +18,27 @@ class Entity {
     Entity(std::vector<Script*> scripts);
     Entity(float width, float height, float posX, float posY, std::vector<Script*> scripts);
     ~Entity();
+    void runStartScripts();
+
     void setHitboxSize(float width, float height);
     void setHitboxPosition(float x, float y);
+
     float getHitboxPositionX();
+    void setHitboxPositionX(float value);
+
     float getHitboxPositionY();
-    void setHitboxWidth(float value);
-    void setHitboxHeight(float value);
+    void setHitboxPositionY(float value);
 
     float getHitboxWidth();
+    void setHitboxWidth(float value);
+
     float getHitboxHeight();
+    void setHitboxHeight(float value);
 
     void update();
     Rectangle getHitbox();
     int getID();
+
 };
 
 #endif

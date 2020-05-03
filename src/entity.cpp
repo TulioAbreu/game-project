@@ -11,10 +11,6 @@ Entity::Entity(std::vector<Script*> scripts) {
     mID = nextEntityID++;
     mHitbox = {0, 0, 0, 0};
     mScripts = scripts;
-
-    for (auto script : mScripts) {
-        script->onStart(mID);
-    }
 }
 
 Entity::Entity(float width, float height, float posX, float posY, std::vector<Script*> scripts) {
@@ -22,10 +18,6 @@ Entity::Entity(float width, float height, float posX, float posY, std::vector<Sc
 
     mHitbox = {width, height, posX, posY};
     mScripts = scripts;
-
-    for (auto script : mScripts) {
-        script->onStart(mID);
-    }
 }
 
 Entity::~Entity() {
@@ -81,3 +73,18 @@ float Entity::getHitboxWidth() {
 float Entity::getHitboxHeight() {
     return mHitbox.height;
 }
+
+void Entity::setHitboxPositionX(float value) {
+    mHitbox.positionX = value;
+}
+
+void Entity::setHitboxPositionY(float value) {
+    mHitbox.positionY = value;
+}
+
+void Entity::runStartScripts() {
+    for (auto script : mScripts) {
+        script->onStart(mID);
+    }
+}
+
