@@ -18,11 +18,15 @@ class Scene {
         const int PLAYER_SCRIPT_ID = 1;
 
         // This is just a placeholder
-        mRefEntities->add(Entity(10, 10, 100, 100, {mScripts[PLAYER_SCRIPT_ID]}));
+        mRefEntities->add(Entity(10, 10, 100, 100, {mScripts[MONSTER_SCRIPT_ID]}));
         mRefEntities->add(Entity(200, 200, 0, 0, {mScripts[MONSTER_SCRIPT_ID]}));
         mRefEntities->add(Entity(10, 10, -100, -100, {mScripts[PLAYER_SCRIPT_ID]}));
         mRefEntities->add(Entity(10, 10, 310, 0, {}));
         mRefEntities->add(Entity(50, 50, 200, 300, {}));
+
+        for (size_t i = 0; i < mRefEntities->size(); ++i) {
+            mRefEntities->at(i).runStartScripts();
+        }
     }
     public:
     Scene() {
