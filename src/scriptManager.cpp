@@ -13,6 +13,7 @@ void Script::loadLuaLibraries(lua_State* luaState) {
     registerFunction(mLuaState, "logWarning", lua_logWarning);
     registerFunction(mLuaState, "logError", lua_logError);
     registerFunction(mLuaState, "setEntityWidth", lua_setEntityWidth);
+    registerFunction(mLuaState, "getEntityWidth", lua_getEntityWidth);
 }
 
 
@@ -39,6 +40,21 @@ int lua_logError(lua_State* mLuaState) {
     if (lua_gettop(mLuaState) >= 0) {
         LOG_ERROR(std::string(lua_tostring(mLuaState, -1)));
     }
+    return 1;
+}
+
+int lua_getEntityWidth(lua_State* mLuaState) {
+    const size_t argsLen = lua_gettop(mLuaState);
+    const size_t REQUIRED_ARGS_LEN = 1;
+
+    if (argsLen >= REQUIRED_ARGS_LEN) {
+        const int entityID = lua_tonumber(mLuaState, 1);
+
+        Entity* entity = gEntities->getEntityByID(entityID);
+        const int entityWidth = entity->getHitboxWidth();
+        lua_pushnumber(mLuaState, entityWidth);
+    }
+
     return 1;
 }
 

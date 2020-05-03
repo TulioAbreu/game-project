@@ -24,6 +24,10 @@ class Entity {
     float getHitboxPositionY();
     void setHitboxWidth(float value);
     void setHitboxHeight(float value);
+
+    float getHitboxWidth();
+    float getHitboxHeight();
+
     void update();
     Rectangle getHitbox();
     int getID();

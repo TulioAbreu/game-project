@@ -73,3 +73,11 @@ void Entity::setHitboxWidth(float value) {
 void Entity::setHitboxHeight(float value) {
     mHitbox.height = value;
 }
+
+float Entity::getHitboxWidth() {
+    return mHitbox.width;
+}
+
+float Entity::getHitboxHeight() {
+    return mHitbox.height;
+}

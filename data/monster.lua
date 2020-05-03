@@ -4,5 +4,8 @@ function monster_OnStart(id)
 end
 
 function monster_OnUpdate(id)
-    setEntityWidth(id, 500)
+    local hitboxWidth = getEntityWidth(id)
+    if hitboxWidth < 1000 then
+        setEntityWidth(id, hitboxWidth + 10)
+    end
 end

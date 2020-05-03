@@ -12,6 +12,7 @@ int lua_log(lua_State* mLuaState);
 int lua_logWarning(lua_State* mLuaState);
 int lua_logError(lua_State* mLuaState);
 int lua_setEntityWidth(lua_State* mLuaState);
+int lua_getEntityWidth(lua_State* mLuaState);
 
 class Script {
 private:
