@@ -12,10 +12,16 @@ void Script::loadLuaLibraries(lua_State* luaState) {
     registerFunction(mLuaState, "log", lua_log);
     registerFunction(mLuaState, "logWarning", lua_logWarning);
     registerFunction(mLuaState, "logError", lua_logError);
+    // Width
     registerFunction(mLuaState, "setEntityWidth", lua_setEntityWidth);
     registerFunction(mLuaState, "getEntityWidth", lua_getEntityWidth);
+    // Position X
+    registerFunction(mLuaState, "setEntityPositionX", lua_setEntityPositionX);
+    registerFunction(mLuaState, "getEntityPositionX", lua_getEntityPositionX);
+    // Position Y
+    registerFunction(mLuaState, "setEntityPositionY", lua_setEntityPositionY);
+    registerFunction(mLuaState, "getEntityPositionY", lua_getEntityPositionY);
 }
-
 
 void Script::registerFunction(lua_State* luaState, std::string functionName, lua_CFunction f) {
     lua_pushcfunction(luaState, f);
@@ -53,8 +59,12 @@ int lua_getEntityWidth(lua_State* mLuaState) {
     const int entityID = lua_tonumber(mLuaState, 1);
 
     Entity* entity = gEntities->getEntityByID(entityID);
-    const int entityWidth = entity->getHitboxWidth();
-    lua_pushnumber(mLuaState, entityWidth);
+    if (!entity) {
+        return 0;
+    }
+
+    const int entityPositionX = entity->getHitboxPositionX();
+    lua_pushnumber(mLuaState, entityPositionX);
 
     return 1;
 }
@@ -74,6 +84,87 @@ int lua_setEntityWidth(lua_State* mLuaState) {
 
     return 1;
 }
+
+int lua_getEntityPositionX(lua_State* mLuaState) {
+    const size_t argsLen = lua_gettop(mLuaState);
+    const size_t REQUIRED_ARGS_LEN = 1;
+    if (argsLen != REQUIRED_ARGS_LEN) {
+        return 0;
+    }
+
+    const int entityID = lua_tonumber(mLuaState, 1);
+
+    Entity* entity = gEntities->getEntityByID(entityID);
+    if (!entity) {
+        return 0;
+    }
+
+    const int entityPositionX = entity->getHitboxPositionX();
+    lua_pushnumber(mLuaState, entityPositionX);
+
+    return 1;
+}
+
+int lua_setEntityPositionX(lua_State* mLuaState) {
+    const size_t argsLen = lua_gettop(mLuaState);
+    const size_t REQUIRED_ARGS_LEN = 2;
+    if (argsLen != REQUIRED_ARGS_LEN) {
+        return 0;
+    }
+
+    const int entityID = lua_tonumber(mLuaState, 1);
+    const int positionX = lua_tonumber(mLuaState, 2);
+ 
+    Entity* entity = gEntities->getEntityByID(entityID);
+    if (!entity) {
+        return 0;
+    }
+
+    entity->setHitboxPositionX(positionX);
+
+    return 0;
+}
+
+int lua_getEntityPositionY(lua_State* mLuaState) {
+    const size_t argsLen = lua_gettop(mLuaState);
+    const size_t REQUIRED_ARGS_LEN = 1;
+    if (argsLen != REQUIRED_ARGS_LEN) {
+        return 0;
+    }
+
+    const int entityID = lua_tonumber(mLuaState, 1);
+
+    Entity* entity = gEntities->getEntityByID(entityID);
+    if (!entity) {
+        return 0;
+    }
+
+    const int entityPositionY = entity->getHitboxPositionY();
+    lua_pushnumber(mLuaState, entityPositionY);
+
+    return 1;
+}
+
+int lua_setEntityPositionY(lua_State* mLuaState) {
+    const size_t argsLen = lua_gettop(mLuaState);
+    const size_t REQUIRED_ARGS_LEN = 2;
+    if (argsLen != REQUIRED_ARGS_LEN) {
+        return 0;
+    }
+
+    const int entityID = lua_tonumber(mLuaState, 1);
+    const int positionY= lua_tonumber(mLuaState, 2);
+ 
+    Entity* entity = gEntities->getEntityByID(entityID);
+    if (!entity) {
+        return 0;
+    }
+
+    entity->setHitboxPositionY(positionY);
+
+    return 0;
+}
+
 
 bool Script::loadFile() {
     if (luaL_loadfile(mLuaState, mFilePath.c_str())) {
