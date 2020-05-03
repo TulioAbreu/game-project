@@ -3,13 +3,16 @@
 
 #include <vector>
 #include "entity.hpp"
+#include "singleton.hpp"
 
-class Entities {
+class Entities: public Singleton<Entities> {
+private:
     // TODO: implement a more sophisticated data structure 
-    private:
     std::vector<Entity> entities;
 
-    public:
+public:
+    Entities() = default;
+
     size_t size() {
         return entities.size();
     }
@@ -32,6 +35,15 @@ class Entities {
 
         entities.erase(entities.begin() + index);
         return true;
+    }
+
+    Entity* getEntityByID(int id) {
+        for (auto& entity : entities) {
+            if (entity.getID() == id) {
+                return &entity;
+            }
+        }
+        return nullptr;
     }
 };
 

@@ -1,37 +1,36 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
+#include <vector>
+
 #include "rectangle.hpp"
+#include "scriptManager.hpp"
 
 class Entity {
     private:
+    static int nextEntityID;
+    int mID;
     Rectangle mHitbox;
+    std::vector<Script*> mScripts;
 
     public:
-    Entity() {
-        mHitbox = {0, 0, 0, 0};
-    }
+    Entity();
+    Entity(std::vector<Script*> scripts);
+    Entity(float width, float height, float posX, float posY, std::vector<Script*> scripts);
+    ~Entity();
+    void setHitboxSize(float width, float height);
+    void setHitboxPosition(float x, float y);
+    float getHitboxPositionX();
+    float getHitboxPositionY();
+    void setHitboxWidth(float value);
+    void setHitboxHeight(float value);
 
-    Entity(float width, float height, float posX, float posY) {
-        mHitbox = {width, height, posX, posY};
-    }
+    float getHitboxWidth();
+    float getHitboxHeight();
 
-    void setHitboxSize(float width, float height) {
-        mHitbox.width = width;
-        mHitbox.height = height;
-    }
-
-    void setHitboxPosition(float x, float y) {
-        mHitbox.positionX = x;
-        mHitbox.positionY = y;
-    }
-
-    float getHitboxPositionX() { return mHitbox.positionX; }
-    float getHitboxPositionY() { return mHitbox.positionY; }
-
-    virtual void update() {}
-
-    inline Rectangle getHitbox() { return mHitbox; }
+    void update();
+    Rectangle getHitbox();
+    int getID();
 };
 
 #endif
