@@ -11,6 +11,9 @@
 #include "scene.hpp"
 #include "entity-container.hpp"
 
+#include "../third-party/json.hpp"
+#include <fstream>
+
 static Keyboard* gKeyboard = Keyboard::getInstance();
 
 class Game {
@@ -58,11 +61,15 @@ int main() {
     Game game;
     game.setIsRunning(true);
 
-    const int WINDOW_WIDTH = 640;
-    const int WINDOW_HEIGHT = 480;
-    const char WINDOW_TITLE[] = "GameProject";
+    std::ifstream configFile ("../config.json");
+    nlohmann::json config;
+    configFile >> config;
 
-    Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
+    const float WINDOW_WIDTH = config["window"]["width"];
+    const float WINDOW_HEIGHT = config["window"]["height"];
+    const std::string WINDOW_TITLE = config["window"]["title"];
+
+    Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE.c_str());
     Keyboard keyboard;
     Scene scene;
 
