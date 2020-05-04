@@ -12,8 +12,11 @@ add_executable (gameProject
     src/keyboard.hpp
     src/log.hpp
     src/entity-container.hpp
+    src/entity-container.cpp
     src/scriptManager.hpp
     src/scriptManager.cpp
+    src/script-library.hpp
+    src/script-library.cpp
     )
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 20)
