@@ -21,6 +21,8 @@ void Script::loadLuaLibraries(lua_State* luaState) {
     // Position Y
     registerFunction(mLuaState, "setEntityPositionY", lua_setEntityPositionY);
     registerFunction(mLuaState, "getEntityPositionY", lua_getEntityPositionY);
+    // Keyboard
+    registerFunction(mLuaState, "getIsKeyPressed", lua_getIsKeyPressed);
 }
 
 void Script::registerFunction(lua_State* luaState, std::string functionName, lua_CFunction f) {
