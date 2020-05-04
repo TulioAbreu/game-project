@@ -23,5 +23,7 @@ int lua_setEntityPositionX(lua_State* mLuaState);
 // Entity Position Y
 int lua_getEntityPositionY(lua_State* mLuaState);
 int lua_setEntityPositionY(lua_State* mLuaState);
+// Keyboard
+int lua_getIsKeyPressed(lua_State* mLuaState);
 
 #endif

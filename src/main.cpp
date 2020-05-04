@@ -29,21 +29,21 @@ void handleKeyboard(Keyboard* keyboard, Camera* mainCamera) {
     const float CAMERA_SPEED = 1;
     const float ZOOM_SPEED = 0.01;
     
-    if (gKeyboard->isKeyPressed("UP")) {
-        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
-    }
+    // if (gKeyboard->isKeyPressed("UP")) {
+    //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, -CAMERA_SPEED));
+    // }
 
-    if (gKeyboard->isKeyPressed("DOWN")) {
-        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, +CAMERA_SPEED));
-    }
+    // if (gKeyboard->isKeyPressed("DOWN")) {
+    //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(0, +CAMERA_SPEED));
+    // }
 
-    if (gKeyboard->isKeyPressed("LEFT")) {
-        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(-CAMERA_SPEED, 0));
-    }
+    // if (gKeyboard->isKeyPressed("LEFT")) {
+    //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(-CAMERA_SPEED, 0));
+    // }
 
-    if (gKeyboard->isKeyPressed("RIGHT")) {
-        mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
-    }
+    // if (gKeyboard->isKeyPressed("RIGHT")) {
+    //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
+    // }
 
     if (gKeyboard->isKeyPressed("W")) {
          mainCamera->setScale(mainCamera->getScale() + ZOOM_SPEED);

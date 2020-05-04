@@ -1,7 +1,11 @@
+#include <string>
 #include "script-library.hpp"
 #include "log.hpp"
+#include "keyboard.hpp"
 
+static Keyboard* gKeyboard = Keyboard::getInstance();
 static Entities* gEntities = Entities::getInstance();
+
 
 int lua_setEntityWidth(lua_State* mLuaState) {
     const size_t argsLen = lua_gettop(mLuaState);
@@ -141,3 +145,17 @@ int lua_getEntityWidth(lua_State* mLuaState) {
     return 1;
 }
 
+int lua_getIsKeyPressed(lua_State* mLuaState) {
+    const size_t argsLen = lua_gettop(mLuaState);
+    const size_t REQUIRED_ARGS_LEN = 1;
+    if (argsLen != REQUIRED_ARGS_LEN) {
+        return 0;
+    }
+
+    const std::string keyName = lua_tostring(mLuaState, 1);
+    const bool result = gKeyboard->isKeyPressed(keyName);
+
+    lua_pushboolean(mLuaState, result);
+
+    return 1;
+}
