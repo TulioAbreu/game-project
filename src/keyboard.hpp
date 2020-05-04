@@ -5,8 +5,9 @@
 #include <map>
 #include <string>
 #include "log.hpp"
+#include "singleton.hpp"
 
-class Keyboard {
+class Keyboard: public Singleton<Keyboard> {
 private:
     std::map<std::string, SDL_Scancode> mKeyboardMap;
 
@@ -29,13 +30,9 @@ public:
     bool isKeyPressed(std::string keyName) {
         const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
         if (!keyboardState) {
-            std::cout << ERROR_PREFIX << "Keyboard/SDL Error: Could not get keyboard state." << std::endl;
+            LOG_ERROR("Keyboard/SDL Error: Could not get keyboard state.");
             return false;
         }
-        // if (!mKeyboardMap.contains(keyName)) {
-        //     std::cout << WARNING_PREFIX << "Keyboard: Specified keyName was not found. (keyName='" << keyName << "')" << std::endl;
-        //     return false;
-        // }
 
         return keyboardState[mKeyboardMap.at(keyName)];
     }
