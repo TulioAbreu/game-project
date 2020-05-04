@@ -7,14 +7,14 @@
 
 class Scene {
     private:
-    std::vector<Script*> mScripts;
+    std::vector<Script*> mScripts;  // TODO: Why are scripts here? Switch it to Singleton?
     Entities* mRefEntities;
 
     void readSceneFile() {
-        mScripts.push_back(new Script("../data/monster.lua", "monster"));
+        mScripts.push_back(new Script("../data/scripts/monster.lua", "monster"));
         const int MONSTER_SCRIPT_ID = 0;
 
-        mScripts.push_back(new Script("../data/player.lua", "player"));
+        mScripts.push_back(new Script("../data/scripts/player.lua", "player"));
         const int PLAYER_SCRIPT_ID = 1;
 
         // This is just a placeholder
