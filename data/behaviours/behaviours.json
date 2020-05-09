@@ -1,0 +1,4 @@
+[
+    { "name": "monster", "path": "scripts/monster.lua" },
+    { "name": "player", "path": "scripts/player.lua" }
+]

@@ -5,16 +5,34 @@
 #include "entity-container.hpp"
 #include "entity.hpp"
 
+#include <fstream>
+#include "log.hpp"
+#include "../third-party/json.hpp"
+
 class Scene {
     private:
     std::vector<Script*> mScripts;  // TODO: Why are scripts here? Switch it to Singleton?
     Entities* mRefEntities;
 
-    void readSceneFile() {
-        mScripts.push_back(new Script("../data/scripts/monster.lua", "monster"));
-        const int MONSTER_SCRIPT_ID = 0;
+    void loadScripts() {
+        std::fstream scriptsFile ("../data/behaviours/behaviours.json");
+        if (!scriptsFile.is_open()) {
+            LOG_ERROR("Scene/readSceneFile: Could not open behaviours/behaviours.json");
+            return;
+        }
 
-        mScripts.push_back(new Script("../data/scripts/player.lua", "player"));
+        nlohmann::json scriptsJson;
+        scriptsFile >> scriptsJson;
+
+        for (auto script : scriptsJson) {
+            const std::string filePath  =  script["path"];
+            mScripts.push_back(new Script("../data/behaviours/" + filePath, script["name"]));
+        }
+    }
+
+    void readSceneFile() {
+        loadScripts();
+        const int MONSTER_SCRIPT_ID = 0;
         const int PLAYER_SCRIPT_ID = 1;
 
         // This is just a placeholder
