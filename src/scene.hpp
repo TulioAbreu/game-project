@@ -17,7 +17,7 @@ class Scene {
     void loadScripts() {
         std::fstream scriptsFile ("../data/behaviours/behaviours.json");
         if (!scriptsFile.is_open()) {
-            LOG_ERROR("Scene/readSceneFile: Could not open behaviours/behaviours.json");
+            LOG_ERROR("Scene/loadScripts: Could not open behaviours/behaviours.json");
             return;
         }
 
@@ -30,22 +30,52 @@ class Scene {
         }
     }
 
+    int getScriptIndexByName(std::string scriptName) {
+        // TODO: Implement with Map type structure
+        for (size_t i = 0; i < mScripts.size(); ++i) {
+            if (mScripts[i]->getName() == scriptName) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void loadScene() {
+        std::fstream sceneFile ("../data/scenes/scene_01.json");
+        if (!sceneFile.is_open()) {
+            LOG_ERROR("Scene/loadScene: Could not open scene file");
+            return;
+        }
+
+        nlohmann::json scene;
+        sceneFile >> scene;
+
+        nlohmann::json sceneEntries = scene["entries"];
+        for (auto sceneEntry : sceneEntries) {
+            std::vector<Script*> scripts;
+            for (auto entryScript : sceneEntry["scripts"]) {
+                scripts.push_back(mScripts[getScriptIndexByName(entryScript)]);
+            }
+
+            mRefEntities->add(Entity(
+                sceneEntry["dimensions"]["x"],
+                sceneEntry["dimensions"]["y"],
+                sceneEntry["position"]["x"],
+                sceneEntry["position"]["y"],
+                scripts
+            ));
+        }
+    }
+
     void readSceneFile() {
         loadScripts();
-        const int MONSTER_SCRIPT_ID = 0;
-        const int PLAYER_SCRIPT_ID = 1;
-
-        // This is just a placeholder
-        mRefEntities->add(Entity(10, 10, 100, 100, {mScripts[MONSTER_SCRIPT_ID]}));
-        mRefEntities->add(Entity(200, 200, 0, 0, {mScripts[MONSTER_SCRIPT_ID]}));
-        mRefEntities->add(Entity(10, 10, -100, -100, {mScripts[PLAYER_SCRIPT_ID]}));
-        mRefEntities->add(Entity(10, 10, 310, 0, {}));
-        mRefEntities->add(Entity(50, 50, 200, 300, {}));
+        loadScene();
 
         for (size_t i = 0; i < mRefEntities->size(); ++i) {
             mRefEntities->at(i).runStartScripts();
         }
     }
+
     public:
     Scene() {
         mRefEntities = (Entities*) Entities::getInstance();

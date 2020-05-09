@@ -1,0 +1,65 @@
+{
+    "entries": [
+        {
+            "dimensions": {
+                "x": 10,
+                "y": 10
+            },
+            "position": {
+                "x": 100,
+                "y": 100
+            },
+            "scripts": [
+                "monster"
+            ]
+        },
+        {
+            "dimensions": {
+                "x": 200,
+                "y": 200
+            },
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "scripts": [
+                "monster"
+            ]
+        },
+        {
+            "dimensions": {
+                "x": 10,
+                "y": 10
+            },
+            "position": {
+                "x": -100,
+                "y": -100
+            },
+            "scripts": [
+                "player"
+            ]
+        },
+        {
+            "dimensions": {
+                "x": 10,
+                "y": 10
+            },
+            "position": {
+                "x": 310,
+                "y": 0
+            },
+            "scripts": []
+        },
+        {
+            "dimensions": {
+                "x": 50,
+                "y": 50
+            },
+            "position": {
+                "x": 200,
+                "y": 300
+            },
+            "scripts": []
+        }
+    ]
+}

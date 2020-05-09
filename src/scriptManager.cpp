@@ -93,3 +93,7 @@ void Script::onDestroy(int entityID) {
     lua_pushnumber(mLuaState, entityID);
     lua_executeFunction(1);
 }
+
+std::string Script::getName() {
+    return this->mName;
+}

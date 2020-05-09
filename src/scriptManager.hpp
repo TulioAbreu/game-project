@@ -27,6 +27,8 @@ private:
 public:
     Script(std::string filePath, std::string name);
 
+    std::string getName();
+
     void loadFunction(std::string functionName);
 
     void lua_executeFunction(int argsLen);
