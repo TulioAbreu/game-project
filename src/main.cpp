@@ -15,8 +15,9 @@
 #include "../third-party/json.hpp"
 #include <fstream>
 
-static Keyboard* gKeyboard = Keyboard::getInstance();
 static Config& gConfig = *Config::getInstance();
+static Entities& gEntities = *Entities::getInstance();
+static Keyboard& gKeyboard = *Keyboard::getInstance();
 
 class Game {
     bool mIsRunning;
@@ -30,7 +31,7 @@ class Game {
 };
 
 
-void handleKeyboard(Keyboard* keyboard, Camera* mainCamera) {
+void handleKeyboard(Camera* mainCamera) {
     const float CAMERA_SPEED = 1;
     const float ZOOM_SPEED = 0.01;
     
@@ -50,11 +51,11 @@ void handleKeyboard(Keyboard* keyboard, Camera* mainCamera) {
     //     mainCamera->setGlobalPosition(mainCamera->getGlobalPosition() + Vector2f(+CAMERA_SPEED, 0));
     // }
 
-    if (gKeyboard->isKeyPressed("W")) {
+    if (gKeyboard.isKeyPressed("W")) {
          mainCamera->setScale(mainCamera->getScale() + ZOOM_SPEED);
     }
 
-    if (gKeyboard->isKeyPressed("S")) {
+    if (gKeyboard.isKeyPressed("S")) {
         mainCamera->setScale(mainCamera->getScale() - ZOOM_SPEED);
     }
 }
@@ -71,8 +72,6 @@ int main() {
     Keyboard keyboard;
     Scene scene;
 
-    Entities* gEntities = (Entities*) Entities::getInstance();
-
     Camera* mainCamera = new Camera();
     mainCamera->setGlobalPosition({320, 240});
 
@@ -83,16 +82,16 @@ int main() {
     while (game.getIsRunning() && window.isOpen()) {
         window.handleWindowEvents();
 
-        for (size_t i = 0; i < gEntities->size(); ++i) {
-            gEntities->at(i).update();
+        for (size_t i = 0; i < gEntities.size(); ++i) {
+            gEntities.at(i).update();
         }
 
-        handleKeyboard(&keyboard, mainCamera);
+        handleKeyboard(mainCamera);
 
         window.clear();
 
-        for (size_t i = 0; i < gEntities->size(); ++i) {
-            Rectangle currentEntityRect = gEntities->at(i).getHitbox();
+        for (size_t i = 0; i < gEntities.size(); ++i) {
+            Rectangle currentEntityRect = gEntities.at(i).getHitbox();
             if (mainCamera->isRectangleVisible(currentEntityRect, contextSize)) {
                 window.drawRectangle(mainCamera->getRelativeRectangle(currentEntityRect, halfContextSize));
             }
