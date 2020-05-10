@@ -17,7 +17,7 @@ add_executable (gameProject
     src/scriptManager.cpp
     src/script-library.hpp
     src/script-library.cpp
-
+    src/config.hpp
     third-party/json.hpp
     )
 

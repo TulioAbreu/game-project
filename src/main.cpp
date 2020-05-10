@@ -7,6 +7,7 @@
 #include "keyboard.hpp"
 #include "window.hpp"
 #include "camera.hpp"
+#include "config.hpp"
 #include "entity.hpp"
 #include "scene.hpp"
 #include "entity-container.hpp"
@@ -15,6 +16,7 @@
 #include <fstream>
 
 static Keyboard* gKeyboard = Keyboard::getInstance();
+static Config* gConfig = Config::getInstance();
 
 class Game {
     bool mIsRunning;
@@ -61,13 +63,9 @@ int main() {
     Game game;
     game.setIsRunning(true);
 
-    std::ifstream configFile ("../config.json");
-    nlohmann::json config;
-    configFile >> config;
-
-    const float WINDOW_WIDTH = config["window"]["width"];
-    const float WINDOW_HEIGHT = config["window"]["height"];
-    const std::string WINDOW_TITLE = config["window"]["title"];
+    const float WINDOW_WIDTH = (*gConfig)["window"]["width"];
+    const float WINDOW_HEIGHT = (*gConfig)["window"]["height"];
+    const std::string WINDOW_TITLE = (*gConfig)["window"]["title"];
 
     Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE.c_str());
     Keyboard keyboard;
