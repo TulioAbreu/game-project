@@ -7,9 +7,9 @@
 #include "entity-container.hpp"
 #include "entity.hpp"
 #include "log.hpp"
+#include "filepath.hpp"
 
-#include "../third-party/json.hpp"
-
+#include "json.hpp"
 
 class Scene {
     private:
@@ -17,18 +17,18 @@ class Scene {
     Entities* mRefEntities;
 
     void loadScripts() {
-        std::fstream scriptsFile ("../data/behaviours/behaviours.json");
+        std::fstream scriptsFile (Path("data/behaviours/behaviours.json"));
         if (!scriptsFile.is_open()) {
             LOG_ERROR("Scene/loadScripts: Could not open behaviours/behaviours.json");
             return;
         }
 
-        nlohmann::json scriptsJson;
+        json scriptsJson;
         scriptsFile >> scriptsJson;
 
         for (auto script : scriptsJson) {
             const std::string filePath  =  script["path"];
-            mScripts.push_back(new Script("../data/behaviours/" + filePath, script["name"]));
+            mScripts.push_back(new Script(Path("data/behaviours/") + filePath, script["name"]));
         }
     }
 
@@ -49,10 +49,10 @@ class Scene {
             return;
         }
 
-        nlohmann::json scene;
+        json scene;
         sceneFile >> scene;
 
-        nlohmann::json sceneEntries = scene["entries"];
+        json sceneEntries = scene["entries"];
         for (auto sceneEntry : sceneEntries) {
             std::vector<Script*> scripts;
             for (auto entryScript : sceneEntry["scripts"]) {

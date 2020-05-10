@@ -18,7 +18,9 @@ add_executable (gameProject
     src/script-library.hpp
     src/script-library.cpp
     src/config.hpp
+    src/filepath.hpp
     third-party/json.hpp
+    src/json.hpp
     )
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 20)
