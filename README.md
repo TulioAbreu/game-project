@@ -1,4 +1,5 @@
-# game-project
+![CI](https://github.com/TulioAbreu/game-project/workflows/CI/badge.svg)
+# GameProject 
 This is a game project where I'm going to use my spare time for building it.
 
 # Getting started
