@@ -1,7 +1,7 @@
 #ifndef SCRIPT_LIBRARY
 #define SCRIPT_LIBRARY
 
-#include "scriptManager.hpp"
+#include "script-manager.hpp"
 #include "entity-container.hpp"
 
 /*

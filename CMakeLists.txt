@@ -13,8 +13,8 @@ add_executable (gameProject
     src/log.hpp
     src/entity-container.hpp
     src/entity-container.cpp
-    src/scriptManager.hpp
-    src/scriptManager.cpp
+    src/script-manager.hpp
+    src/script-manager.cpp
     src/script-library.hpp
     src/script-library.cpp
     src/config.hpp
