@@ -2,6 +2,7 @@
 #define ENTITY_HPP
 
 #include <vector>
+#include <string>
 
 #include "rectangle.hpp"
 #include "script-manager.hpp"
@@ -10,15 +11,24 @@ class Entity {
     private:
     static int nextEntityID;
     int mID;
+    std::string mName;
     Rectangle mHitbox;
     std::vector<Script*> mScripts;
 
     public:
     Entity();
     Entity(std::vector<Script*> scripts);
-    Entity(float width, float height, float posX, float posY, std::vector<Script*> scripts);
+    Entity(std::string name, 
+           float width,
+           float height,
+           float posX,
+           float posY,
+           std::vector<Script*> scripts);
     ~Entity();
     void runStartScripts();
+
+    void setName(std::string name);
+    std::string getName();
 
     void setHitboxSize(float width, float height);
     void setHitboxPosition(float x, float y);
