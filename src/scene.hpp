@@ -7,6 +7,7 @@
 #include "entity-container.hpp"
 #include "entity.hpp"
 #include "log.hpp"
+#include "filepath.hpp"
 
 #include "json.hpp"
 
@@ -16,7 +17,7 @@ class Scene {
     Entities* mRefEntities;
 
     void loadScripts() {
-        std::fstream scriptsFile ("../data/behaviours/behaviours.json");
+        std::fstream scriptsFile (Path("data/behaviours/behaviours.json"));
         if (!scriptsFile.is_open()) {
             LOG_ERROR("Scene/loadScripts: Could not open behaviours/behaviours.json");
             return;
@@ -27,7 +28,7 @@ class Scene {
 
         for (auto script : scriptsJson) {
             const std::string filePath  =  script["path"];
-            mScripts.push_back(new Script("../data/behaviours/" + filePath, script["name"]));
+            mScripts.push_back(new Script(Path("data/behaviours/") + filePath, script["name"]));
         }
     }
 

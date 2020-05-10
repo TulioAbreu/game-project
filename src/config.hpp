@@ -4,6 +4,7 @@
 #include <fstream>
 #include "singleton.hpp"
 #include "json.hpp"
+#include "filepath.hpp"
 
 class Config: public Singleton<Config> {
 private:
@@ -11,7 +12,7 @@ private:
 
 public:
     Config() {
-        std::ifstream configFile ("../config.json");
+        std::ifstream configFile (Path("config.json"));
         configFile >> mConfig;
         configFile.close();
     }
