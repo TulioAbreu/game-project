@@ -2,12 +2,14 @@
 #define SCENE_HPP
 
 #include <vector>
+#include <fstream>
+
 #include "entity-container.hpp"
 #include "entity.hpp"
-
-#include <fstream>
 #include "log.hpp"
+
 #include "../third-party/json.hpp"
+
 
 class Scene {
     private:
@@ -76,7 +78,7 @@ class Scene {
         }
     }
 
-    public:
+public:
     Scene() {
         mRefEntities = (Entities*) Entities::getInstance();
         readSceneFile();
