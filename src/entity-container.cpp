@@ -34,3 +34,12 @@ Entity* Entities::getEntityByID(int id) {
     LOG_WARNING("Entities/getEntityByID: Returned nullptr reference after searcing for entity ID = " << id);
     return nullptr;
 }
+
+Entity* Entities::getEntityByName(std::string name) {
+    for (auto& entity : entities) {
+        if (entity.getName() == name) {
+            return &entity;
+        }
+    }
+    return nullptr;
+}

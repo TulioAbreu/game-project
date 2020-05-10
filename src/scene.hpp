@@ -60,6 +60,7 @@ class Scene {
             }
 
             mRefEntities->add(Entity(
+                sceneEntry["name"],
                 sceneEntry["dimensions"]["x"],
                 sceneEntry["dimensions"]["y"],
                 sceneEntry["position"]["x"],

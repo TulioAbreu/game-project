@@ -1,6 +1,7 @@
 {
     "entries": [
         {
+            "name": "",
             "dimensions": {
                 "x": 10,
                 "y": 10
@@ -14,6 +15,7 @@
             ]
         },
         {
+            "name": "",
             "dimensions": {
                 "x": 200,
                 "y": 200
@@ -27,6 +29,7 @@
             ]
         },
         {
+            "name": "player",
             "dimensions": {
                 "x": 10,
                 "y": 10
@@ -40,6 +43,7 @@
             ]
         },
         {
+            "name": "",
             "dimensions": {
                 "x": 10,
                 "y": 10
@@ -51,6 +55,7 @@
             "scripts": []
         },
         {
+            "name": "",
             "dimensions": {
                 "x": 50,
                 "y": 50

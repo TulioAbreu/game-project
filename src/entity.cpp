@@ -13,9 +13,9 @@ Entity::Entity(std::vector<Script*> scripts) {
     mScripts = scripts;
 }
 
-Entity::Entity(float width, float height, float posX, float posY, std::vector<Script*> scripts) {
+Entity::Entity(std::string name, float width, float height, float posX, float posY, std::vector<Script*> scripts) {
     mID = nextEntityID++;
-
+    mName = name;
     mHitbox = {width, height, posX, posY};
     mScripts = scripts;
 }
@@ -88,3 +88,10 @@ void Entity::runStartScripts() {
     }
 }
 
+void Entity::setName(std::string name) {
+    mName = name;
+}
+
+std::string Entity::getName() {
+    return mName;
+}

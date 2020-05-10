@@ -45,6 +45,7 @@ int main() {
 
     Camera* mainCamera = new Camera();
     mainCamera->setGlobalPosition({320, 240});
+    mainCamera->fixToEntity(gEntities.getEntityByName("player"));
 
     const Vector2f contextSize = {WINDOW_WIDTH, WINDOW_HEIGHT};
     const Vector2f halfContextSize = contextSize*0.5f;

@@ -63,6 +63,11 @@ class Camera {
 
     inline Rectangle getRelativeRectangle(Rectangle rectangle, const Vector2f halfContextSize) {
         // TODO: Scale must be applied here
+        if (mFixedEntityPtr) {
+            mGlobalPosition = {mFixedEntityPtr->getHitboxPositionX(),
+                               mFixedEntityPtr->getHitboxPositionY()};
+            }
+
         return {rectangle.width*mScale, rectangle.height*mScale,
                 rectangle.positionX*mScale-(mGlobalPosition.x*mScale-halfContextSize.x), rectangle.positionY*mScale-(mGlobalPosition.y*mScale-halfContextSize.y)};
     }

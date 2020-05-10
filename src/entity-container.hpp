@@ -17,6 +17,7 @@ public:
     void add(Entity entity);
     bool remove(size_t index);
     Entity* getEntityByID(int id);
+    Entity* getEntityByName(std::string name);
 };
 
 #endif
