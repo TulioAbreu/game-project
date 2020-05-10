@@ -3,7 +3,7 @@
 #include <vector>
 #include <SDL2/SDL.h>
 #include "log.hpp"
-#include "scriptManager.hpp"
+#include "script-manager.hpp"
 #include "keyboard.hpp"
 #include "window.hpp"
 #include "camera.hpp"
