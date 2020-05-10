@@ -20,6 +20,7 @@ add_executable (gameProject
     src/config.hpp
     src/filepath.hpp
     third-party/json.hpp
+    src/json.hpp
     )
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 20)

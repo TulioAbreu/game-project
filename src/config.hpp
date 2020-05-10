@@ -3,14 +3,12 @@
 
 #include <fstream>
 #include "singleton.hpp"
+#include "json.hpp"
 #include "filepath.hpp"
-#include "../third-party/json.hpp"
-
-using Json = nlohmann::json;
 
 class Config: public Singleton<Config> {
 private:
-    nlohmann::json mConfig;
+    json mConfig;
 
 public:
     Config() {
@@ -19,11 +17,11 @@ public:
         configFile.close();
     }
 
-    Json operator[](const char* key) {
+    json operator[](const char* key) {
         return mConfig[key];
     }
 
-    Json operator[](const std::string key) {
+    json operator[](const std::string key) {
         return mConfig[key];
     }
 };

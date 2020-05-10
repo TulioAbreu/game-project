@@ -9,8 +9,7 @@
 #include "log.hpp"
 #include "filepath.hpp"
 
-#include "../third-party/json.hpp"
-
+#include "json.hpp"
 
 class Scene {
     private:
@@ -24,7 +23,7 @@ class Scene {
             return;
         }
 
-        nlohmann::json scriptsJson;
+        json scriptsJson;
         scriptsFile >> scriptsJson;
 
         for (auto script : scriptsJson) {
@@ -50,10 +49,10 @@ class Scene {
             return;
         }
 
-        nlohmann::json scene;
+        json scene;
         sceneFile >> scene;
 
-        nlohmann::json sceneEntries = scene["entries"];
+        json sceneEntries = scene["entries"];
         for (auto sceneEntry : sceneEntries) {
             std::vector<Script*> scripts;
             for (auto entryScript : sceneEntry["scripts"]) {
