@@ -29,11 +29,11 @@ class Window {
         );
 
         if (mWindow == NULL) {
-            std::cout << ERROR_PREFIX << "SDL/Window: Failed to open a window." << std::endl;
+            LOG_ERROR("SDL/Window: Failed to open a window");
             mIsOpen = false;
         }
         else {
-            std::cout << LOG_PREFIX << "SDL/Window: Success" << std::endl;
+            LOG("SDL/Window: Success");
             mIsOpen = true;
             mWinRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
             SDL_SetRenderDrawBlendMode(mWinRenderer, SDL_BLENDMODE_BLEND);
@@ -54,7 +54,6 @@ class Window {
             } 
         }
     }
-
 
     void clear() {
         SDL_SetRenderDrawColor(mWinRenderer, 0, 0, 0, 255);
