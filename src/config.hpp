@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include "singleton.hpp"
+#include "filepath.hpp"
 #include "../third-party/json.hpp"
 
 using Json = nlohmann::json;
@@ -13,7 +14,7 @@ private:
 
 public:
     Config() {
-        std::ifstream configFile ("../config.json");
+        std::ifstream configFile (Path("config.json"));
         configFile >> mConfig;
         configFile.close();
     }
