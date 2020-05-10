@@ -80,7 +80,7 @@ class Scene {
 
 public:
     Scene() {
-        mRefEntities = (Entities*) Entities::getInstance();
+        mRefEntities = Entities::getInstance();
         readSceneFile();
     }
 
