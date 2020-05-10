@@ -16,7 +16,7 @@
 #include <fstream>
 
 static Keyboard* gKeyboard = Keyboard::getInstance();
-static Config* gConfig = Config::getInstance();
+static Config& gConfig = *Config::getInstance();
 
 class Game {
     bool mIsRunning;
@@ -63,9 +63,9 @@ int main() {
     Game game;
     game.setIsRunning(true);
 
-    const float WINDOW_WIDTH = (*gConfig)["window"]["width"];
-    const float WINDOW_HEIGHT = (*gConfig)["window"]["height"];
-    const std::string WINDOW_TITLE = (*gConfig)["window"]["title"];
+    const float WINDOW_WIDTH = gConfig["window"]["width"];
+    const float WINDOW_HEIGHT = gConfig["window"]["height"];
+    const std::string WINDOW_TITLE = gConfig["window"]["title"];
 
     Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE.c_str());
     Keyboard keyboard;
