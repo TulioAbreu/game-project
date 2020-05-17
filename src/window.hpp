@@ -42,12 +42,10 @@ class Window {
                 close();
             }
             if (mEvent.type == sf::Event::Resized) {
-                sf::View view;
-                auto windowSize = mWindow.getSize();
-                view.setSize(windowSize.x, windowSize.y);
-                contextSize = {windowSize.x, windowSize.y};
+                sf::FloatRect visibleArea(0, 0, mEvent.size.width, mEvent.size.height);
+                contextSize = {(float)mEvent.size.width, (float)mEvent.size.height};
                 halfContextSize = contextSize*0.5f;
-                mWindow.setView(view);
+                mWindow.setView(sf::View(visibleArea));
             }
         }
     }
