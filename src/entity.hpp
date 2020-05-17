@@ -49,6 +49,7 @@ class Entity {
     Rectangle getHitbox();
     int getID();
 
+    void addScript(Script* script);
 };
 
 #endif

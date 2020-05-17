@@ -22,6 +22,7 @@ add_executable (gameProject
     src/sprite-manager.hpp
     third-party/json.hpp
     src/json.hpp
+    src/prefab.hpp
     )
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 20)

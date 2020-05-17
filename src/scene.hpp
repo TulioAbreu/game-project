@@ -3,17 +3,19 @@
 
 #include <vector>
 #include <fstream>
+#include <set>
 
 #include "entity-container.hpp"
 #include "entity.hpp"
 #include "log.hpp"
 #include "filepath.hpp"
-
+#include "prefab.hpp"
 #include "json.hpp"
 
 class Scene {
     private:
     std::vector<Script*> mScripts;  // TODO: Why are scripts here? Switch it to Singleton?
+    std::map<size_t, Prefab> mPrefabsMap;
     Entities* mRefEntities;
 
     void loadScripts() {
@@ -54,24 +56,57 @@ class Scene {
 
         json sceneEntries = scene["entries"];
         for (auto sceneEntry : sceneEntries) {
-            std::vector<Script*> scripts;
-            for (auto entryScript : sceneEntry["scripts"]) {
-                scripts.push_back(mScripts[getScriptIndexByName(entryScript)]);
+            const size_t entryPrefabId = sceneEntry["prefabId"];
+            Prefab entryPrefab (mPrefabsMap[entryPrefabId]);
+            
+            Entity entity;
+            if (sceneEntry["name"] != "") {
+                entity.setName(sceneEntry["name"]);
+            } else {
+                entity.setName(entryPrefab.getName());
             }
 
-            mRefEntities->add(Entity(
-                sceneEntry["name"],
-                sceneEntry["dimensions"]["x"],
-                sceneEntry["dimensions"]["y"],
-                sceneEntry["position"]["x"],
-                sceneEntry["position"]["y"],
-                scripts
-            ));
+            Vector2f size = entryPrefab.getDimensions();
+            entity.setHitboxSize(size.x, size.y);
+            entity.setHitboxPosition(sceneEntry["position"]["x"], sceneEntry["position"]["y"]);
+
+            std::set<std::string> scriptNamesSet;
+            for (auto scriptName : entryPrefab.getScriptNames()) {
+                scriptNamesSet.insert(scriptName);
+            }
+            for (auto scriptNameJson : sceneEntry["scripts"]) {
+                const std::string scriptName = scriptNameJson;
+                scriptNamesSet.insert(scriptName);
+            }
+
+            for (auto scriptName : scriptNamesSet) {
+                entity.addScript(mScripts[getScriptIndexByName(scriptName)]);
+            }
+
+            mRefEntities->add(entity);
+        }
+    }
+
+    void loadPrefabs() {
+        std::fstream entitiesIndexFile (Path("data/entities/entities.json"));
+        if (!entitiesIndexFile.is_open()) {
+            LOG_ERROR("Scene/loadPrefabs: Could not open entities.json");
+            return;
+        }
+
+        json entitiesIndexJson;
+        entitiesIndexFile >> entitiesIndexJson;
+
+        for (auto entity : entitiesIndexJson) {
+            const int prefabId = entity["id"];
+            const std::string filePath = entity["path"];
+            mPrefabsMap[prefabId] = Prefab(Path("data/entities/" + filePath));
         }
     }
 
     void readSceneFile() {
         loadScripts();
+        loadPrefabs();
         loadScene();
 
         for (size_t i = 0; i < mRefEntities->size(); ++i) {
