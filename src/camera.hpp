@@ -4,8 +4,9 @@
 #include "rectangle.hpp"
 #include "vector2.hpp"
 #include "entity.hpp"
+#include "singleton.hpp"
 
-class Camera {
+class Camera: public Singleton<Camera> {
     float mScale;
     Vector2f mGlobalPosition;
     Vector2f mWindowCenter;
