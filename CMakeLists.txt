@@ -1,28 +1,33 @@
 cmake_minimum_required (VERSION 3.7)
 project (gameProject)
 add_executable (gameProject 
-    src/main.cpp
-    src/rectangle.hpp
-    src/window.hpp
-    src/singleton.hpp
-    src/camera.hpp
-    src/entity.hpp
-    src/entity.cpp
-    src/vector2.hpp
-    src/keyboard.hpp
-    src/log.hpp
-    src/entity-container.hpp
-    src/entity-container.cpp
-    src/script-manager.hpp
-    src/script-manager.cpp
-    src/script-library.hpp
-    src/script-library.cpp
-    src/config.hpp
-    src/filepath.hpp
     src/sprite-manager.hpp
-    third-party/json.hpp
+    src/scene.hpp
+    src/camera.hpp
     src/json.hpp
+    src/config.hpp
+    src/script-manager.hpp
+    src/scene.cpp
+    src/entity-container.hpp
+    src/script-library.cpp
+    src/entity.hpp
+    src/singleton.hpp
+    src/main.cpp
+    src/entity-container.cpp
+    src/window.hpp
+    src/keyboard.hpp
+    src/filepath.hpp
     src/prefab.hpp
+    src/log.hpp
+    src/entity.cpp
+    src/script-library.hpp
+    src/filepath.cpp
+    src/rectangle.hpp
+    src/script-manager.cpp
+    src/window.cpp
+    src/vector2.hpp
+
+    third-party/json.hpp
     )
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 20)

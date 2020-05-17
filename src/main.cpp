@@ -17,6 +17,7 @@ static Config& gConfig = *Config::getInstance();
 static Entities& gEntities = *Entities::getInstance();
 static Keyboard& gKeyboard = *Keyboard::getInstance();
 static Camera& gCamera = *Camera::getInstance();
+static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
 
 class Game {
     bool mIsRunning;
@@ -60,9 +61,10 @@ int main() {
         window.clear();
 
         for (size_t i = 0; i < gEntities.size(); ++i) {
-            Rectangle currentEntityRect = gEntities.at(i).getHitbox();
+            Entity entity = gEntities.at(i);
+            Rectangle currentEntityRect = entity.getHitbox();
             if (gCamera.isRectangleVisible(currentEntityRect, contextSize)) {
-                window.drawRectangle(gCamera.getRelativeRectangle(currentEntityRect, halfContextSize));
+                window.drawSprite(entity.getSpriteId(), gCamera.getRelativeRectangle(currentEntityRect, halfContextSize));
             }
         }
 

@@ -3,10 +3,6 @@
 
 #include <string>
 
-const std::string FILEPATH_ROOT ("../");
-
-std::string Path(std::string relativeFilepath) {
-    return FILEPATH_ROOT + relativeFilepath;
-}
+std::string Path(std::string relativeFilepath);
 
 #endif
