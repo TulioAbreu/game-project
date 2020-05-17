@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 3.7)
 project (gameProject)
 add_executable (gameProject 
     src/sprite-manager.hpp
+    src/sprite-manager.cpp
     src/scene.hpp
     src/camera.hpp
     src/json.hpp
