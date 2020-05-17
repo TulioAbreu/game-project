@@ -1,7 +1,7 @@
 #ifndef KEYBOARD_HPP
 #define KEYBOARD_HPP
 
-#include <SDL2/SDL.h>
+#include <SFML/Window/Keyboard.hpp>
 #include <map>
 #include <string>
 #include "log.hpp"
@@ -9,32 +9,26 @@
 
 class Keyboard: public Singleton<Keyboard> {
 private:
-    std::map<std::string, SDL_Scancode> mKeyboardMap;
+    std::map<std::string, sf::Keyboard::Key> mKeyboardMap;
 
 public:
     Keyboard() {
-        instantiateKey("UP", SDL_SCANCODE_UP);
-        instantiateKey("DOWN", SDL_SCANCODE_DOWN);
-        instantiateKey("LEFT", SDL_SCANCODE_LEFT);
-        instantiateKey("RIGHT", SDL_SCANCODE_RIGHT);
-        instantiateKey("A", SDL_SCANCODE_A);
-        instantiateKey("E", SDL_SCANCODE_E);
-        instantiateKey("S", SDL_SCANCODE_S);
-        instantiateKey("W", SDL_SCANCODE_W);
+        instantiateKey("UP", sf::Keyboard::Up);
+        instantiateKey("DOWN", sf::Keyboard::Down);
+        instantiateKey("LEFT", sf::Keyboard::Left);
+        instantiateKey("RIGHT", sf::Keyboard::Right);
+        instantiateKey("A", sf::Keyboard::A);
+        instantiateKey("E", sf::Keyboard::E);
+        instantiateKey("S", sf::Keyboard::S);
+        instantiateKey("W", sf::Keyboard::W);
     }
 
-    void instantiateKey(std::string keyName, SDL_Scancode scanCode) {
+    void instantiateKey(std::string keyName, sf::Keyboard::Key scanCode) {
         mKeyboardMap[keyName] = scanCode;
     }
 
     bool isKeyPressed(std::string keyName) {
-        const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
-        if (!keyboardState) {
-            LOG_ERROR("Keyboard/SDL Error: Could not get keyboard state.");
-            return false;
-        }
-
-        return keyboardState[mKeyboardMap.at(keyName)];
+        return sf::Keyboard::isKeyPressed(mKeyboardMap.at(keyName));
     }
 };
 

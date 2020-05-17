@@ -1,7 +1,4 @@
-#define SDL_MAIN_HANDLED
-
 #include <vector>
-#include <SDL2/SDL.h>
 #include "log.hpp"
 #include "script-manager.hpp"
 #include "keyboard.hpp"

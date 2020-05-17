@@ -25,9 +25,8 @@ add_executable (gameProject
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 20)
 
-find_package(SDL2 REQUIRED)
-include_directories(gameProject ${SDL2_INCLUDE_DIRS})
-target_link_libraries(gameProject ${SDL2_LIBRARIES})
+find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
+target_link_libraries(gameProject sfml-system sfml-window sfml-graphics sfml-network sfml-audio)
 
 find_package(Lua51 REQUIRED)
 include_directories(/usr/local/include ${LUA_INCLUDE_DIR})
