@@ -8,6 +8,7 @@
 #include "entity.hpp"
 #include "scene.hpp"
 #include "entity-container.hpp"
+#include "sprite-manager.hpp"
 
 #include "../third-party/json.hpp"
 #include <fstream>

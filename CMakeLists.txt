@@ -19,6 +19,7 @@ add_executable (gameProject
     src/script-library.cpp
     src/config.hpp
     src/filepath.hpp
+    src/sprite-manager.hpp
     third-party/json.hpp
     src/json.hpp
     )
