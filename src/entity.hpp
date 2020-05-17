@@ -14,6 +14,7 @@ class Entity {
     std::string mName;
     Rectangle mHitbox;
     std::vector<Script*> mScripts;
+    size_t mSpriteId;
 
     public:
     Entity();
@@ -50,6 +51,9 @@ class Entity {
     int getID();
 
     void addScript(Script* script);
+
+    inline int getSpriteId();
+    inline void setSpriteId(size_t spriteId);
 };
 
 #endif

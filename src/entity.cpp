@@ -99,3 +99,11 @@ std::string Entity::getName() {
 void Entity::addScript(Script* script) {
     mScripts.push_back(script);
 }
+
+int Entity::getSpriteId() {
+    return mSpriteId;
+}
+
+void Entity::setSpriteId(size_t spriteId) {
+    mSpriteId = spriteId;
+}
