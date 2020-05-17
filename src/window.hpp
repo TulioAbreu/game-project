@@ -6,6 +6,7 @@
 #include "rectangle.hpp"
 #include "log.hpp"
 #include <iostream>
+#include "vector2.hpp"
 
 class Window {
     bool mIsOpen;
@@ -20,6 +21,7 @@ class Window {
     Window(int width, int height, std::string title):
         mWindow (sf::VideoMode(width, height), title)
     {
+        mWindow.setFramerateLimit(60);
         if (!mWindow.isOpen()) {
             LOG_ERROR("SFML/Window: Failed to open a window");
             mIsOpen = false;
@@ -34,10 +36,18 @@ class Window {
         mWindow.close();
     }
 
-    void handleWindowEvents() {
+    void handleWindowEvents(Vector2f& contextSize, Vector2f& halfContextSize) {
         while (mWindow.pollEvent(mEvent)) {
             if (mEvent.type == sf::Event::Closed) {
                 close();
+            }
+            if (mEvent.type == sf::Event::Resized) {
+                sf::View view;
+                auto windowSize = mWindow.getSize();
+                view.setSize(windowSize.x, windowSize.y);
+                contextSize = {windowSize.x, windowSize.y};
+                halfContextSize = contextSize*0.5f;
+                mWindow.setView(view);
             }
         }
     }
