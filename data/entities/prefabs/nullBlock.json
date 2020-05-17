@@ -1,0 +1,8 @@
+{
+    "name": "Null Block",
+    "spriteId": 0,
+    "dimensions": {
+        "x": 32,
+        "y": 32
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Test Block",
+    "spriteId": 0,
+    "dimensions": {
+        "x": 32,
+        "y": 32
+    },
+    "scripts": [
+        "player"
+    ]
+}

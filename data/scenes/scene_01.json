@@ -1,42 +1,11 @@
 {
     "entries": [
         {
-            "name": "",
-            "dimensions": {
-                "x": 10,
-                "y": 10
-            },
-            "position": {
-                "x": 100,
-                "y": 100
-            },
-            "scripts": [
-                "monster"
-            ]
-        },
-        {
-            "name": "",
-            "dimensions": {
-                "x": 200,
-                "y": 200
-            },
-            "position": {
-                "x": 0,
-                "y": 0
-            },
-            "scripts": [
-                "monster"
-            ]
-        },
-        {
             "name": "player",
-            "dimensions": {
-                "x": 10,
-                "y": 10
-            },
+            "prefabId": 0,
             "position": {
-                "x": -100,
-                "y": -100
+                "x": 32,
+                "y": 32
             },
             "scripts": [
                 "player"
@@ -44,27 +13,13 @@
         },
         {
             "name": "",
-            "dimensions": {
-                "x": 10,
-                "y": 10
-            },
+            "prefabId": 1,
             "position": {
-                "x": 310,
-                "y": 0
-            },
-            "scripts": []
-        },
-        {
-            "name": "",
-            "dimensions": {
                 "x": 50,
                 "y": 50
             },
-            "position": {
-                "x": 200,
-                "y": 300
-            },
-            "scripts": []
+            "scripts": [
+            ]
         }
     ]
 }

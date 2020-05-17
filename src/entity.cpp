@@ -95,3 +95,7 @@ void Entity::setName(std::string name) {
 std::string Entity::getName() {
     return mName;
 }
+
+void Entity::addScript(Script* script) {
+    mScripts.push_back(script);
+}
