@@ -1,9 +1,10 @@
 #include "sprite-manager.hpp"
 
-#include "log.hpp"
 #include <fstream>
+#include <exception>
+
+#include "log.hpp"
 #include "filepath.hpp"
-#include "json.hpp"
 
 SpriteManager::SpriteManager() {
     mLastSpriteId = 0;
@@ -36,57 +37,87 @@ void SpriteManager::loadTextures() {
     }
 }
 
-void SpriteManager::loadTemplateSprites() {
+SpriteTemplate SpriteManager::createSpriteTemplate(json jsonObject) {
+    const size_t textureId = jsonObject["textureId"];
+    const Rectangle area = {
+        jsonObject["area"]["width"],
+        jsonObject["area"]["height"],
+        jsonObject["area"]["positionX"],
+        jsonObject["area"]["positionY"]
+    };
+
+    return {textureId, area};
+}
+
+bool SpriteManager::loadTemplateSprites() {
     LOG("Loading template sprites...");
 
     const std::string spritesJsonFilepath (Path("data/textures/sprites.json"));
     std::fstream spriteTemplatesFile (spritesJsonFilepath);
     if (!spriteTemplatesFile.is_open()) {
         LOG_ERROR("SpriteManager/loadTemplateSprites: Could not open " << spritesJsonFilepath);
-        return;
+        return false;
     }
 
     json spritesIndexJson;
     spriteTemplatesFile >> spritesIndexJson;
 
-    for (auto spriteTemplate : spritesIndexJson) {
-        const size_t spriteTemplateId = spriteTemplate["id"];
-        const size_t textureId = spriteTemplate["textureId"];
-        const Rectangle area = {
-            spriteTemplate["area"]["width"],
-            spriteTemplate["area"]["height"],
-            spriteTemplate["area"]["positionX"],
-            spriteTemplate["area"]["positionY"]
-        };
-        mSpriteTemplates[spriteTemplateId] = {textureId, area};
+    try {
+        for (auto spriteTemplateJson : spritesIndexJson) {
+            const size_t spriteTemplateId = spriteTemplateJson["id"];
+            mSpriteTemplates[spriteTemplateId] = createSpriteTemplate(spriteTemplateJson);
+        }
+    } catch (...) {
+        // TODO: This error is too serious. Consider giving a "Could not load scene" error
+        LOG_ERROR("SpriteManager/loadTemplateSprites: Could not load texture due to invalid json data. Check textures/sprites.json.");
+        return false;
     }
+    return true;
 }
 
 size_t SpriteManager::createSprite(size_t spriteTemplateId) {
-    SpriteTemplate& spriteTemplate = mSpriteTemplates[spriteTemplateId];
+    SpriteTemplate* spriteTemplatePtr = nullptr;
+    try {
+        spriteTemplatePtr = &mSpriteTemplates.at(spriteTemplateId);
+    }
+    catch (...) {
+        LOG_WARNING("SpriteManager/createSprite: Could not find Sprite Template with specified id. [spriteId = " << spriteTemplateId << "]");
+        return -1;
+    }
 
     sf::Sprite sprite;
-    sprite.setTexture(mTexturesMap[spriteTemplate.textureId]);
-    sprite.setTextureRect(sf::IntRect(spriteTemplate.area.positionX,
-                                        spriteTemplate.area.positionY,
-                                        spriteTemplate.area.width,
-                                        spriteTemplate.area.height));
-    size_t spriteId = mLastSpriteId;
-    mLastSpriteId++;
+    try {
+        sprite.setTexture(mTexturesMap.at(spriteTemplatePtr->textureId));
+    } catch (...) {
+        LOG_WARNING("SpriteManager/createSprite: Could not find texture with specified id. [spriteId = " << spriteTemplatePtr->textureId << "]");
+        return -1;
+    }
+    sprite.setTextureRect(sf::IntRect(spriteTemplatePtr->area.positionX,
+                                      spriteTemplatePtr->area.positionY,
+                                      spriteTemplatePtr->area.width,
+                                      spriteTemplatePtr->area.height));
 
+    size_t spriteId = mLastSpriteId++;
     mSprites[spriteId] = sprite;
     return spriteId;
 }
 
 bool SpriteManager::setSpritePosition(size_t spriteId, Vector2f position) {
-    if (spriteId >= 0 && spriteId < mSprites.size()) {
+    try {
+        mSprites.at(spriteId).setPosition(position.x, position.y);
+    } catch (...) {
+        LOG_WARNING("SpriteManager/setSpritePosition: Could not set sprite's position. [spriteId = " << spriteId << "]");
         return false;
     }
-
-    mSprites[spriteId].setPosition(position.x, position.y);
     return true;
 }
 
 sf::Sprite SpriteManager::getSpriteById(size_t spriteId) {
+    try {
+        const sf::Sprite spriteAtId = mSprites.at(spriteId);
+        return spriteAtId;
+    } catch (...) {
+        LOG_WARNING("SpriteManager/getSpriteById: Could not get sprite with specified id. [spriteId = " << spriteId << "]");
+    }
     return mSprites[spriteId];
 }

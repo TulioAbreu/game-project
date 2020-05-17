@@ -7,6 +7,7 @@
 #include <map>
 #include "rectangle.hpp"
 #include "vector2.hpp"
+#include "json.hpp"
 #include "singleton.hpp"
 
 struct SpriteTemplate {
@@ -20,12 +21,12 @@ private:
     std::map<size_t, SpriteTemplate> mSpriteTemplates;
     std::map<size_t, sf::Sprite> mSprites;
     int mLastSpriteId;
-
+    SpriteTemplate createSpriteTemplate(json jsonObject);
 public:
     SpriteManager();
     sf::Texture loadTexture(std::string filepath);
     void loadTextures();
-    void loadTemplateSprites();
+    bool loadTemplateSprites();
     virtual ~SpriteManager() {}
     size_t createSprite(size_t spriteTemplateId);
     bool setSpritePosition(size_t spriteId, Vector2f position);
