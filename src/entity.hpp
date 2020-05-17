@@ -52,8 +52,8 @@ class Entity {
 
     void addScript(Script* script);
 
-    inline int getSpriteId();
-    inline void setSpriteId(size_t spriteId);
+    int getSpriteId();
+    void setSpriteId(size_t spriteId);
 };
 
 #endif

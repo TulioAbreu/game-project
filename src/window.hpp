@@ -7,6 +7,8 @@
 #include "log.hpp"
 #include <iostream>
 #include "vector2.hpp"
+#include "sprite-manager.hpp"
+
 
 class Window {
     bool mIsOpen;
@@ -32,47 +34,14 @@ class Window {
         }
     }
 
-    virtual ~Window() {
-        mWindow.close();
-    }
-
-    void handleWindowEvents(Vector2f& contextSize, Vector2f& halfContextSize) {
-        while (mWindow.pollEvent(mEvent)) {
-            if (mEvent.type == sf::Event::Closed) {
-                close();
-            }
-            if (mEvent.type == sf::Event::Resized) {
-                sf::FloatRect visibleArea(0, 0, mEvent.size.width, mEvent.size.height);
-                contextSize = {(float)mEvent.size.width, (float)mEvent.size.height};
-                halfContextSize = contextSize*0.5f;
-                mWindow.setView(sf::View(visibleArea));
-            }
-        }
-    }
-
-    void clear() {
-        mWindow.clear();
-    }
-
-    void display() { 
-        mWindow.display();
-    }
-
-    bool isOpen() { 
-        return mWindow.isOpen();
-    }
-
-    void drawRectangle(const Rectangle rect) {
-        mRectangle.setSize(sf::Vector2f(rect.width, rect.height));
-        mRectangle.setPosition(rect.positionX, rect.positionY);
-        mRectangle.setFillColor(sf::Color::Red);
-
-        mWindow.draw(mRectangle);
-    }
-    
-    void close() {
-        mIsOpen = false;
-    }
+    virtual ~Window();
+    void handleWindowEvents(Vector2f& contextSize, Vector2f& halfContextSize);
+    void clear();
+    void display(); 
+    bool isOpen(); 
+    void drawRectangle(const Rectangle rect);
+    void drawSprite(int spriteId, const Rectangle relativeRectangle);
+    void close();
 };
 
 

@@ -5,6 +5,7 @@
 #include "vector2.hpp"
 #include "entity.hpp"
 #include "singleton.hpp"
+#include "sprite-manager.hpp"
 
 class Camera: public Singleton<Camera> {
     float mScale;
