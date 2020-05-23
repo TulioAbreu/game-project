@@ -11,8 +11,6 @@
 
 
 class Window {
-    bool mIsOpen;
-
     public:
     sf::RenderWindow mWindow;
     sf::Event mEvent;
@@ -26,11 +24,9 @@ class Window {
         mWindow.setFramerateLimit(60);
         if (!mWindow.isOpen()) {
             LOG_ERROR("SFML/Window: Failed to open a window");
-            mIsOpen = false;
         }
         else {
             LOG("SFML/Window: Success");
-            mIsOpen = true;
         }
     }
 
