@@ -42,7 +42,7 @@ int Scene::getScriptIndexByName(std::string scriptName) {
 }
 
 void Scene::loadScene() {
-    std::fstream sceneFile ("../data/scenes/scene_01.json");
+    std::fstream sceneFile (Path("data/scenes/scene_01.json"));
     if (!sceneFile.is_open()) {
         LOG_ERROR("Scene/loadScene: Could not open scene file");
         return;
