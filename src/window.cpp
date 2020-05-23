@@ -47,5 +47,6 @@ void Window::drawSprite(int spriteId, const Rectangle relativeRectangle) {
 }
 
 void Window::close() {
+    mWindow.close();
     mIsOpen = false;
 }
