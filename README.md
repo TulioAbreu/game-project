@@ -11,3 +11,7 @@ $ cmake ..
 $ make
 $ ./gameProject
 ```
+
+## Windows
+
+Current game.ps1 and editor.ps1 are being used for building the game on Windows. You will probably have to install [**Lua 5.1**](https://www.lua.org/download.html) and [**SFML**](https://www.sfml-dev.org/download/sfml/2.5.1/). Add the libraries to your mingw, modify the include path on build files.
