@@ -1,7 +1,7 @@
 #include "scene.hpp"
 #include "filepath.hpp"
 
-static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
+static SpriteManagder& gSpriteManager = *SpriteManager::getInstance();
 
 
 Scene::Scene(std::string filePath, bool fullLoad) {
@@ -10,6 +10,7 @@ Scene::Scene(std::string filePath, bool fullLoad) {
     mFullLoad = fullLoad;
 
     if (fullLoad) {
+        // TODO: load scene file first, get dependencies and load only what is necessary? After that, load by demand?
         loadScripts();
         loadPrefabs();
         loadScene();
