@@ -1,7 +1,7 @@
 #include "scene.hpp"
 #include "filepath.hpp"
 
-static SpriteManagder& gSpriteManager = *SpriteManager::getInstance();
+static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
 
 
 Scene::Scene(std::string filePath, bool fullLoad) {
@@ -40,18 +40,13 @@ void Scene::loadScripts() {
 
     for (auto script : scriptsJson) {
         const std::string filePath  =  script["path"];
+        mScriptsIndexMap[script["name"]] = mScripts.size();
         mScripts.push_back(new Script(Path("data/behaviours/") + filePath, script["name"]));
     }
 }
 
 int Scene::getScriptIndexByName(std::string scriptName) {
-    // TODO: Implement with Map type structure
-    for (size_t i = 0; i < mScripts.size(); ++i) {
-        if (mScripts[i]->getName() == scriptName) {
-            return i;
-        }
-    }
-    return -1;
+    return mScriptsIndexMap.at(scriptName);
 }
 
 void Scene::loadScene() {

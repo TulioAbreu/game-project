@@ -5,6 +5,7 @@
 #include <fstream>
 #include <set>
 #include <string>
+#include <map>
 
 #include "entity-container.hpp"
 #include "entity.hpp"
@@ -16,6 +17,7 @@
 class Scene {
     private:
     std::vector<Script*> mScripts;  // TODO: Why are scripts here? Switch it to Singleton?
+    std::map<std::string, size_t> mScriptsIndexMap;
     std::map<size_t, Prefab> mPrefabsMap;
     Entities* mRefEntities;
     std::string mFilePath;
