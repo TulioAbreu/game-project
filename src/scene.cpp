@@ -73,17 +73,19 @@ void Scene::loadScene() {
         entity.setHitboxSize(size.x, size.y);
         entity.setHitboxPosition(sceneEntry["position"]["x"], sceneEntry["position"]["y"]);
 
-        std::set<std::string> scriptNamesSet;
-        for (auto scriptName : entryPrefab.getScriptNames()) {
-            scriptNamesSet.insert(scriptName);
-        }
-        for (auto scriptNameJson : sceneEntry["scripts"]) {
-            const std::string scriptName = scriptNameJson;
-            scriptNamesSet.insert(scriptName);
-        }
+        if (mFullLoad) {
+            std::set<std::string> scriptNamesSet;
+            for (auto scriptName : entryPrefab.getScriptNames()) {
+                scriptNamesSet.insert(scriptName);
+            }
+            for (auto scriptNameJson : sceneEntry["scripts"]) {
+                const std::string scriptName = scriptNameJson;
+                scriptNamesSet.insert(scriptName);
+            }
 
-        for (auto scriptName : scriptNamesSet) {
-            entity.addScript(mScripts[getScriptIndexByName(scriptName)]);
+            for (auto scriptName : scriptNamesSet) {
+                entity.addScript(mScripts[getScriptIndexByName(scriptName)]);
+            }
         }
 
         const size_t generatedSpriteId = gSpriteManager.createSprite(entryPrefab.getSpriteId());
