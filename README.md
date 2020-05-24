@@ -14,4 +14,14 @@ $ ./gameProject
 
 ## Windows
 
-Current game.ps1 and editor.ps1 are being used for building the game on Windows. You will probably have to install [**Lua 5.1**](https://www.lua.org/download.html) and [**SFML**](https://www.sfml-dev.org/download/sfml/2.5.1/). Add the libraries to your mingw, modify the include path on build files.
+> Download windows dependencies:
+- Mingw (you can use [Chocolatey](http://chocolatey.org/))
+
+- [Lua 5.1](https://www.lua.org/download.html)
+
+- [SFML](https://www.sfml-dev.org/download/sfml/2.5.1/)
+
+> Install Lua5.1 and SFML libraries into your mingw.
+> Modify game.ps1/editor.ps1 `-I` filepath, for matching with your Lua5.1 and SFML includes paths
+> Run the powershell build scripts. Since they're used for development, they are removing the generated .exe after closing the game
+
