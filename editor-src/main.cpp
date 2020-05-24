@@ -1,14 +1,46 @@
 #include "../third-party/imgui.h"
 #include "../third-party/imgui-SFML.h"
+#include "../third-party/json.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
+#include <fstream>
+#include <string>
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(640, 480), "");
+using json = nlohmann::json;
+
+const std::string EDITOR_CONFIG_PATH = "./editorConfig.json";
+
+json readJsonFile(std::string filePath) {
+    std::fstream file (filePath);
+    json jsonObject;
+    file >> jsonObject;
+    file.close();
+    return jsonObject;
+}
+
+class TilePicker {
+private:
+
+public:
+    TilePicker() {
+        
+    }
+
+    void render() {
+
+    }
+}
+
+int main() {
+    json config = readJsonFile(EDITOR_CONFIG_PATH);
+    sf::RenderWindow window (
+        sf::VideoMode(config["windowSize"]["width"], config["windowSize"]["height"]),
+        "Game Editor"
+        );
     window.setVerticalSyncEnabled(true);
+
     ImGui::SFML::Init(window);
 
     sf::Color bgColor;
