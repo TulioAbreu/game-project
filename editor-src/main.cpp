@@ -20,19 +20,6 @@ json readJsonFile(std::string filePath) {
     return jsonObject;
 }
 
-class TilePicker {
-private:
-
-public:
-    TilePicker() {
-        
-    }
-
-    void render() {
-
-    }
-}
-
 int main() {
     json config = readJsonFile(EDITOR_CONFIG_PATH);
     sf::RenderWindow window (
@@ -76,7 +63,6 @@ int main() {
             bgColor.g = static_cast<sf::Uint8>(color[1] * 255.f);
             bgColor.b = static_cast<sf::Uint8>(color[2] * 255.f);
         }
-
         // Window title text edit
         ImGui::InputText("Window title", windowTitle, 255);
 
