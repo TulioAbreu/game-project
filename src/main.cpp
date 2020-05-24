@@ -41,7 +41,7 @@ int main() {
 
     Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE.c_str());
     Keyboard keyboard;
-    Scene scene;
+    Scene scene (Path("data/scenes/scene_01.json"), true);
 
     Vector2f contextSize = {WINDOW_WIDTH, WINDOW_HEIGHT};
     Vector2f halfContextSize = contextSize*0.5f;
