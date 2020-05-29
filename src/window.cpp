@@ -1,13 +1,23 @@
 #include "window.hpp"
+#include "../third-party/imgui.h"
+#include "../third-party/imgui-SFML.h"
+#include <SFML/Graphics.hpp>
 
 static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
 
 Window::~Window() {
     mWindow.close();
+    ImGui::SFML::Shutdown();
+}
+
+void Window::startImgui() {
+    ImGui::SFML::Init(mWindow);
 }
 
 void Window::handleWindowEvents(Vector2f& contextSize, Vector2f& halfContextSize) {
     while (mWindow.pollEvent(mEvent)) {
+        ImGui::SFML::ProcessEvent(mEvent);
+
         if (mEvent.type == sf::Event::Closed) {
             close();
         }
@@ -18,6 +28,8 @@ void Window::handleWindowEvents(Vector2f& contextSize, Vector2f& halfContextSize
             mWindow.setView(sf::View(visibleArea));
         }
     }
+
+    ImGui::SFML::Update(mWindow, sf::milliseconds(16));
 }
 
 void Window::clear() {
@@ -25,6 +37,7 @@ void Window::clear() {
 }
 
 void Window::display() { 
+    ImGui::SFML::Render(mWindow);
     mWindow.display();
 }
 

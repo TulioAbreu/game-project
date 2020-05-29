@@ -11,6 +11,9 @@
 
 
 class Window {
+    private:
+    void startImgui();
+
     public:
     sf::RenderWindow mWindow;
     sf::Event mEvent;
@@ -28,6 +31,7 @@ class Window {
         else {
             LOG("SFML/Window: Success");
         }
+        startImgui();
     }
 
     virtual ~Window();

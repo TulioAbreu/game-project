@@ -9,6 +9,7 @@
 #include "scene.hpp"
 #include "entity-container.hpp"
 #include "sprite-manager.hpp"
+#include "console.hpp"
 
 #include "../third-party/json.hpp"
 #include <fstream>
@@ -49,15 +50,14 @@ int main() {
     gCamera.setGlobalPosition({halfContextSize.x, halfContextSize.y});
     gCamera.fixToEntity(gEntities.getEntityByName("player"));
 
-
-
+    Console console;
     while (game.getIsRunning() && window.isOpen()) {
         window.handleWindowEvents(contextSize, halfContextSize);
 
         for (size_t i = 0; i < gEntities.size(); ++i) {
             gEntities.at(i).update();
         }
-
+        console.render();
         window.clear();
 
         for (size_t i = 0; i < gEntities.size(); ++i) {
@@ -67,9 +67,9 @@ int main() {
                 window.drawSprite(entity.getSpriteId(), gCamera.getRelativeRectangle(currentEntityRect, halfContextSize));
             }
         }
-
         window.display();
     }
 
+    ImGui::SFML::Shutdown();
     return 0;
 }
