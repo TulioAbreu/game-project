@@ -6,8 +6,8 @@
 #include "../third-party/imgui.h"
 #include "../third-party/imgui-SFML.h"
 
-const std::string CONSOLE_WINDOW_TITLE = "Console";
-const std::string CONSOLE_BUTTON_TEXT = "Execute";
+const char* CONSOLE_WINDOW_TITLE = "Console";
+const char* CONSOLE_BUTTON_TEXT = "Execute";
 
 class Console {
 private:
@@ -46,8 +46,8 @@ public:
     }
 
     void render() {
-        ImGui::Begin(CONSOLE_WINDOW_TITLE.c_str());
-        ImGui::Button(CONSOLE_BUTTON_TEXT.c_str());
+        ImGui::Begin(CONSOLE_WINDOW_TITLE);
+        ImGui::Button(CONSOLE_BUTTON_TEXT);
         ImGui::SameLine();
         if (ImGui::InputText("", mCommandBuffer, 255, ImGuiInputTextFlags_EnterReturnsTrue, nullptr, nullptr)) {
             onCommand();
