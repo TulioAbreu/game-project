@@ -1,27 +1,60 @@
 #ifndef CONSOLE_HPP
 #define CONSOLE_HPP
 
+#include <string>
+
 #include "../third-party/imgui.h"
 #include "../third-party/imgui-SFML.h"
 
+const std::string CONSOLE_WINDOW_TITLE = "Console";
+const std::string CONSOLE_BUTTON_TEXT = "Execute";
+
 class Console {
 private:
-    std::string mLog;
-    char mBuffer[255];
+    std::string mCommandLog;
+    char mCommandBuffer[255];
+
+    void logMessage(std::string message) {
+        mCommandLog += message + "\n";
+    }
+
+    std::string runCommand(std::string commandStr) {
+        std::string output ("hello! :)");
+        // TODO: Run command
+        return output;
+    }
+
+    void cleanCommandBuffer() {
+        mCommandBuffer[0] = '\0';
+    }
+
 public:
     Console() {
-        mLog = "hi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\nhi\n";
-        strcpy(mBuffer, mLog.c_str());
+        mCommandLog = "";
+        strcpy(mCommandBuffer, mCommandLog.c_str());
+    }
+
+    void onCommand() {
+        std::string commandStr (mCommandBuffer);
+        if (commandStr.length() == 0) return;
+
+        cleanCommandBuffer();
+
+        logMessage(commandStr);
+        std::string output = runCommand(commandStr);
+        logMessage(">" + output);
     }
 
     void render() {
-        ImGui::Begin("Console");
-        ImGui::Button("Clear");
+        ImGui::Begin(CONSOLE_WINDOW_TITLE.c_str());
+        ImGui::Button(CONSOLE_BUTTON_TEXT.c_str());
         ImGui::SameLine();
-        ImGui::InputText("Command", mBuffer, 255);
+        if (ImGui::InputText("", mCommandBuffer, 255, ImGuiInputTextFlags_EnterReturnsTrue, nullptr, nullptr)) {
+            onCommand();
+        }
         ImGui::Separator();
         ImGui::BeginChild("scrolling");
-        ImGui::Text(mBuffer);
+        ImGui::Text(mCommandLog.c_str());
         ImGui::EndChild();
         ImGui::End();
     }
