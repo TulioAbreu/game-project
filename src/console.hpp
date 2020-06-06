@@ -47,10 +47,12 @@ public:
 
     void render() {
         ImGui::Begin(CONSOLE_WINDOW_TITLE);
-        ImGui::Button(CONSOLE_BUTTON_TEXT);
+        if (ImGui::Button(CONSOLE_BUTTON_TEXT)) {
+            this->onCommand();
+        }
         ImGui::SameLine();
         if (ImGui::InputText("", mCommandBuffer, 255, ImGuiInputTextFlags_EnterReturnsTrue, nullptr, nullptr)) {
-            onCommand();
+            this->onCommand();
         }
         ImGui::Separator();
         ImGui::BeginChild("scrolling");
