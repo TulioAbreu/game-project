@@ -3,13 +3,14 @@
 
 #include <string>
 
+#include "singleton.hpp"
 #include "../third-party/imgui.h"
 #include "../third-party/imgui-SFML.h"
 
 const char* CONSOLE_WINDOW_TITLE = "Console";
 const char* CONSOLE_BUTTON_TEXT = "Execute";
 
-class Console {
+class Console: public Singleton<Console> {
 private:
     std::string mCommandLog;
     char mCommandBuffer[255];
@@ -19,8 +20,8 @@ private:
     }
 
     std::string runCommand(std::string commandStr) {
-        std::string output ("hello! :)");
         // TODO: Run command
+        std::string output ("hello! :)");
         return output;
     }
 
@@ -48,11 +49,11 @@ public:
     void render() {
         ImGui::Begin(CONSOLE_WINDOW_TITLE);
         if (ImGui::Button(CONSOLE_BUTTON_TEXT)) {
-            this->onCommand();
+            onCommand();
         }
         ImGui::SameLine();
         if (ImGui::InputText("", mCommandBuffer, 255, ImGuiInputTextFlags_EnterReturnsTrue, nullptr, nullptr)) {
-            this->onCommand();
+            onCommand();
         }
         ImGui::Separator();
         ImGui::BeginChild("scrolling");

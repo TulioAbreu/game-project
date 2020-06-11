@@ -19,6 +19,7 @@ static Entities& gEntities = *Entities::getInstance();
 static Keyboard& gKeyboard = *Keyboard::getInstance();
 static Camera& gCamera = *Camera::getInstance();
 static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
+static Console& gConsole = *Console::getInstance();
 
 class Game {
     bool mIsRunning;
@@ -50,14 +51,13 @@ int main() {
     gCamera.setGlobalPosition({halfContextSize.x, halfContextSize.y});
     gCamera.fixToEntity(gEntities.getEntityByName("player"));
 
-    Console console;
     while (game.getIsRunning() && window.isOpen()) {
         window.handleWindowEvents(contextSize, halfContextSize);
 
         for (size_t i = 0; i < gEntities.size(); ++i) {
             gEntities.at(i).update();
         }
-        console.render();
+        gConsole.render();
         window.clear();
 
         for (size_t i = 0; i < gEntities.size(); ++i) {
