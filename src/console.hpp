@@ -2,6 +2,7 @@
 #define CONSOLE_HPP
 
 #include <string>
+#include "script-manager.hpp"
 
 #include "singleton.hpp"
 #include "../third-party/imgui.h"
@@ -20,8 +21,10 @@ private:
     }
 
     std::string runCommand(std::string commandStr) {
-        // TODO: Run command
-        std::string output ("hello! :)");
+        commandStr = "buffer = " + commandStr;
+        luaL_dostring(Script::mLuaState, commandStr.c_str());
+        // TODO: Implement output
+        // std::string output ("hello! :)");
         return output;
     }
 

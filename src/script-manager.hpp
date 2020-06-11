@@ -8,9 +8,9 @@ extern "C" {
     #include <lua5.1/lualib.h>
 };
 
+
 class Script {
     private:
-    static lua_State* mLuaState;
     static bool mIsLibLoaded;
     std::string mFilePath;
     std::string mName;
@@ -21,6 +21,7 @@ class Script {
     static void registerFunction(lua_State* luaState, std::string functionName, lua_CFunction f);
 
     public:
+    static lua_State* mLuaState;
     Script(std::string filePath, std::string name);
     std::string getName();
     void loadFunction(std::string functionName);
