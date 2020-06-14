@@ -23,9 +23,7 @@ private:
     std::string runCommand(std::string commandStr) {
         commandStr = "buffer = " + commandStr;
         luaL_dostring(Script::mLuaState, commandStr.c_str());
-        // TODO: Implement output
-        // std::string output ("hello! :)");
-        return output;
+        return "Finish!";
     }
 
     void cleanCommandBuffer() {
