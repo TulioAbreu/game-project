@@ -12,9 +12,9 @@ struct Color {
     int green;
     int blue;
     int alpha;
-
+    Color() = default;
     Color(std::string colorStr);
-    Color(int red, int green, int blue, int alpha);
+    Color(int red, int green, int blue, int alpha = 255);
 
 private:
     int enforceInterval(int value);

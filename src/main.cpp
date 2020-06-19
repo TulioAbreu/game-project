@@ -14,6 +14,9 @@
 #include "../third-party/json.hpp"
 #include <fstream>
 
+#include "particle.hpp"
+#include "color.hpp"
+
 static Config& gConfig = *Config::getInstance();
 static Entities& gEntities = *Entities::getInstance();
 static Keyboard& gKeyboard = *Keyboard::getInstance();
@@ -51,6 +54,8 @@ int main() {
     gCamera.setGlobalPosition({halfContextSize.x, halfContextSize.y});
     gCamera.fixToEntity(gEntities.getEntityByName("player"));
 
+    Particles particles;
+
     while (game.getIsRunning() && window.isOpen()) {
         window.handleWindowEvents(contextSize, halfContextSize);
 
@@ -67,6 +72,20 @@ int main() {
                 window.drawSprite(entity.getSpriteId(), gCamera.getRelativeRectangle(currentEntityRect, halfContextSize));
             }
         }
+
+        particles.update();
+        sf::RectangleShape currentParticleDrawing;
+        Rectangle currentParticleRectangle;
+        Color color("#FFFF00");
+        currentParticleDrawing.setFillColor(sf::Color(color.red, color.green, color.blue));
+        currentParticleRectangle.height = 1;
+        currentParticleRectangle.width = 1;
+        for (auto particle : particles.particles) {
+            currentParticleRectangle.positionX = particle.position.x;
+            currentParticleRectangle.positionY = particle.position.y;
+            window.drawRectangle(gCamera.getRelativeRectangle(currentParticleRectangle, halfContextSize));
+        }
+
         window.display();
     }
 

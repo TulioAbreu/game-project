@@ -72,7 +72,7 @@ Color::Color(std::string colorStr) {
     alpha = enforceInterval(alpha);
 }
 
-Color::Color(int red, int green, int blue, int alpha = 255) {
+Color::Color(int red, int green, int blue, int alpha) {
     this->red = red;
     this->green = green;
     this->blue = blue;
