@@ -45,10 +45,10 @@ bool Window::isOpen() {
     return mWindow.isOpen();
 }
 
-void Window::drawRectangle(const Rectangle rect) {
+void Window::drawRectangle(const Rectangle rect, Color color) {
     mRectangle.setSize(sf::Vector2f(rect.width, rect.height));
     mRectangle.setPosition(rect.positionX, rect.positionY);
-    mRectangle.setFillColor(sf::Color::Red);
+    mRectangle.setFillColor(sf::Color(color.red, color.green, color.blue, color.alpha));
 
     mWindow.draw(mRectangle);
 }

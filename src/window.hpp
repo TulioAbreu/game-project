@@ -8,7 +8,7 @@
 #include <iostream>
 #include "vector2.hpp"
 #include "sprite-manager.hpp"
-
+#include "color.hpp"
 
 class Window {
     private:
@@ -39,7 +39,7 @@ class Window {
     void clear();
     void display(); 
     bool isOpen(); 
-    void drawRectangle(const Rectangle rect);
+    void drawRectangle(const Rectangle rect, Color color = Color("#FFFFFF"));
     void drawSprite(int spriteId, const Rectangle relativeRectangle);
     void close();
 };

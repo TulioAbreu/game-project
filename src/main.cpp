@@ -83,7 +83,8 @@ int main() {
         for (auto particle : particles.particles) {
             currentParticleRectangle.positionX = particle.position.x;
             currentParticleRectangle.positionY = particle.position.y;
-            window.drawRectangle(gCamera.getRelativeRectangle(currentParticleRectangle, halfContextSize));
+            color = particle.color;
+            window.drawRectangle(gCamera.getRelativeRectangle(currentParticleRectangle, halfContextSize), color);
         }
 
         window.display();
