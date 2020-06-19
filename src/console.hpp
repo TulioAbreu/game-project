@@ -25,7 +25,7 @@ private:
         luaL_dostring(Script::mLuaState, commandStr.c_str());
         // TODO: Implement output
         // std::string output ("hello! :)");
-        return output;
+        return "";
     }
 
     void cleanCommandBuffer() {
