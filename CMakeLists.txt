@@ -30,6 +30,7 @@ add_executable (gameProject
     src/window.cpp
     src/vector2.hpp
     src/color.hpp src/color.cpp
+    src/particle.hpp src/particle.cpp
     third-party/imgui_demo.cpp
     third-party/imgui.h
     third-party/imgui-SFML.h
