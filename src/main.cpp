@@ -24,22 +24,7 @@ static Camera& gCamera = *Camera::getInstance();
 static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
 static Console& gConsole = *Console::getInstance();
 
-class Game {
-    bool mIsRunning;
-
-    public:
-    Game() = default;
-    virtual ~Game() = default;
-
-    void setIsRunning(const bool value) { mIsRunning = value; }
-    bool getIsRunning() const { return mIsRunning; }
-};
-
-
 int main() {
-    Game game;
-    game.setIsRunning(true);
-
     const float WINDOW_WIDTH = gConfig["window"]["width"];
     const float WINDOW_HEIGHT = gConfig["window"]["height"];
     const std::string WINDOW_TITLE = gConfig["window"]["title"];
@@ -54,14 +39,18 @@ int main() {
     gCamera.setGlobalPosition({halfContextSize.x, halfContextSize.y});
     gCamera.fixToEntity(gEntities.getEntityByName("player"));
 
-    Particles particles;
-
-    while (game.getIsRunning() && window.isOpen()) {
+    std::vector<Particles> particles;
+    bool isRunning = true;
+    while (isRunning && window.isOpen()) {
         window.handleWindowEvents(contextSize, halfContextSize);
 
         for (size_t i = 0; i < gEntities.size(); ++i) {
             gEntities.at(i).update();
         }
+        for (auto& particle : particles) {
+            particle.update();
+        }
+
         gConsole.render();
         window.clear();
 
@@ -73,18 +62,19 @@ int main() {
             }
         }
 
-        particles.update();
         sf::RectangleShape currentParticleDrawing;
         Rectangle currentParticleRectangle;
-        Color color("#FFFF00");
-        currentParticleDrawing.setFillColor(sf::Color(color.red, color.green, color.blue));
-        currentParticleRectangle.height = 1;
-        currentParticleRectangle.width = 1;
-        for (auto particle : particles.particles) {
-            currentParticleRectangle.positionX = particle.position.x;
-            currentParticleRectangle.positionY = particle.position.y;
-            color = particle.color;
-            window.drawRectangle(gCamera.getRelativeRectangle(currentParticleRectangle, halfContextSize), color);
+        Color color("#FFFFFF");
+        for (auto _particles : particles) {
+            currentParticleDrawing.setFillColor(sf::Color(color.red, color.green, color.blue));
+            currentParticleRectangle.height = 1;
+            currentParticleRectangle.width = 1;
+            for (auto particle : _particles.particles) {
+                currentParticleRectangle.positionX = particle.position.x;
+                currentParticleRectangle.positionY = particle.position.y;
+                color = particle.color;
+                window.drawRectangle(gCamera.getRelativeRectangle(currentParticleRectangle, halfContextSize), color);
+            }
         }
 
         window.display();
