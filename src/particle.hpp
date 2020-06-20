@@ -6,7 +6,7 @@
 #include "vector2.hpp"
 #include <cmath>
 
-// TODO: Future optimization: imagine player moving around and we getting camera offset with 500 particles (thats bad)
+// TODO: Future optimization: imagine player moving around and we getting camera offset with 500 particles (thats bad) - maybe some batch operations?
 
 struct Particle {
     Color color;
@@ -20,37 +20,23 @@ struct Particle {
     }
 };
 
+enum class ParticlePattern {
+    NONE = 0,
+    TEST
+};
+
 class Particles {
 public:
     std::vector<Particle> particles;
     Vector2f epicenterPosition;
+    ParticlePattern pattern;
 
-    Particles() {
-        epicenterPosition = {0, 0};
-    }
+    Particles();
 
-    void update() {
-        if (particles.size() < 70) {
-            if (rand() % 100 < 30) {
-                particles.push_back(Particle(
-                    Color(255, 255, 0),
-                    Vector2f(epicenterPosition.x - (rand()%5), 0 - epicenterPosition.y - (rand()%5)),
-                    5
-                ));
-            }
-        }
+    void update();
 
-        for (auto& particle : particles) {
-            Vector2f movement = {rand()%5, rand()%5};
-            particle.position = particle.position + movement;
-        }
-
-        if (particles.size() > 0) {
-            if (rand() % 100 < 5) {
-                particles.erase(particles.begin());
-            }
-        }
-    }
+private:
+    void testPatternUpdate();
 };
 
 #endif
