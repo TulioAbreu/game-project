@@ -19,6 +19,7 @@
                 "y": 50
             },
             "scripts": [
+                "monster"
             ]
         }
     ]

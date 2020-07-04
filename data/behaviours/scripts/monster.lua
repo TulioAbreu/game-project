@@ -1,21 +1,32 @@
-local isWalkingLeft = true
+local playerId = 0
+local monsterSpeed = 3
 
 function monster_OnStart(id)
-    setEntityPositionY(id, -100)
 end
 
 function monster_OnUpdate(id)
-    local posY = getEntityPositionY(id)
-    if isWalkingLeft then
-        setEntityPositionY(id, (posY + 30))
+    monsterPositionX = getEntityPositionX(id)
+    monsterPositionY = getEntityPositionY(id)
 
-        if posY > 300 then
-            isWalkingLeft = false
-        end
-    else
-        setEntityPositionY(id, (posY - 30))
-        if posY < -300 then
-            isWalkingLeft = true
-        end
+    playerPositionX = getEntityPositionX(playerId)
+    playerPositionY = getEntityPositionY(playerId)
+
+    newMonsterPositionX = monsterPositionX
+    if monsterPositionX < playerPositionX then
+        newMonsterPositionX = newMonsterPositionX + monsterSpeed
     end
+    if monsterPositionX > playerPositionX then
+        newMonsterPositionX = newMonsterPositionX - monsterSpeed
+    end
+
+    newMonsterPositionY = monsterPositionY
+    if monsterPositionY < playerPositionY then
+        newMonsterPositionY = newMonsterPositionY + monsterSpeed
+    end
+    if monsterPositionY > playerPositionY then
+        newMonsterPositionY = newMonsterPositionY - monsterSpeed
+    end
+
+    setEntityPositionX(id, newMonsterPositionX)
+    setEntityPositionY(id, newMonsterPositionY)
 end
