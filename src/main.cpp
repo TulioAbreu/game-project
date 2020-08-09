@@ -1,4 +1,5 @@
 #include <vector>
+#include <fstream>
 #include "log.hpp"
 #include "script-manager.hpp"
 #include "keyboard.hpp"
@@ -10,66 +11,96 @@
 #include "entity-container.hpp"
 #include "sprite-manager.hpp"
 #include "console.hpp"
-
 #include "../third-party/json.hpp"
-#include <fstream>
-
-static Config& gConfig = *Config::getInstance();
-static Entities& gEntities = *Entities::getInstance();
-static Keyboard& gKeyboard = *Keyboard::getInstance();
-static Camera& gCamera = *Camera::getInstance();
-static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
-static Console& gConsole = *Console::getInstance();
 
 class Game {
+    Config* mConfig;
+    Entities* mEntities;
+    Keyboard* mKeyboard;
+    Camera* mCamera;
+    SpriteManager* mSpriteManager;
+    Console* mConsole;
+    Window* mWindow;
+
+    std::string mGameWindowTitle;
+    Vector2f mGameWindowSize;
     bool mIsRunning;
 
-    public:
-    Game() = default;
-    virtual ~Game() = default;
+public:
+    Game() {
+        mConfig = Config::getInstance();
+        mEntities = Entities::getInstance();
+        mKeyboard = Keyboard::getInstance();
+        mCamera = Camera::getInstance();
+        mSpriteManager = SpriteManager::getInstance();
+        mConsole = Console::getInstance();
+        mWindow = nullptr;
+    }
 
-    void setIsRunning(const bool value) { mIsRunning = value; }
-    bool getIsRunning() const { return mIsRunning; }
+    ~Game() {
+        delete mWindow;
+    }
+
+    void setIsRunning(const bool value) {
+        mIsRunning = value;
+    }
+
+    bool getIsRunning() const {
+        return mIsRunning;
+    }
+
+    void start() {
+        setIsRunning(true);
+        mGameWindowSize = {
+            (*mConfig)["window"]["width"],
+            (*mConfig)["window"]["height"]
+        };
+        mGameWindowTitle = (*mConfig)["window"]["title"];
+        mWindow = new Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
+
+        Keyboard keyboard;
+        Scene scene (Path("data/scenes/scene_01.json"), true);
+
+        mCamera->setGlobalPosition(mGameWindowSize*.5f);
+        mCamera->fixToEntity(mEntities->getEntityByName("player"));
+
+        while (getIsRunning() && mWindow->isOpen()) {
+            handleEvents();
+            update();
+            render();
+        }
+
+        ImGui::SFML::Shutdown();
+    }
+
+private:
+    void handleEvents() {
+        mWindow->handleWindowEvents(mGameWindowSize);
+    }
+
+    void update() {
+        for (size_t i = 0; i < mEntities->size(); ++i) {
+            mEntities->at(i).update();
+        }
+    }
+
+    void render() {
+        mConsole->render();
+        mWindow->clear();
+
+        for (size_t i = 0; i < mEntities->size(); ++i) {
+            Entity entity = mEntities->at(i);
+            Rectangle currentEntityRect = entity.getHitbox();
+            if (mCamera->isRectangleVisible(currentEntityRect, mGameWindowSize)) {
+                mWindow->drawSprite(entity.getSpriteId(), mCamera->getRelativeRectangle(currentEntityRect, mGameWindowSize*0.5f));
+            }
+        }
+        mWindow->display();
+    }
 };
-
 
 int main() {
     Game game;
-    game.setIsRunning(true);
-
-    const float WINDOW_WIDTH = gConfig["window"]["width"];
-    const float WINDOW_HEIGHT = gConfig["window"]["height"];
-    const std::string WINDOW_TITLE = gConfig["window"]["title"];
-
-    Window window (WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE.c_str());
-    Keyboard keyboard;
-    Scene scene (Path("data/scenes/scene_01.json"), true);
-
-    Vector2f contextSize = {WINDOW_WIDTH, WINDOW_HEIGHT};
-    Vector2f halfContextSize = contextSize*0.5f;
-
-    gCamera.setGlobalPosition({halfContextSize.x, halfContextSize.y});
-    gCamera.fixToEntity(gEntities.getEntityByName("player"));
-
-    while (game.getIsRunning() && window.isOpen()) {
-        window.handleWindowEvents(contextSize, halfContextSize);
-
-        for (size_t i = 0; i < gEntities.size(); ++i) {
-            gEntities.at(i).update();
-        }
-        gConsole.render();
-        window.clear();
-
-        for (size_t i = 0; i < gEntities.size(); ++i) {
-            Entity entity = gEntities.at(i);
-            Rectangle currentEntityRect = entity.getHitbox();
-            if (gCamera.isRectangleVisible(currentEntityRect, contextSize)) {
-                window.drawSprite(entity.getSpriteId(), gCamera.getRelativeRectangle(currentEntityRect, halfContextSize));
-            }
-        }
-        window.display();
-    }
-
-    ImGui::SFML::Shutdown();
+    game.start();
     return 0;
 }

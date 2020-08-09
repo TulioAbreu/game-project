@@ -14,7 +14,9 @@ void Window::startImgui() {
     ImGui::SFML::Init(mWindow);
 }
 
-void Window::handleWindowEvents(Vector2f& contextSize, Vector2f& halfContextSize) {
+void Window::handleWindowEvents(Vector2f& contextSize) {
+    Vector2f halfContextSize = contextSize*.5f;
+
     while (mWindow.pollEvent(mEvent)) {
         ImGui::SFML::ProcessEvent(mEvent);
 

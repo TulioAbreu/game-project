@@ -35,7 +35,7 @@ class Window {
     }
 
     virtual ~Window();
-    void handleWindowEvents(Vector2f& contextSize, Vector2f& halfContextSize);
+    void handleWindowEvents(Vector2f& contextSize);
     void clear();
     void display(); 
     bool isOpen(); 
