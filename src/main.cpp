@@ -11,10 +11,9 @@
 #include "entity-container.hpp"
 #include "sprite-manager.hpp"
 #include "console.hpp"
-#include "../third-party/json.hpp"
+#include "filepath.hpp"
 
 class Game {
-    Config* mConfig;
     Entities* mEntities;
     Keyboard* mKeyboard;
     Camera* mCamera;
@@ -28,7 +27,6 @@ class Game {
 
 public:
     Game() {
-        mConfig = Config::getInstance();
         mEntities = Entities::getInstance();
         mKeyboard = Keyboard::getInstance();
         mCamera = Camera::getInstance();
@@ -51,11 +49,8 @@ public:
 
     void start() {
         setIsRunning(true);
-        mGameWindowSize = {
-            (*mConfig)["window"]["width"],
-            (*mConfig)["window"]["height"]
-        };
-        mGameWindowTitle = (*mConfig)["window"]["title"];
+        mGameWindowSize = GAME_WINDOW_SIZE;
+        mGameWindowTitle = GAME_WINDOW_TITLE;
         mWindow = new Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
 
         Keyboard keyboard;
