@@ -2,7 +2,7 @@
 #define CAMERA_HPP
 
 #include "rectangle.hpp"
-#include "vector2.hpp"
+#include "utils/vector2/vector2.hpp"
 #include "entity.hpp"
 #include "singleton.hpp"
 #include "sprite-manager.hpp"

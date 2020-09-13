@@ -6,7 +6,7 @@
 #include <vector>
 #include "json.hpp"
 #include "log.hpp"
-#include "vector2.hpp"
+#include "utils/vector2/vector2.hpp"
 
 class Prefab {
 private:

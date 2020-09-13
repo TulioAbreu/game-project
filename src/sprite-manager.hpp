@@ -6,7 +6,7 @@
 #include <string>
 #include <map>
 #include "rectangle.hpp"
-#include "vector2.hpp"
+#include "utils/vector2/vector2.hpp"
 #include "json.hpp"
 #include "singleton.hpp"
 

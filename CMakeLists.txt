@@ -28,7 +28,7 @@ add_executable (gameProject
     src/rectangle.hpp
     src/script-manager.cpp
     src/graphics/window/window.cpp
-    src/vector2.hpp
+    src/utils/vector2/vector2.hpp
     third-party/imgui_demo.cpp
     third-party/imgui.h
     third-party/imgui-SFML.h
