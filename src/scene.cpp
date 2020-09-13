@@ -54,7 +54,7 @@ void Scene::loadScene() {
     json scene;
     bool loadedWithSuccess = JSON::load(mFilePath, &scene);
     if (!loadedWithSuccess) {
-        LOG_ERROR("Scene/loadScene: Could not open scene file");
+        LOG_ERROR("Scene/loadScene: Could not open scene file (" << mFilePath << ")");
         return;
     }
 
