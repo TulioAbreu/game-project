@@ -3,6 +3,10 @@
 
 #include <string>
 
-std::string Path(std::string relativeFilepath);
+struct FilePath {
+    std::string value;
+};
+
+FilePath Path(std::string relativeFilepath);
 
 #endif

@@ -21,7 +21,8 @@ sf::Texture SpriteManager::loadTexture(std::string filepath) {
 void SpriteManager::loadTextures() {
     LOG("Loading textures...");
     // TODO: This piece of code is repeating itself on the entire codebase. Maybe create a function for this?
-    std::fstream texturesIndexFile (Path("data/textures/textures.json"));
+    const FilePath path = Path("data/textures/textures.json");
+    std::fstream texturesIndexFile (path.value);
     if (!texturesIndexFile.is_open()) {
         LOG_ERROR("SpriteManager/loadTextures: Could not open textures.json");
         return;
@@ -30,10 +31,11 @@ void SpriteManager::loadTextures() {
     json texturesIndexJson;
     texturesIndexFile >> texturesIndexJson;
 
+    const FilePath texturePathPrefix = Path("data/textures/");
     for (auto textureIndex : texturesIndexJson) {
         const size_t textureId = textureIndex["id"];
         const std::string texturePath = textureIndex["path"];
-        mTexturesMap[textureId] = loadTexture(Path("data/textures/") + texturePath);
+        mTexturesMap[textureId] = loadTexture(texturePathPrefix.value + texturePath);
     }
 }
 
@@ -51,7 +53,6 @@ SpriteTemplate SpriteManager::createSpriteTemplate(json jsonObject) {
 
 bool SpriteManager::loadTemplateSprites() {
     LOG("Loading template sprites...");
-
     const std::string spritesJsonFilepath (Path("data/textures/sprites.json"));
     std::fstream spriteTemplatesFile (spritesJsonFilepath);
     if (!spriteTemplatesFile.is_open()) {
