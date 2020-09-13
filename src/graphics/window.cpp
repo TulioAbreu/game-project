@@ -5,16 +5,16 @@
 
 static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
 
-Window::~Window() {
+Graphics::Window::~Window() {
     mWindow.close();
     ImGui::SFML::Shutdown();
 }
 
-void Window::startImgui() {
+void Graphics::Window::startImgui() {
     ImGui::SFML::Init(mWindow);
 }
 
-void Window::handleWindowEvents(Vector2f& contextSize) {
+void Graphics::Window::handleWindowEvents(Vector2f& contextSize) {
     Vector2f halfContextSize = contextSize*.5f;
 
     while (mWindow.pollEvent(mEvent)) {
@@ -34,20 +34,20 @@ void Window::handleWindowEvents(Vector2f& contextSize) {
     ImGui::SFML::Update(mWindow, sf::milliseconds(16));
 }
 
-void Window::clear() {
+void Graphics::Window::clear() {
     mWindow.clear();
 }
 
-void Window::display() { 
+void Graphics::Window::display() { 
     ImGui::SFML::Render(mWindow);
     mWindow.display();
 }
 
-bool Window::isOpen() { 
+bool Graphics::Window::isOpen() { 
     return mWindow.isOpen();
 }
 
-void Window::drawRectangle(const Rectangle rect) {
+void Graphics::Window::drawRectangle(const Rectangle rect) {
     mRectangle.setSize(sf::Vector2f(rect.width, rect.height));
     mRectangle.setPosition(rect.positionX, rect.positionY);
     mRectangle.setFillColor(sf::Color::Red);
@@ -55,12 +55,12 @@ void Window::drawRectangle(const Rectangle rect) {
     mWindow.draw(mRectangle);
 }
 
-void Window::drawSprite(int spriteId, const Rectangle relativeRectangle) {
+void Graphics::Window::drawSprite(int spriteId, const Rectangle relativeRectangle) {
     sf::Sprite spr (gSpriteManager.getSpriteById(spriteId));
     spr.setPosition(relativeRectangle.positionX, relativeRectangle.positionY);
     mWindow.draw(spr);
 }
 
-void Window::close() {
+void Graphics::Window::close() {
     mWindow.close();
 }

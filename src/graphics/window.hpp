@@ -9,6 +9,7 @@
 #include "../vector2.hpp"
 #include "../sprite-manager.hpp"
 
+namespace Graphics { 
 class Window {
     private:
     void startImgui();
@@ -41,7 +42,6 @@ class Window {
     void drawRectangle(const Rectangle rect);
     void drawSprite(int spriteId, const Rectangle relativeRectangle);
     void close();
-};
-
+};};
 
 #endif

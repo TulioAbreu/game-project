@@ -20,7 +20,7 @@ class Game {
     Camera* mCamera;
     SpriteManager* mSpriteManager;
     Console* mConsole;
-    Window* mWindow;
+    Graphics::Window* mWindow;
 
     std::string mGameWindowTitle;
     Vector2f mGameWindowSize;
@@ -56,7 +56,7 @@ public:
             (*mConfig)["window"]["height"]
         };
         mGameWindowTitle = (*mConfig)["window"]["title"];
-        mWindow = new Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
+        mWindow = new Graphics::Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
 
         Keyboard keyboard;
         const FilePath DEFAULT_SCENE_FILEPATH = Path("data/scenes/scene_01.json");
