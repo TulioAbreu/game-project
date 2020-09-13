@@ -59,7 +59,8 @@ public:
         mWindow = new Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
 
         Keyboard keyboard;
-        Scene scene (Path("data/scenes/scene_01.json"), true);
+        const FilePath DEFAULT_SCENE_FILEPATH = Path("data/scenes/scene_01.json");
+        Scene scene (DEFAULT_SCENE_FILEPATH.value, true);
 
         mCamera->setGlobalPosition(mGameWindowSize*.5f);
         mCamera->fixToEntity(mEntities->getEntityByName("player"));

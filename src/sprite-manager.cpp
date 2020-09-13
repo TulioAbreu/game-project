@@ -53,10 +53,10 @@ SpriteTemplate SpriteManager::createSpriteTemplate(json jsonObject) {
 
 bool SpriteManager::loadTemplateSprites() {
     LOG("Loading template sprites...");
-    const std::string spritesJsonFilepath (Path("data/textures/sprites.json"));
-    std::fstream spriteTemplatesFile (spritesJsonFilepath);
+    const FilePath DEFAULT_SPRITES_JSON_FILEPATH = Path("data/textures/sprites.json");
+    std::fstream spriteTemplatesFile (DEFAULT_SPRITES_JSON_FILEPATH.value);
     if (!spriteTemplatesFile.is_open()) {
-        LOG_ERROR("SpriteManager/loadTemplateSprites: Could not open " << spritesJsonFilepath);
+        LOG_ERROR("SpriteManager/loadTemplateSprites: Could not open " << DEFAULT_SPRITES_JSON_FILEPATH.value);
         return false;
     }
 

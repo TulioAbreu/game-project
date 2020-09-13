@@ -12,7 +12,8 @@ private:
 
 public:
     Config() {
-        std::ifstream configFile (Path("config.json"));
+        const FilePath DEFAULT_CONFIG_FILEPATH = Path("config.json");
+        std::ifstream configFile (DEFAULT_CONFIG_FILEPATH.value);
         configFile >> mConfig;
         configFile.close();
     }

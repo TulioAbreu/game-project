@@ -32,7 +32,8 @@ void Scene::update() {
 
 void Scene::loadScripts() {
     json scriptsJson;
-    bool loadedWithSuccess = JSON::load(Path("data/behaviours/behaviours.json"), &scriptsJson);
+    const FilePath DEFAULT_BEHAVIOURS_JSON_PATH = Path("data/behaviours/behaviours.json");
+    bool loadedWithSuccess = JSON::load(DEFAULT_BEHAVIOURS_JSON_PATH.value, &scriptsJson);
     if (!loadedWithSuccess) {
         LOG_ERROR("Scene/loadScripts: Could not open behaviours/behaviours.json");
         return;
@@ -41,7 +42,7 @@ void Scene::loadScripts() {
     for (auto script : scriptsJson) {
         const std::string filePath  =  script["path"];
         mScriptsIndexMap[script["name"]] = mScripts.size();
-        mScripts.push_back(new Script(Path("data/behaviours/") + filePath, script["name"]));
+        mScripts.push_back(new Script(Path("data/behaviours/").value + filePath, script["name"]));
     }
 }
 
@@ -97,7 +98,7 @@ void Scene::loadScene() {
 
 void Scene::loadPrefabs() {
     json entitiesIndexJson;
-    bool loadedWithSuccess = JSON::load(Path("data/entities/entities.json"), &entitiesIndexJson);
+    bool loadedWithSuccess = JSON::load(Path("data/entities/entities.json").value, &entitiesIndexJson);
     if (!loadedWithSuccess) {
         LOG_ERROR("Scene/loadPrefabs: Could not open entities.json");
         return;
@@ -106,6 +107,6 @@ void Scene::loadPrefabs() {
     for (auto entity : entitiesIndexJson) {
         const int prefabId = entity["id"];
         const std::string filePath = entity["path"];
-        mPrefabsMap[prefabId] = Prefab(Path("data/entities/" + filePath));
+        mPrefabsMap[prefabId] = Prefab(Path("data/entities/" + filePath).value);
     }
 }
