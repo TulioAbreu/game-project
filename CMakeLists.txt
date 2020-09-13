@@ -3,7 +3,7 @@ project (gameProject)
 add_executable (gameProject 
     src/sprite-manager.hpp
     src/scene.hpp
-    src/camera.hpp
+    src/graphics/camera/camera.hpp src/graphics/camera/camera.cpp
     src/json.cpp
     src/sprite-manager.cpp
     src/json.hpp

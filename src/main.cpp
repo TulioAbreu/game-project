@@ -4,7 +4,7 @@
 #include "script-manager.hpp"
 #include "keyboard.hpp"
 #include "graphics/window/window.hpp"
-#include "camera.hpp"
+#include "graphics/camera/camera.hpp"
 #include "config.hpp"
 #include "entity.hpp"
 #include "scene.hpp"
@@ -17,7 +17,7 @@ class Game {
     Config* mConfig;
     Entities* mEntities;
     Keyboard* mKeyboard;
-    Camera* mCamera;
+    Graphics::Camera* mCamera;
     SpriteManager* mSpriteManager;
     Console* mConsole;
     Graphics::Window* mWindow;
@@ -31,7 +31,7 @@ public:
         mConfig = Config::getInstance();
         mEntities = Entities::getInstance();
         mKeyboard = Keyboard::getInstance();
-        mCamera = Camera::getInstance();
+        mCamera = Graphics::Camera::getInstance();
         mSpriteManager = SpriteManager::getInstance();
         mConsole = Console::getInstance();
         mWindow = nullptr;
