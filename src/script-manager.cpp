@@ -1,5 +1,5 @@
 #include "script-manager.hpp"
-#include "entity-container.hpp"
+#include "entities/container/container.hpp"
 #include "utils/log/log.hpp"
 #include "script-library.hpp"
 

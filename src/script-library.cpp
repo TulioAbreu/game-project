@@ -4,7 +4,7 @@
 #include "keyboard.hpp"
 
 static Keyboard* gKeyboard = Keyboard::getInstance();
-static Entities* gEntities = Entities::getInstance();
+static Entities::Container* gEntities = Entities::Container::getInstance();
 
 
 int lua_setEntityWidth(lua_State* mLuaState) {

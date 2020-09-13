@@ -2,7 +2,7 @@
 #define SCRIPT_LIBRARY
 
 #include "script-manager.hpp"
-#include "entity-container.hpp"
+#include "entities/container/container.hpp"
 
 /*
     IMPORTANT:

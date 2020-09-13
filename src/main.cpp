@@ -8,14 +8,14 @@
 #include "config.hpp"
 #include "entity.hpp"
 #include "scene.hpp"
-#include "entity-container.hpp"
+#include "entities/container/container.hpp"
 #include "sprite-manager.hpp"
 #include "console.hpp"
 #include "../third-party/json.hpp"
 
 class Game {
     Config* mConfig;
-    Entities* mEntities;
+    Entities::Container* mEntities;
     Keyboard* mKeyboard;
     Graphics::Camera* mCamera;
     SpriteManager* mSpriteManager;
@@ -29,7 +29,7 @@ class Game {
 public:
     Game() {
         mConfig = Config::getInstance();
-        mEntities = Entities::getInstance();
+        mEntities = Entities::Container::getInstance();
         mKeyboard = Keyboard::getInstance();
         mCamera = Graphics::Camera::getInstance();
         mSpriteManager = SpriteManager::getInstance();

@@ -5,7 +5,7 @@ static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
 
 
 Scene::Scene(std::string filePath, bool fullLoad) {
-    mRefEntities = Entities::getInstance();
+    mRefEntities = Entities::Container::getInstance();
     mFilePath = filePath;
     mFullLoad = fullLoad;
 
@@ -61,7 +61,7 @@ void Scene::loadScene() {
     json sceneEntries = scene["entries"];
     for (auto sceneEntry : sceneEntries) {
         const size_t entryPrefabId = sceneEntry["prefabId"];
-        Prefab entryPrefab (mPrefabsMap[entryPrefabId]);
+        Entities::Prefab entryPrefab (mPrefabsMap[entryPrefabId]);
         
         Entity entity;
         if (sceneEntry["name"] != "") {
@@ -107,6 +107,6 @@ void Scene::loadPrefabs() {
     for (auto entity : entitiesIndexJson) {
         const int prefabId = entity["id"];
         const std::string filePath = entity["path"];
-        mPrefabsMap[prefabId] = Prefab(Path("data/entities/" + filePath).value);
+        mPrefabsMap[prefabId] = Entities::Prefab(Path("data/entities/" + filePath));
     }
 }

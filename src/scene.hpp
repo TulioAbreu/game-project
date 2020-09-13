@@ -7,10 +7,10 @@
 #include <string>
 #include <map>
 
-#include "entity-container.hpp"
+#include "entities/container/container.hpp"
 #include "entity.hpp"
 #include "utils/log/log.hpp"
-#include "prefab.hpp"
+#include "entities/prefab/prefab.hpp"
 #include "json.hpp"
 #include "sprite-manager.hpp"
 
@@ -18,8 +18,8 @@ class Scene {
     private:
     std::vector<Script*> mScripts;  // TODO: Why are scripts here? Switch it to Singleton?
     std::map<std::string, size_t> mScriptsIndexMap;
-    std::map<size_t, Prefab> mPrefabsMap;
-    Entities* mRefEntities;
+    std::map<size_t, Entities::Prefab> mPrefabsMap;
+    Entities::Container* mRefEntities;
     std::string mFilePath;
     bool mFullLoad;
 

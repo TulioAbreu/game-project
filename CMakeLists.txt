@@ -10,17 +10,16 @@ add_executable (gameProject
     src/config.hpp
     src/script-manager.hpp
     src/scene.cpp
-    src/entity-container.hpp
+    src/entities/container/container.hpp src/entities/container/container.cpp
     src/script-library.cpp
     src/entity.hpp
     src/singleton.hpp
     src/console.hpp
     src/main.cpp
-    src/entity-container.cpp
     src/graphics/window/window.hpp
     src/keyboard.hpp
     src/utils/filepath/filepath.hpp src/utils/filepath/filepath.cpp
-    src/prefab.hpp
+    src/entities/prefab/prefab.hpp src/entities/prefab/prefab.cpp
     src/utils/log/log.hpp
     src/entity.cpp
     src/script-library.hpp

@@ -1,19 +1,19 @@
-#include "entity-container.hpp"
-#include "utils/log/log.hpp"
+#include "container.hpp"
+#include "../../utils/log/log.hpp"
 
-size_t Entities::size() {
+size_t Entities::Container::size() {
     return entities.size();
 }
 
-Entity Entities::at(int index) {
+Entity Entities::Container::at(int index) {
     return entities.at(index);
 }
 
-void Entities::add(Entity entity) {
+void Entities::Container::add(Entity entity) {
     entities.push_back(entity);
 }
 
-bool Entities::remove(size_t index) {
+bool Entities::Container::remove(size_t index) {
     if (entities.empty()) {
         return false;
     } 
@@ -25,7 +25,7 @@ bool Entities::remove(size_t index) {
     return true;
 }
 
-Entity* Entities::getEntityByID(int id) {
+Entity* Entities::Container::getEntityByID(int id) {
     for (auto& entity : entities) {
         if (entity.getID() == id) {
             return &entity;
@@ -35,7 +35,7 @@ Entity* Entities::getEntityByID(int id) {
     return nullptr;
 }
 
-Entity* Entities::getEntityByName(std::string name) {
+Entity* Entities::Container::getEntityByName(std::string name) {
     for (auto& entity : entities) {
         if (entity.getName() == name) {
             return &entity;
