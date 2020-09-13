@@ -4,7 +4,7 @@
 #include <fstream>
 #include "singleton.hpp"
 #include "json.hpp"
-#include "filepath.hpp"
+#include "utils/filepath/filepath.hpp"
 #include "utils/vector2/vector2.hpp"
 
 const std::string CONFIG_PATH = "config.json";

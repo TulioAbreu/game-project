@@ -4,7 +4,7 @@
 #include <exception>
 
 #include "utils/log/log.hpp"
-#include "filepath.hpp"
+#include "utils/filepath/filepath.hpp"
 
 SpriteManager::SpriteManager() {
     mLastSpriteId = 0;

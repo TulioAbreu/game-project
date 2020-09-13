@@ -19,12 +19,11 @@ add_executable (gameProject
     src/entity-container.cpp
     src/graphics/window/window.hpp
     src/keyboard.hpp
-    src/filepath.hpp
+    src/utils/filepath/filepath.hpp src/utils/filepath/filepath.cpp
     src/prefab.hpp
     src/utils/log/log.hpp
     src/entity.cpp
     src/script-library.hpp
-    src/filepath.cpp
     src/rectangle.hpp
     src/script-manager.cpp
     src/graphics/window/window.cpp

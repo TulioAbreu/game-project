@@ -1,5 +1,5 @@
 #include "scene.hpp"
-#include "filepath.hpp"
+#include "utils/filepath/filepath.hpp"
 
 static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
 
