@@ -4,6 +4,19 @@
 
 static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
 
+Graphics::Window::Window(int width, int height, std::string title):
+    mWindow (sf::VideoMode(width, height), title) 
+{
+    mWindow.setFramerateLimit(60);
+    mUnfocusLimitFrames = true;
+    if (!mWindow.isOpen()) {
+        LOG_ERROR("SFML/Window: Failed to open a window");
+    } else {
+        LOG("SFML/Window: Success");
+    }
+    startImgui();
+}
+
 Graphics::Window::~Window() {
     mWindow.close();
     ImGui::SFML::Shutdown();
@@ -18,15 +31,31 @@ void Graphics::Window::handleWindowEvents(Vector2f& contextSize) {
 
     while (mWindow.pollEvent(mEvent)) {
         ImGui::SFML::ProcessEvent(mEvent);
-
-        if (mEvent.type == sf::Event::Closed) {
-            close();
-        }
-        if (mEvent.type == sf::Event::Resized) {
-            sf::FloatRect visibleArea(0, 0, mEvent.size.width, mEvent.size.height);
-            contextSize = {(float)mEvent.size.width, (float)mEvent.size.height};
-            halfContextSize = contextSize*0.5f;
-            mWindow.setView(sf::View(visibleArea));
+        switch (mEvent.type) {
+            case sf::Event::Closed: {
+                close();
+            } break;
+            case sf::Event::Resized: {
+                sf::FloatRect visibleArea(0, 0, mEvent.size.width, mEvent.size.height);
+                contextSize = {(float)mEvent.size.width, (float)mEvent.size.height};
+                halfContextSize = contextSize*0.5f;
+                mWindow.setView(sf::View(visibleArea));
+            } break;
+            case sf::Event::GainedFocus: {
+                if (mUnfocusLimitFrames) {
+                    mWindow.setFramerateLimit(DEFAULT_FOCUS_FRAMERATE);
+                    LOG("Window/HandleWindowEvents: Gained window focus. FrameRate set to " << DEFAULT_FOCUS_FRAMERATE);
+                }
+            } break;
+            case sf::Event::LostFocus: {
+                if (mUnfocusLimitFrames) {
+                    mWindow.setFramerateLimit(DEFAULT_UNFOCUS_FRAMERATE);
+                    LOG("Window/HandleWindowEvents: Lost window focus. FrameRate set to " << DEFAULT_UNFOCUS_FRAMERATE);
+                }
+            }
+            default: {
+                // Do nothing.
+            }
         }
     }
 

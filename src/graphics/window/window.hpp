@@ -9,6 +9,9 @@
 #include "../../sprite-manager.hpp"
 
 namespace Graphics { 
+const int DEFAULT_FOCUS_FRAMERATE = 60;
+const int DEFAULT_UNFOCUS_FRAMERATE = 5;
+
 class Window {
     private:
     void startImgui();
@@ -16,23 +19,10 @@ class Window {
     public:
     sf::RenderWindow mWindow;
     sf::Event mEvent;
-
     sf::RectangleShape mRectangle;
+    bool mUnfocusLimitFrames;
 
-    public:
-    Window(int width, int height, std::string title):
-        mWindow (sf::VideoMode(width, height), title)
-    {
-        mWindow.setFramerateLimit(60);
-        if (!mWindow.isOpen()) {
-            LOG_ERROR("SFML/Window: Failed to open a window");
-        }
-        else {
-            LOG("SFML/Window: Success");
-        }
-        startImgui();
-    }
-
+    Window(int width, int height, std::string title);
     virtual ~Window();
     void handleWindowEvents(Vector2f& contextSize);
     void clear();
