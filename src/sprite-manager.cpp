@@ -3,7 +3,7 @@
 #include <fstream>
 #include <exception>
 
-#include "log.hpp"
+#include "utils/log/log.hpp"
 #include "filepath.hpp"
 
 SpriteManager::SpriteManager() {

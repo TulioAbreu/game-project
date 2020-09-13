@@ -1,6 +1,6 @@
 #include <vector>
 #include <fstream>
-#include "log.hpp"
+#include "utils/log/log.hpp"
 #include "script-manager.hpp"
 #include "keyboard.hpp"
 #include "graphics/window/window.hpp"

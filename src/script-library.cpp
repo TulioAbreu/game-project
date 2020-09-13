@@ -1,6 +1,6 @@
 #include <string>
 #include "script-library.hpp"
-#include "log.hpp"
+#include "utils/log/log.hpp"
 #include "keyboard.hpp"
 
 static Keyboard* gKeyboard = Keyboard::getInstance();

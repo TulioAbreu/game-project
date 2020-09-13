@@ -4,7 +4,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <map>
 #include <string>
-#include "log.hpp"
+#include "utils/log/log.hpp"
 #include "singleton.hpp"
 
 class Keyboard: public Singleton<Keyboard> {

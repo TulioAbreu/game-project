@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "../../rectangle.hpp"
-#include "../../log.hpp"
+#include "../../utils/log/log.hpp"
 #include "../../utils/vector2/vector2.hpp"
 #include "../../sprite-manager.hpp"
 

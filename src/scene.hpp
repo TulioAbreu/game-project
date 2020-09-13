@@ -9,7 +9,7 @@
 
 #include "entity-container.hpp"
 #include "entity.hpp"
-#include "log.hpp"
+#include "utils/log/log.hpp"
 #include "prefab.hpp"
 #include "json.hpp"
 #include "sprite-manager.hpp"

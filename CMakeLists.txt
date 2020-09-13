@@ -21,7 +21,7 @@ add_executable (gameProject
     src/keyboard.hpp
     src/filepath.hpp
     src/prefab.hpp
-    src/log.hpp
+    src/utils/log/log.hpp
     src/entity.cpp
     src/script-library.hpp
     src/filepath.cpp
