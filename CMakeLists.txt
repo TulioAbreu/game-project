@@ -17,7 +17,7 @@ add_executable (gameProject
     src/console.hpp
     src/main.cpp
     src/entity-container.cpp
-    src/window.hpp
+    src/graphics/window/window.hpp
     src/keyboard.hpp
     src/filepath.hpp
     src/prefab.hpp
@@ -27,7 +27,7 @@ add_executable (gameProject
     src/filepath.cpp
     src/rectangle.hpp
     src/script-manager.cpp
-    src/window.cpp
+    src/graphics/window/window.cpp
     src/vector2.hpp
     third-party/imgui_demo.cpp
     third-party/imgui.h

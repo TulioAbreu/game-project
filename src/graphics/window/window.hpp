@@ -3,11 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
-#include "../rectangle.hpp"
-#include "../log.hpp"
-#include <iostream>
-#include "../vector2.hpp"
-#include "../sprite-manager.hpp"
+#include "../../rectangle.hpp"
+#include "../../log.hpp"
+#include "../../vector2.hpp"
+#include "../../sprite-manager.hpp"
 
 namespace Graphics { 
 class Window {
