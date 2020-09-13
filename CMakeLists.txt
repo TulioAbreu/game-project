@@ -60,3 +60,4 @@ target_link_libraries(gameProject ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
 
 
 target_link_libraries(gameProject ${LUA_LIBRARIES})
+add_compile_definitions(DEBUG)
