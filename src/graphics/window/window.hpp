@@ -19,7 +19,6 @@ class Window {
     public:
     sf::RenderWindow mWindow;
     sf::Event mEvent;
-    sf::RectangleShape mRectangle;
     bool mUnfocusLimitFrames;
 
     Window(int width, int height, std::string title);
@@ -31,6 +30,7 @@ class Window {
     void drawRectangle(const Rectangle rect);
     void drawSprite(int spriteId, const Rectangle relativeRectangle);
     void close();
+    Vector2f getWindowSize() const;
 };};
 
 #endif

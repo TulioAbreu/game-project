@@ -21,7 +21,6 @@ class Game {
     SpriteManager* mSpriteManager;
     Console* mConsole;
     Graphics::Window* mWindow;
-
     std::string mGameWindowTitle;
     Vector2f mGameWindowSize;
     bool mIsRunning;
@@ -55,7 +54,6 @@ public:
         mGameWindowSize = mConfig->getWindowSize();
         mWindow = new Graphics::Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
 
-        Keyboard keyboard;
         const FilePath DEFAULT_SCENE_FILEPATH = Path("data/scenes/scene_01.json");
         Scene scene (DEFAULT_SCENE_FILEPATH.value, true);
 
@@ -67,8 +65,6 @@ public:
             update();
             render();
         }
-
-        ImGui::SFML::Shutdown();
     }
 
 private:
@@ -83,14 +79,18 @@ private:
     }
 
     void render() {
+        if (!mWindow->isOpen()) {
+            return;
+        }
+
         mConsole->render();
         mWindow->clear();
-
+        const Vector2f halfScreen = mGameWindowSize * .5f;
         for (size_t i = 0; i < mEntities->size(); ++i) {
             Entity entity = mEntities->at(i);
             Rectangle currentEntityRect = entity.getHitbox();
             if (mCamera->isRectangleVisible(currentEntityRect, mGameWindowSize)) {
-                mWindow->drawSprite(entity.getSpriteId(), mCamera->getRelativeRectangle(currentEntityRect, mGameWindowSize*0.5f));
+                mWindow->drawSprite(entity.getSpriteId(), mCamera->getRelativeRectangle(currentEntityRect, halfScreen));
             }
         }
         mWindow->display();
