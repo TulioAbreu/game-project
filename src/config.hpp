@@ -5,25 +5,66 @@
 #include "singleton.hpp"
 #include "json.hpp"
 #include "filepath.hpp"
+#include "utils/vector2/vector2.hpp"
+
+const std::string CONFIG_PATH = "config.json";
+const std::string DEFAULT_WINDOW_TITLE = "Game Project";
+const Vector2f DEFAULT_WINDOW_SIZE = {1200, 768};
 
 class Config: public Singleton<Config> {
 private:
-    json mConfig;
+    std::string mWindowTitle;
+    Vector2f mWindowSize;
+
+    std::string readWindowTitle(json& config) {
+        std::string windowTitle;
+
+        try {
+            windowTitle = config["window"]["title"];
+        } catch (...) {
+            windowTitle = DEFAULT_WINDOW_TITLE;
+        }
+
+        return windowTitle;
+    }
+
+    Vector2f readWindowSize(json& config) {
+        Vector2f windowSize;
+
+        try {
+            windowSize = {
+                config["window"]["width"],
+                config["window"]["height"]
+            };
+        } catch (...) {
+            windowSize = DEFAULT_WINDOW_SIZE;
+        }
+
+        return windowSize;
+    }
+
+    json readConfigFile(FilePath filepath) {
+        std::ifstream configFile (filepath.value);
+        json config;
+        configFile >> config;
+        configFile.close();
+        return config;
+    }
 
 public:
     Config() {
-        const FilePath DEFAULT_CONFIG_FILEPATH = Path("config.json");
-        std::ifstream configFile (DEFAULT_CONFIG_FILEPATH.value);
-        configFile >> mConfig;
-        configFile.close();
+        json config = readConfigFile(Path(CONFIG_PATH));
+
+        mWindowTitle = readWindowTitle(config);
+        mWindowSize = readWindowSize(config);
     }
 
-    json operator[](const char* key) {
-        return mConfig[key];
+    const std::string getWindowTitle() const {
+        return mWindowTitle;
     }
 
-    json operator[](const std::string key) {
-        return mConfig[key];
+    const Vector2f getWindowSize() const {
+        return mWindowSize;
     }
 };
 

@@ -51,11 +51,8 @@ public:
 
     void start() {
         setIsRunning(true);
-        mGameWindowSize = {
-            (*mConfig)["window"]["width"],
-            (*mConfig)["window"]["height"]
-        };
-        mGameWindowTitle = (*mConfig)["window"]["title"];
+        mGameWindowTitle = mConfig->getWindowTitle();
+        mGameWindowSize = mConfig->getWindowSize();
         mWindow = new Graphics::Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
 
         Keyboard keyboard;
