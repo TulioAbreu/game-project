@@ -58,7 +58,7 @@ public:
         }
         ImGui::Separator();
         ImGui::BeginChild("scrolling");
-        ImGui::Text(mCommandLog.c_str());
+        ImGui::Text("%s", mCommandLog.c_str());
         ImGui::EndChild();
         ImGui::End();
     }
