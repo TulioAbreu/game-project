@@ -54,8 +54,7 @@ public:
         mGameWindowSize = mConfig->getWindowSize();
         mWindow = new Graphics::Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
 
-        const FilePath DEFAULT_SCENE_FILEPATH = Path("data/scenes/scene_01.json");
-        Scene scene (DEFAULT_SCENE_FILEPATH.value, true);
+        Scene scene (mConfig->getDefaultScene().value, true);
 
         mCamera->setGlobalPosition(mGameWindowSize*.5f);
         mCamera->fixToEntity(mEntities->getEntityByName("player"));

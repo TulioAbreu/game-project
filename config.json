@@ -2,5 +2,8 @@
     "window": {
         "width": 640,
         "height": 480
+    },
+    "scenes": {
+        "defaultScene": "data/scenes/scene_01.json"
     }
 }
