@@ -1,6 +1,6 @@
 #include "window.hpp"
-#include "../third-party/imgui.h"
-#include "../third-party/imgui-SFML.h"
+#include "../../third-party/imgui.h"
+#include "../../third-party/imgui-SFML.h"
 #include <SFML/Graphics.hpp>
 
 static SpriteManager& gSpriteManager = *SpriteManager::getInstance();

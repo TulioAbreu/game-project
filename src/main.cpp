@@ -3,7 +3,7 @@
 #include "log.hpp"
 #include "script-manager.hpp"
 #include "keyboard.hpp"
-#include "window.hpp"
+#include "graphics/window.hpp"
 #include "camera.hpp"
 #include "config.hpp"
 #include "entity.hpp"
