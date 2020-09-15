@@ -55,8 +55,8 @@ public:
         mWindow = new Graphics::Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
 
         Scene scene (mConfig->getDefaultScene(), true);
-
         mCamera->setGlobalPosition(mGameWindowSize*.5f);
+        // TODO: Camera should be inside Scene (class&file), and there it should be attached to some script or entity
         mCamera->fixToEntity(mEntities->getEntityByName("player"));
 
         while (getIsRunning() && mWindow->isOpen()) {
@@ -87,7 +87,7 @@ private:
         for (size_t i = 0; i < mEntities->size(); ++i) {
             Entity entity = mEntities->at(i);
             Rectangle currentEntityRect = entity.getHitbox();
-            // TODO: (currentRect, visionRect) doesnt work
+            // FIXME: (currentRect, visionRect) doesnt work
             if (intersects(mCamera->getVisionRectangle(mWindow->getWindowSize()), currentEntityRect)) {
                 mWindow->drawSprite(entity.getSpriteId(), mCamera->getRelativeRectangle(currentEntityRect, halfScreen));
             }
