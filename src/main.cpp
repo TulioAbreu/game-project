@@ -82,16 +82,16 @@ private:
             return;
         }
 
-        mConsole->render();
         mWindow->clear();
         const Vector2f halfScreen = mGameWindowSize * .5f;
         for (size_t i = 0; i < mEntities->size(); ++i) {
             Entity entity = mEntities->at(i);
             Rectangle currentEntityRect = entity.getHitbox();
-            if (mCamera->isRectangleVisible(currentEntityRect, mGameWindowSize)) {
+            if (mCamera->isRectangleVisible(currentEntityRect, mWindow->getWindowSize())) {
                 mWindow->drawSprite(entity.getSpriteId(), mCamera->getRelativeRectangle(currentEntityRect, halfScreen));
             }
         }
+        mConsole->render();
         mWindow->display();
     }
 };

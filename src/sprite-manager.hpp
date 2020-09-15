@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <string>
 #include <map>
-#include "rectangle.hpp"
+#include "utils/rectangle/rectangle.hpp"
 #include "utils/vector2/vector2.hpp"
 #include "json.hpp"
 #include "singleton.hpp"

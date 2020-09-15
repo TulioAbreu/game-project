@@ -10,7 +10,6 @@ class Container: public Singleton<Container> {
 private:
     // TODO: implement a more sophisticated data structure 
     std::vector<Entity> entities;
-
 public:
     Container() = default;
     size_t size();

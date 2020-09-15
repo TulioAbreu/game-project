@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
-#include "../../rectangle.hpp"
+#include "../../utils/rectangle/rectangle.hpp"
 #include "../../utils/log/log.hpp"
 #include "../../utils/vector2/vector2.hpp"
 #include "../../sprite-manager.hpp"

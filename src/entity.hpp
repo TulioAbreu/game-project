@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "rectangle.hpp"
+#include "utils/rectangle/rectangle.hpp"
 #include "script-manager.hpp"
 
 class Entity {

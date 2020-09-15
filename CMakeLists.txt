@@ -21,9 +21,9 @@ add_executable (gameProject
     src/utils/filepath/filepath.hpp src/utils/filepath/filepath.cpp
     src/entities/prefab/prefab.hpp src/entities/prefab/prefab.cpp
     src/utils/log/log.hpp
+    src/utils/rectangle/rectangle.hpp src/utils/rectangle/rectangle.cpp
     src/entity.cpp
     src/script-library.hpp
-    src/rectangle.hpp
     src/script-manager.cpp
     src/graphics/window/window.cpp
     src/utils/vector2/vector2.hpp
