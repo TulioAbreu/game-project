@@ -25,8 +25,8 @@ class Window {
     virtual ~Window();
     void handleWindowEvents(Vector2f& contextSize);
     void clear();
-    void display(); 
-    bool isOpen(); 
+    void display();
+    bool isOpen();
     void drawRectangle(const Rectangle rect);
     void drawSprite(int spriteId, const Rectangle relativeRectangle);
     void close();
