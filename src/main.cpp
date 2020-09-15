@@ -87,7 +87,8 @@ private:
         for (size_t i = 0; i < mEntities->size(); ++i) {
             Entity entity = mEntities->at(i);
             Rectangle currentEntityRect = entity.getHitbox();
-            if (mCamera->isRectangleVisible(currentEntityRect, mWindow->getWindowSize())) {
+            // TODO: (currentRect, visionRect) doesnt work
+            if (intersects(mCamera->getVisionRectangle(mWindow->getWindowSize()), currentEntityRect)) {
                 mWindow->drawSprite(entity.getSpriteId(), mCamera->getRelativeRectangle(currentEntityRect, halfScreen));
             }
         }
