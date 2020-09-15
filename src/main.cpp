@@ -7,7 +7,7 @@
 #include "graphics/camera/camera.hpp"
 #include "config.hpp"
 #include "entity.hpp"
-#include "scene.hpp"
+#include "scene/scene.hpp"
 #include "entities/container/container.hpp"
 #include "sprite-manager.hpp"
 #include "console.hpp"

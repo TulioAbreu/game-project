@@ -1,8 +1,6 @@
 #include "scene.hpp"
-#include "utils/filepath/filepath.hpp"
 
 static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
-
 
 Scene::Scene(std::string filePath, bool fullLoad) {
     mRefEntities = Entities::Container::getInstance();
