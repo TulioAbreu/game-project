@@ -1,9 +1,11 @@
 #include "reader.hpp"
 
-SceneFile readSceneFromFile(FilePath filePath) {
+bool readSceneFromFile(FilePath filePath, SceneFile& sceneFile) {
     json sceneJson;
     bool success = JSON::load(filePath.value, &sceneJson);
-    SceneFile sceneFile;
+    if (!success) {
+        return false;
+    }
 
     for (auto fileEntry : sceneJson["entries"]) {
         Entry newEntry;
@@ -20,5 +22,5 @@ SceneFile readSceneFromFile(FilePath filePath) {
         sceneFile.entries.push_back(newEntry);
     }
 
-    return sceneFile;
+    return true;
 }

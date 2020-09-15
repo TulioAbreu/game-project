@@ -31,6 +31,11 @@ void Entity::setHitboxSize(float width, float height) {
     mHitbox.height = height;
 }
 
+void Entity::setHitboxSize(Vector2f size) {
+    mHitbox.width = size.x;
+    mHitbox.height = size.y;
+}
+
 void Entity::setHitboxPosition(float x, float y) {
     mHitbox.positionX = x;
     mHitbox.positionY = y;

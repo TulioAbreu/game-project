@@ -18,6 +18,6 @@ struct SceneFile {
     std::vector<Entry> entries;
 };
 
-SceneFile readSceneFromFile(FilePath filePath);
+bool readSceneFromFile(FilePath filePath, SceneFile& sceneFile);
 
 #endif

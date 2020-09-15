@@ -1,8 +1,9 @@
 #include "scene.hpp"
+#include "reader/reader.hpp"
 
 static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
 
-Scene::Scene(std::string filePath, bool fullLoad) {
+Scene::Scene(FilePath filePath, bool fullLoad) {
     mRefEntities = Entities::Container::getInstance();
     mFilePath = filePath;
     mFullLoad = fullLoad;
@@ -49,38 +50,26 @@ int Scene::getScriptIndexByName(std::string scriptName) {
 }
 
 void Scene::loadScene() {
-    json scene;
-    bool loadedWithSuccess = JSON::load(mFilePath, &scene);
+    SceneFile sceneFile;
+    bool loadedWithSuccess = readSceneFromFile(mFilePath, sceneFile);
     if (!loadedWithSuccess) {
-        LOG_ERROR("Scene/loadScene: Could not open scene file (" << mFilePath << ")");
+        LOG_ERROR("Scene/loadScene: Could not open scene file (" << mFilePath.value << ")");
         return;
     }
 
-    json sceneEntries = scene["entries"];
-    for (auto sceneEntry : sceneEntries) {
-        const size_t entryPrefabId = sceneEntry["prefabId"];
-        Entities::Prefab entryPrefab (mPrefabsMap[entryPrefabId]);
-        
+    for (auto sceneEntry : sceneFile.entries) {
+        const size_t entryPrefabId = sceneEntry.prefabId;
         Entity entity;
-        if (sceneEntry["name"] != "") {
-            entity.setName(sceneEntry["name"]);
-        } else {
-            entity.setName(entryPrefab.getName());
-        }
-
-        Vector2f size = entryPrefab.getDimensions();
-        entity.setHitboxSize(size.x, size.y);
-        entity.setHitboxPosition(sceneEntry["position"]["x"], sceneEntry["position"]["y"]);
+        Entities::Prefab entryPrefab (mPrefabsMap[entryPrefabId]);
+        entity.setName((sceneEntry.name != "") ? sceneEntry.name : entryPrefab.getName());
+        entity.setHitboxSize(entryPrefab.getDimensions());
+        entity.setHitboxPosition(sceneEntry.position.x, sceneEntry.position.y);
 
         if (mFullLoad) {
-            std::set<std::string> scriptNamesSet;
-            for (auto scriptName : entryPrefab.getScriptNames()) {
-                scriptNamesSet.insert(scriptName);
-            }
-            for (auto scriptNameJson : sceneEntry["scripts"]) {
-                const std::string scriptName = scriptNameJson;
-                scriptNamesSet.insert(scriptName);
-            }
+            std::set<std::string> scriptNamesSet (sceneEntry.scripts.begin(), sceneEntry.scripts.end());
+
+            const auto scriptsFromEntityPrefab = entryPrefab.getScriptNames();
+            scriptNamesSet.insert(scriptsFromEntityPrefab.begin(), scriptsFromEntityPrefab.end());
 
             for (auto scriptName : scriptNamesSet) {
                 entity.addScript(mScripts[getScriptIndexByName(scriptName)]);

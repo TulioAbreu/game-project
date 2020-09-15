@@ -21,7 +21,7 @@ class Scene {
     std::map<std::string, size_t> mScriptsIndexMap;
     std::map<size_t, Entities::Prefab> mPrefabsMap;
     Entities::Container* mRefEntities;
-    std::string mFilePath;
+    FilePath mFilePath;
     bool mFullLoad;
 
     void loadScripts();
@@ -30,7 +30,7 @@ class Scene {
     void loadPrefabs();
 
 public:
-    Scene(std::string filePath, bool fullLoad);
+    Scene(FilePath filePath, bool fullLoad);
     void load();
     void update();
 };

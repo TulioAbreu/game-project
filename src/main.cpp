@@ -54,7 +54,7 @@ public:
         mGameWindowSize = mConfig->getWindowSize();
         mWindow = new Graphics::Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
 
-        Scene scene (mConfig->getDefaultScene().value, true);
+        Scene scene (mConfig->getDefaultScene(), true);
 
         mCamera->setGlobalPosition(mGameWindowSize*.5f);
         mCamera->fixToEntity(mEntities->getEntityByName("player"));
