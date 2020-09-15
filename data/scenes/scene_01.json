@@ -20,6 +20,16 @@
             },
             "scripts": [
             ]
+        },
+        {
+            "name": "",
+            "prefabId": 2,
+            "position": {
+                "x": 10,
+                "y": 10
+            },
+            "scripts": [
+            ]
         }
     ]
 }

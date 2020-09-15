@@ -1,0 +1,8 @@
+{
+    "name": "Blue Block",
+    "spriteId": 2,
+    "dimensions": {
+        "x": 32,
+        "y": 32
+    }
+}

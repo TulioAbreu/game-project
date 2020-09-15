@@ -1,4 +1,5 @@
 [
     {"id": 0, "path": "prefabs/testBlock.json"},
-    {"id": 1, "path": "prefabs/nullBlock.json"}
+    {"id": 1, "path": "prefabs/nullBlock.json"},
+    {"id": 2, "path": "prefabs/blueBlock.json"}
 ]
