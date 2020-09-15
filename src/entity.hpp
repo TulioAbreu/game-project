@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 
+#include "utils/vector2/vector2.hpp"
 #include "utils/rectangle/rectangle.hpp"
 #include "script-manager.hpp"
 
@@ -31,6 +32,7 @@ class Entity {
     void setName(std::string name);
     std::string getName();
 
+    void setHitboxSize(Vector2f size);
     void setHitboxSize(float width, float height);
     void setHitboxPosition(float x, float y);
 

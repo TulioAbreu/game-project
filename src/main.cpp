@@ -7,7 +7,7 @@
 #include "graphics/camera/camera.hpp"
 #include "config.hpp"
 #include "entity.hpp"
-#include "scene.hpp"
+#include "scene/scene.hpp"
 #include "entities/container/container.hpp"
 #include "sprite-manager.hpp"
 #include "console.hpp"
@@ -54,7 +54,7 @@ public:
         mGameWindowSize = mConfig->getWindowSize();
         mWindow = new Graphics::Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
 
-        Scene scene (mConfig->getDefaultScene().value, true);
+        Scene scene (mConfig->getDefaultScene(), true);
 
         mCamera->setGlobalPosition(mGameWindowSize*.5f);
         mCamera->fixToEntity(mEntities->getEntityByName("player"));

@@ -7,12 +7,13 @@
 #include <string>
 #include <map>
 
-#include "entities/container/container.hpp"
-#include "entity.hpp"
-#include "utils/log/log.hpp"
-#include "entities/prefab/prefab.hpp"
-#include "json.hpp"
-#include "sprite-manager.hpp"
+#include "../json.hpp"
+#include "../entity.hpp"
+#include "../entities/container/container.hpp"
+#include "../entities/prefab/prefab.hpp"
+#include "../sprite-manager.hpp"
+#include "../utils/log/log.hpp"
+#include "../utils/filepath/filepath.hpp"
 
 class Scene {
     private:
@@ -20,7 +21,7 @@ class Scene {
     std::map<std::string, size_t> mScriptsIndexMap;
     std::map<size_t, Entities::Prefab> mPrefabsMap;
     Entities::Container* mRefEntities;
-    std::string mFilePath;
+    FilePath mFilePath;
     bool mFullLoad;
 
     void loadScripts();
@@ -29,7 +30,7 @@ class Scene {
     void loadPrefabs();
 
 public:
-    Scene(std::string filePath, bool fullLoad);
+    Scene(FilePath filePath, bool fullLoad);
     void load();
     void update();
 };
