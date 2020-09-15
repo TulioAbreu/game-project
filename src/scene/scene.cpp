@@ -9,7 +9,7 @@ Scene::Scene(FilePath filePath, bool fullLoad) {
     mFullLoad = fullLoad;
 
     if (fullLoad) {
-        // TODO: load scene file first, get dependencies and load only what is necessary? After that, load by demand?
+        // TODO: load scene file first, get dependencies and load just what is necessary? After that, load by demand?
         loadScripts();
         loadPrefabs();
         loadScene();
@@ -37,7 +37,7 @@ void Scene::loadScripts() {
         LOG_ERROR("Scene/loadScripts: Could not open behaviours/behaviours.json");
         return;
     }
-
+    // TODO: This should choose which scripts are going to be loaded. Read scripts somewhere else
     for (auto script : scriptsJson) {
         const std::string filePath  =  script["path"];
         mScriptsIndexMap[script["name"]] = mScripts.size();
@@ -59,6 +59,8 @@ void Scene::loadScene() {
 
     for (auto sceneEntry : sceneFile.entries) {
         const size_t entryPrefabId = sceneEntry.prefabId;
+
+        // TODO: Is is possible to golf this code with a constructor?
         Entity entity;
         Entities::Prefab entryPrefab (mPrefabsMap[entryPrefabId]);
         entity.setName((sceneEntry.name != "") ? sceneEntry.name : entryPrefab.getName());
@@ -85,12 +87,13 @@ void Scene::loadScene() {
 
 void Scene::loadPrefabs() {
     json entitiesIndexJson;
+    // TODO: Its OK to scene choose which prefab to read, but why is entities.json loaded here?
     bool loadedWithSuccess = JSON::load(Path("data/entities/entities.json").value, &entitiesIndexJson);
     if (!loadedWithSuccess) {
         LOG_ERROR("Scene/loadPrefabs: Could not open entities.json");
         return;
     }
-
+    // TODO: This part of code should only choose which prefabs are going to be chosen. Start it somewhere else
     for (auto entity : entitiesIndexJson) {
         const int prefabId = entity["id"];
         const std::string filePath = entity["path"];
