@@ -1,6 +1,6 @@
 #include "filepath.hpp"
 
-const std::string FILEPATH_ROOT ("../");
+#define FILEPATH_ROOT std::string("../")
 
 FilePath Path(std::string relativeFilePath) {
     return FilePath(relativeFilePath);
