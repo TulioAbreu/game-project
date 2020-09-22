@@ -63,7 +63,10 @@ void Scene::loadScene() {
         // TODO: Is is possible to golf this code with a constructor?
         Entity entity;
         Entities::Prefab entryPrefab (mPrefabsMap[entryPrefabId]);
-        entity.setName((sceneEntry.name != "") ? sceneEntry.name : entryPrefab.getName());
+        entity.setName(
+            (sceneEntry.name != "")
+            ? sceneEntry.name
+            : entryPrefab.getName());
         entity.setHitboxSize(entryPrefab.getDimensions());
         entity.setHitboxPosition(sceneEntry.position.x, sceneEntry.position.y);
 
@@ -74,7 +77,8 @@ void Scene::loadScene() {
             scriptNamesSet.insert(scriptsFromEntityPrefab.begin(), scriptsFromEntityPrefab.end());
 
             for (auto scriptName : scriptNamesSet) {
-                entity.addScript(mScripts[getScriptIndexByName(scriptName)]);
+                const int index = getScriptIndexByName(scriptName);
+                entity.addScript(mScripts[index]);
             }
         }
 
@@ -97,6 +101,6 @@ void Scene::loadPrefabs() {
     for (auto entity : entitiesIndexJson) {
         const int prefabId = entity["id"];
         const std::string filePath = entity["path"];
-        mPrefabsMap[prefabId] = Entities::Prefab(Path("data/entities/" + filePath));
+        mPrefabsMap[prefabId] = Entities::Prefab(FilePath("data/entities/" + filePath));
     }
 }
