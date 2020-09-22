@@ -6,6 +6,7 @@
 struct FilePath {
     std::string value;
 
+    FilePath() = default;
     FilePath(std::string relativeFilepath);
 };
 
