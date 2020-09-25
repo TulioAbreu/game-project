@@ -1,25 +1,18 @@
-#include "sprite-manager.hpp"
+#include "manager.hpp"
 
-#include <fstream>
-#include <exception>
-
-#include "sprites/reader/reader.hpp"
-#include "utils/log/log.hpp"
-#include "utils/filepath/filepath.hpp"
-
-SpriteManager::SpriteManager() {
+Sprites::Manager::Manager() {
     mLastSpriteId = 0;
     loadTextures();
     loadTemplateSprites();
 }
 
-sf::Texture SpriteManager::loadTexture(std::string filepath) {
+sf::Texture Sprites::Manager::loadTexture(std::string filepath) {
     sf::Texture texture;
     texture.loadFromFile(filepath);
     return texture;
 }
 
-void SpriteManager::loadTextures() {
+void Sprites::Manager::loadTextures() {
     const std::string TEXTURE_SUMMARY_PATH = "data/textures/textures.json";
 
     std::vector<Sprites::TextureSummaryEntry> textureSummary;
@@ -34,7 +27,7 @@ void SpriteManager::loadTextures() {
     }
 }
 
-bool SpriteManager::loadTemplateSprites() {
+bool Sprites::Manager::loadTemplateSprites() {
     LOG("Loading template sprites...");
     const std::string SPRITE_SUMMARY_PATH = "data/textures/sprites.json";
 
@@ -53,8 +46,8 @@ bool SpriteManager::loadTemplateSprites() {
     return true;
 }
 
-size_t SpriteManager::createSprite(size_t spriteTemplateId) {
-    SpriteTemplate* spriteTemplatePtr = nullptr;
+size_t Sprites::Manager::createSprite(size_t spriteTemplateId) {
+    Sprites::Template* spriteTemplatePtr = nullptr;
     try {
         spriteTemplatePtr = &mSpriteTemplates.at(spriteTemplateId);
     }
@@ -80,7 +73,7 @@ size_t SpriteManager::createSprite(size_t spriteTemplateId) {
     return spriteId;
 }
 
-bool SpriteManager::setSpritePosition(size_t spriteId, Vector2f position) {
+bool Sprites::Manager::setSpritePosition(size_t spriteId, Vector2f position) {
     try {
         mSprites.at(spriteId).setPosition(position.x, position.y);
     } catch (...) {
@@ -90,7 +83,7 @@ bool SpriteManager::setSpritePosition(size_t spriteId, Vector2f position) {
     return true;
 }
 
-sf::Sprite SpriteManager::getSpriteById(size_t spriteId) {
+sf::Sprite Sprites::Manager::getSpriteById(size_t spriteId) {
     try {
         const sf::Sprite spriteAtId = mSprites.at(spriteId);
         return spriteAtId;

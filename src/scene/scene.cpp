@@ -1,7 +1,7 @@
 #include "scene.hpp"
 #include "reader/reader.hpp"
 
-static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
+static Sprites::Manager& gSpriteManager = *Sprites::Manager::getInstance();
 
 Scene::Scene(FilePath filePath, bool fullLoad) {
     mRefEntities = Entities::Container::getInstance();

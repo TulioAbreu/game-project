@@ -9,7 +9,6 @@
 #include "entity.hpp"
 #include "scene/scene.hpp"
 #include "entities/container/container.hpp"
-#include "sprite-manager.hpp"
 #include "console.hpp"
 #include "../third-party/json.hpp"
 
@@ -18,7 +17,6 @@ class Game {
     Entities::Container* mEntities;
     Keyboard* mKeyboard;
     Graphics::Camera* mCamera;
-    SpriteManager* mSpriteManager;
     Console* mConsole;
     Graphics::Window* mWindow;
     std::string mGameWindowTitle;
@@ -31,7 +29,6 @@ public:
         mEntities = Entities::Container::getInstance();
         mKeyboard = Keyboard::getInstance();
         mCamera = Graphics::Camera::getInstance();
-        mSpriteManager = SpriteManager::getInstance();
         mConsole = Console::getInstance();
         mWindow = nullptr;
     }

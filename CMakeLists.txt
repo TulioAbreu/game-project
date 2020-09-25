@@ -1,14 +1,12 @@
 cmake_minimum_required (VERSION 3.7)
 project (gameProject)
 add_executable (gameProject 
-    src/sprite-manager.hpp
     src/scene/scene.hpp src/scene/scene.cpp
     src/scene/reader/reader.hpp src/scene/reader/reader.cpp
     src/graphics/camera/camera.hpp src/graphics/camera/camera.cpp
+    src/sprites/manager.hpp src/sprites/manager.cpp
     src/sprites/reader/reader.hpp src/sprites/reader/reader.cpp
-    src/json.cpp
-    src/sprite-manager.cpp
-    src/json.hpp
+    src/json.hpp src/json.cpp
     src/config.hpp
     src/script-manager.hpp
     src/entities/container/container.hpp src/entities/container/container.cpp
