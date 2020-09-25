@@ -5,7 +5,6 @@
 #include "../../utils/rectangle/rectangle.hpp"
 #include "../../entity.hpp"
 #include "../../singleton.hpp"
-#include "../../sprite-manager.hpp"
 
 namespace Graphics {
 class Camera: public Singleton<Camera> {

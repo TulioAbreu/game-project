@@ -11,7 +11,7 @@
 #include "../entity.hpp"
 #include "../entities/container/container.hpp"
 #include "../entities/prefab/prefab.hpp"
-#include "../sprite-manager.hpp"
+#include "../sprites/manager.hpp"
 #include "../utils/log/log.hpp"
 #include "../utils/filepath/filepath.hpp"
 

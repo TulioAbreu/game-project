@@ -4,11 +4,11 @@
 #include "script-manager.hpp"
 #include "entities/container/container.hpp"
 
-/*
-    IMPORTANT:
-    On exposing new scripts, dont forget to register the new function
-    at scriptManager.hpp
-*/
+/**
+ * IMPORTANT:
+ * On exposing new scripts, dont forget to register the new function
+ * at scriptManager.hpp
+ */
 
 // Logging
 int lua_log(lua_State* mLuaState);

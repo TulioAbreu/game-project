@@ -6,7 +6,7 @@
 #include "../../utils/rectangle/rectangle.hpp"
 #include "../../utils/log/log.hpp"
 #include "../../utils/vector2/vector2.hpp"
-#include "../../sprite-manager.hpp"
+#include "../../sprites/manager.hpp"
 
 namespace Graphics { 
 const int DEFAULT_FOCUS_FRAMERATE = 60;

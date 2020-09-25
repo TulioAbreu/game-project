@@ -1,25 +1,21 @@
 #include "scene.hpp"
 #include "reader/reader.hpp"
 
-static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
+static Sprites::Manager& gSpriteManager = *Sprites::Manager::getInstance();
 
 Scene::Scene(FilePath filePath, bool fullLoad) {
     mRefEntities = Entities::Container::getInstance();
     mFilePath = filePath;
     mFullLoad = fullLoad;
-
     if (fullLoad) {
-        // TODO: load scene file first, get dependencies and load just what is necessary? After that, load by demand?
         loadScripts();
-        loadPrefabs();
-        loadScene();
-
+    }
+    loadPrefabs();
+    loadScene();
+    if (fullLoad) {
         for (size_t i = 0; i < mRefEntities->size(); ++i) {
             mRefEntities->at(i).runStartScripts();
         }
-    } else {
-        loadPrefabs();
-        loadScene();
     }
 }
 
@@ -30,8 +26,10 @@ void Scene::update() {
 }
 
 void Scene::loadScripts() {
+    const std::string SCRIPT_SUMMARY_PATH = "data/behaviours/behaviours.json";
+
     json scriptsJson;
-    const FilePath DEFAULT_BEHAVIOURS_JSON_PATH = Path("data/behaviours/behaviours.json");
+    const FilePath DEFAULT_BEHAVIOURS_JSON_PATH = Path(SCRIPT_SUMMARY_PATH);
     bool loadedWithSuccess = JSON::load(DEFAULT_BEHAVIOURS_JSON_PATH.value, &scriptsJson);
     if (!loadedWithSuccess) {
         LOG_ERROR("Scene/loadScripts: Could not open behaviours/behaviours.json");
@@ -39,9 +37,11 @@ void Scene::loadScripts() {
     }
     // TODO: This should choose which scripts are going to be loaded. Read scripts somewhere else
     for (auto script : scriptsJson) {
-        const std::string filePath  =  script["path"];
-        mScriptsIndexMap[script["name"]] = mScripts.size();
-        mScripts.push_back(new Script(Path("data/behaviours/").value + filePath, script["name"]));
+        const std::string behaviourPath = "data/behaviours/" + std::string(script["path"]);
+        const std::string behaviourName = script["name"];
+
+        mScriptsIndexMap[behaviourName] = mScripts.size();
+        mScripts.push_back(new Script(Path(behaviourPath).value, behaviourName));
     }
 }
 

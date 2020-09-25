@@ -2,7 +2,7 @@
 #include "../../../third-party/imgui.h"
 #include "../../../third-party/imgui-SFML.h"
 
-static SpriteManager& gSpriteManager = *SpriteManager::getInstance();
+static Sprites::Manager& gSpriteManager = *Sprites::Manager::getInstance();
 
 Graphics::Window::Window(int width, int height, std::string title):
     mWindow (sf::VideoMode(width, height), title) 
