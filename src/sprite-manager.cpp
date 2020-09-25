@@ -3,6 +3,7 @@
 #include <fstream>
 #include <exception>
 
+#include "sprites/reader/reader.hpp"
 #include "utils/log/log.hpp"
 #include "utils/filepath/filepath.hpp"
 
@@ -19,23 +20,15 @@ sf::Texture SpriteManager::loadTexture(std::string filepath) {
 }
 
 void SpriteManager::loadTextures() {
-    LOG("Loading textures...");
-    // TODO: This piece of code is repeating itself on the entire codebase. Maybe create a function for this?
-    const FilePath path = Path("data/textures/textures.json");
-    std::fstream texturesIndexFile (path.value);
-    if (!texturesIndexFile.is_open()) {
-        LOG_ERROR("SpriteManager/loadTextures: Could not open textures.json");
-        return;
-    }
+    std::vector<Sprites::TextureSummaryEntry> textureSummary;
+    const bool result = Sprites::readTextureSummary(
+        Path("data/textures/textures.json"),
+        textureSummary
+    );
+    if (!result) return;
 
-    json texturesIndexJson;
-    texturesIndexFile >> texturesIndexJson;
-
-    const FilePath texturePathPrefix = Path("data/textures/");
-    for (auto textureIndex : texturesIndexJson) {
-        const size_t textureId = textureIndex["id"];
-        const std::string texturePath = textureIndex["path"];
-        mTexturesMap[textureId] = loadTexture(texturePathPrefix.value + texturePath);
+    for (auto texture : textureSummary) {
+        mTexturesMap[texture.textureId] = loadTexture(texture.filePath.value);
     }
 }
 

@@ -5,6 +5,7 @@ add_executable (gameProject
     src/scene/scene.hpp src/scene/scene.cpp
     src/scene/reader/reader.hpp src/scene/reader/reader.cpp
     src/graphics/camera/camera.hpp src/graphics/camera/camera.cpp
+    src/sprites/reader/reader.hpp src/sprites/reader/reader.cpp
     src/json.cpp
     src/sprite-manager.cpp
     src/json.hpp
