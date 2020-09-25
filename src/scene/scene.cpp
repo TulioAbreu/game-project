@@ -30,8 +30,10 @@ void Scene::update() {
 }
 
 void Scene::loadScripts() {
+    const std::string SCRIPT_SUMMARY_PATH = "data/behaviours/behaviours.json";
+
     json scriptsJson;
-    const FilePath DEFAULT_BEHAVIOURS_JSON_PATH = Path("data/behaviours/behaviours.json");
+    const FilePath DEFAULT_BEHAVIOURS_JSON_PATH = Path(SCRIPT_SUMMARY_PATH);
     bool loadedWithSuccess = JSON::load(DEFAULT_BEHAVIOURS_JSON_PATH.value, &scriptsJson);
     if (!loadedWithSuccess) {
         LOG_ERROR("Scene/loadScripts: Could not open behaviours/behaviours.json");
@@ -39,9 +41,11 @@ void Scene::loadScripts() {
     }
     // TODO: This should choose which scripts are going to be loaded. Read scripts somewhere else
     for (auto script : scriptsJson) {
-        const std::string filePath  =  script["path"];
-        mScriptsIndexMap[script["name"]] = mScripts.size();
-        mScripts.push_back(new Script(Path("data/behaviours/").value + filePath, script["name"]));
+        const std::string behaviourPath = "data/behaviours/" + std::string(script["path"]);
+        const std::string behaviourName = script["name"];
+
+        mScriptsIndexMap[behaviourName] = mScripts.size();
+        mScripts.push_back(new Script(Path(behaviourPath).value, behaviourName));
     }
 }
 

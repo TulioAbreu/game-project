@@ -20,9 +20,11 @@ sf::Texture SpriteManager::loadTexture(std::string filepath) {
 }
 
 void SpriteManager::loadTextures() {
+    const std::string TEXTURE_SUMMARY_PATH = "data/textures/textures.json";
+
     std::vector<Sprites::TextureSummaryEntry> textureSummary;
     const bool result = Sprites::readTextureSummary(
-        Path("data/textures/textures.json"),
+        Path(TEXTURE_SUMMARY_PATH),
         textureSummary
     );
     if (!result) return;
@@ -34,9 +36,10 @@ void SpriteManager::loadTextures() {
 
 bool SpriteManager::loadTemplateSprites() {
     LOG("Loading template sprites...");
+    const std::string SPRITE_SUMMARY_PATH = "data/textures/sprites.json";
 
     std::vector<Sprites::SpriteSummaryEntry> spriteSummary;
-    const bool success = Sprites::readSpriteSummary(Path("data/textures/sprites.json"), spriteSummary);
+    const bool success = Sprites::readSpriteSummary(Path(SPRITE_SUMMARY_PATH), spriteSummary);
     if (!success) return false;
 
     for (auto sprite : spriteSummary) {
