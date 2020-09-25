@@ -21,7 +21,6 @@ private:
     std::map<size_t, SpriteTemplate> mSpriteTemplates;
     std::map<size_t, sf::Sprite> mSprites;
     int mLastSpriteId;
-    SpriteTemplate createSpriteTemplate(json jsonObject);
 public:
     SpriteManager();
     sf::Texture loadTexture(std::string filepath);

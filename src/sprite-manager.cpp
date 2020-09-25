@@ -32,40 +32,21 @@ void SpriteManager::loadTextures() {
     }
 }
 
-SpriteTemplate SpriteManager::createSpriteTemplate(json jsonObject) {
-    const size_t textureId = jsonObject["textureId"];
-    const Rectangle area = {
-        jsonObject["area"]["width"],
-        jsonObject["area"]["height"],
-        jsonObject["area"]["positionX"],
-        jsonObject["area"]["positionY"]
-    };
-
-    return {textureId, area};
-}
-
 bool SpriteManager::loadTemplateSprites() {
     LOG("Loading template sprites...");
-    const FilePath DEFAULT_SPRITES_JSON_FILEPATH = Path("data/textures/sprites.json");
-    std::fstream spriteTemplatesFile (DEFAULT_SPRITES_JSON_FILEPATH.value);
-    if (!spriteTemplatesFile.is_open()) {
-        LOG_ERROR("SpriteManager/loadTemplateSprites: Could not open " << DEFAULT_SPRITES_JSON_FILEPATH.value);
-        return false;
+
+    std::vector<Sprites::SpriteSummaryEntry> spriteSummary;
+    const bool success = Sprites::readSpriteSummary(Path("data/textures/sprites.json"), spriteSummary);
+    if (!success) return false;
+
+    for (auto sprite : spriteSummary) {
+        const size_t id = sprite.spriteId;
+        mSpriteTemplates[id] = {
+            sprite.textureId,
+            sprite.spriteSheetArea
+        };
     }
 
-    json spritesIndexJson;
-    spriteTemplatesFile >> spritesIndexJson;
-
-    try {
-        for (auto spriteTemplateJson : spritesIndexJson) {
-            const size_t spriteTemplateId = spriteTemplateJson["id"];
-            mSpriteTemplates[spriteTemplateId] = createSpriteTemplate(spriteTemplateJson);
-        }
-    } catch (...) {
-        // TODO: This error is too serious. Consider giving a "Could not load scene" error
-        LOG_ERROR("SpriteManager/loadTemplateSprites: Could not load texture due to invalid json data. Check textures/sprites.json.");
-        return false;
-    }
     return true;
 }
 

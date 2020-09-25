@@ -41,9 +41,9 @@ bool Sprites::readSpriteSummary(FilePath filePath, std::vector<Sprites::SpriteSu
     try {
         for (auto sprite : spriteSummaryFile) {
             const size_t id = sprite["id"];
-            assert (id > 0);
+            assert (id >= 0);
             const size_t textureId = sprite["textureId"];
-            assert (textureId > 0);
+            assert (textureId >= 0);
             const Rectangle area = {
                 sprite["area"]["width"],
                 sprite["area"]["height"],

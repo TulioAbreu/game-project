@@ -10,7 +10,7 @@
 
 namespace Sprites {
     struct TextureSummaryEntry {
-        int textureId;
+        size_t textureId;
         FilePath filePath;
 
         TextureSummaryEntry(const size_t textureId, const FilePath filePath) {
@@ -20,8 +20,8 @@ namespace Sprites {
     };
 
     struct SpriteSummaryEntry {
-        int spriteId;
-        int textureId;
+        size_t spriteId;
+        size_t textureId;
         Rectangle spriteSheetArea;
 
         SpriteSummaryEntry(const size_t spriteId, const size_t textureId, const Rectangle area) {
