@@ -7,19 +7,15 @@ Scene::Scene(FilePath filePath, bool fullLoad) {
     mRefEntities = Entities::Container::getInstance();
     mFilePath = filePath;
     mFullLoad = fullLoad;
-
     if (fullLoad) {
-        // TODO: load scene file first, get dependencies and load just what is necessary? After that, load by demand?
         loadScripts();
-        loadPrefabs();
-        loadScene();
-
+    }
+    loadPrefabs();
+    loadScene();
+    if (fullLoad) {
         for (size_t i = 0; i < mRefEntities->size(); ++i) {
             mRefEntities->at(i).runStartScripts();
         }
-    } else {
-        loadPrefabs();
-        loadScene();
     }
 }
 
