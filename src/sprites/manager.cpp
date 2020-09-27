@@ -48,47 +48,47 @@ bool Sprites::Manager::loadTemplateSprites() {
 
 size_t Sprites::Manager::createSprite(size_t spriteTemplateId) {
     Sprites::Template* spriteTemplatePtr = nullptr;
-    try {
-        spriteTemplatePtr = &mSpriteTemplates.at(spriteTemplateId);
-    }
-    catch (...) {
-        LOG_WARNING("SpriteManager/createSprite: Could not find Sprite Template with specified id. [spriteId = " << spriteTemplateId << "]");
+
+    if (mSpriteTemplates.contains(spriteTemplateId)) {
+        spriteTemplatePtr = &(mSpriteTemplates[spriteTemplateId]);
+    } else {
+        LOG_WARNING("SpriteManager/createSprite: Could not find sprite template [spriteId = " << spriteTemplateId << "]");
         return -1;
     }
 
     sf::Sprite sprite;
-    try {
-        sprite.setTexture(mTexturesMap.at(spriteTemplatePtr->textureId));
-    } catch (...) {
-        LOG_WARNING("SpriteManager/createSprite: Could not find texture with specified id. [spriteId = " << spriteTemplatePtr->textureId << "]");
+    const auto spriteTextureId = spriteTemplatePtr->textureId;
+    if (mTexturesMap.contains(spriteTextureId)) {
+        sprite.setTexture(mTexturesMap[spriteTextureId]);
+    } else {
+        LOG_WARNING("SpriteManager/createSprite: Could not find texture [textureId = " << spriteTextureId << "]");
         return -1;
     }
+
     sprite.setTextureRect(sf::IntRect(spriteTemplatePtr->area.positionX,
                                       spriteTemplatePtr->area.positionY,
                                       spriteTemplatePtr->area.width,
                                       spriteTemplatePtr->area.height));
-
     size_t spriteId = mLastSpriteId++;
     mSprites[spriteId] = sprite;
     return spriteId;
 }
 
 bool Sprites::Manager::setSpritePosition(size_t spriteId, Vector2f position) {
-    try {
-        mSprites.at(spriteId).setPosition(position.x, position.y);
-    } catch (...) {
-        LOG_WARNING("SpriteManager/setSpritePosition: Could not set sprite's position. [spriteId = " << spriteId << "]");
+    if (mSprites.contains(spriteId)) {
+        mSprites[spriteId].setPosition(position.x, position.y);
+    } else {
+        LOG_WARNING("SpriteManager/setSpritePosition: Could not find sprite. [spriteId = " << spriteId << "]");
         return false;
     }
     return true;
 }
 
 sf::Sprite Sprites::Manager::getSpriteById(size_t spriteId) {
-    try {
-        const sf::Sprite spriteAtId = mSprites.at(spriteId);
-        return spriteAtId;
-    } catch (...) {
-        LOG_WARNING("SpriteManager/getSpriteById: Could not get sprite with specified id. [spriteId = " << spriteId << "]");
+    if (mSprites.contains(spriteId)) {
+        return mSprites[spriteId];
+    } else {
+        LOG_WARNING("SpriteManager/getSpriteById: Could not get sprite. [spriteId = " << spriteId << "]");
     }
     return mSprites[spriteId];
 }
