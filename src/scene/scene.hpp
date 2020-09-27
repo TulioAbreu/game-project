@@ -11,12 +11,14 @@
 #include "../entity.hpp"
 #include "../entities/container/container.hpp"
 #include "../entities/prefab/prefab.hpp"
+#include "../graphics/camera/camera.hpp"
 #include "../sprites/manager.hpp"
 #include "../utils/log/log.hpp"
 #include "../utils/filepath/filepath.hpp"
 
 class Scene {
 private:
+    Graphics::Camera* mCamera;
     // TODO: Move Scripts from here
     std::vector<Script*> mScripts;
     std::map<std::string, size_t> mScriptsIndexMap;
@@ -34,6 +36,7 @@ public:
     Scene(FilePath filePath, bool fullLoad);
     void load();
     void update();
+    Entities::Container* getEntities();
 };
 
 #endif

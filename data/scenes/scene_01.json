@@ -1,4 +1,7 @@
 {
+    "camera": {
+        "fixedTo": "player"
+    },
     "entries": [
         {
             "name": "player",

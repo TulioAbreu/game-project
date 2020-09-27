@@ -7,6 +7,7 @@ Scene::Scene(FilePath filePath, bool fullLoad) {
     mRefEntities = Entities::Container::getInstance();
     mFilePath = filePath;
     mFullLoad = fullLoad;
+    mCamera = Graphics::Camera::getInstance();
     if (fullLoad) {
         loadScripts();
     }
@@ -51,7 +52,7 @@ int Scene::getScriptIndexByName(std::string scriptName) {
 
 void Scene::loadScene() {
     SceneFile sceneFile;
-    bool loadedWithSuccess = readSceneFromFile(mFilePath, sceneFile);
+    const bool loadedWithSuccess = readSceneFromFile(mFilePath, sceneFile);
     if (!loadedWithSuccess) {
         LOG_ERROR("Scene/loadScene: Could not open scene file (" << mFilePath.value << ")");
         return;
@@ -87,12 +88,17 @@ void Scene::loadScene() {
 
         mRefEntities->add(entity);
     }
+
+    const auto cameraTargetEntity = mRefEntities->getEntityByName(sceneFile.camera.fixedTo);
+    mCamera->fixToEntity(cameraTargetEntity);
 }
 
 void Scene::loadPrefabs() {
+    const std::string ENTITIES_SUMMARY_FILEPATH = "data/entities/entities.json";
+
     json entitiesIndexJson;
     // TODO: Its OK to scene choose which prefab to read, but why is entities.json loaded here?
-    bool loadedWithSuccess = JSON::load(Path("data/entities/entities.json").value, &entitiesIndexJson);
+    bool loadedWithSuccess = JSON::load(Path(ENTITIES_SUMMARY_FILEPATH).value, &entitiesIndexJson);
     if (!loadedWithSuccess) {
         LOG_ERROR("Scene/loadPrefabs: Could not open entities.json");
         return;
@@ -103,4 +109,8 @@ void Scene::loadPrefabs() {
         const std::string filePath = entity["path"];
         mPrefabsMap[prefabId] = Entities::Prefab(FilePath("data/entities/" + filePath));
     }
+}
+
+Entities::Container* Scene::getEntities() {
+    return mRefEntities;
 }

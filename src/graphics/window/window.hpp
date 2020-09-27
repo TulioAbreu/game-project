@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "../camera/camera.hpp"
+#include "../../scene/scene.hpp"
 #include "../../utils/rectangle/rectangle.hpp"
 #include "../../utils/log/log.hpp"
 #include "../../utils/vector2/vector2.hpp"
@@ -29,6 +31,7 @@ class Window {
     bool isOpen();
     void drawRectangle(const Rectangle rect);
     void drawSprite(int spriteId, const Rectangle relativeRectangle);
+    void drawScene(Scene* scene, Camera* camera, const Vector2f halfContextSize);
     void close();
     Vector2f getWindowSize() const;
 };};
