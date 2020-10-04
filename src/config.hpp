@@ -25,6 +25,7 @@ private:
             windowTitle = config["window"]["title"];
         } catch (...) {
             windowTitle = DEFAULT_WINDOW_TITLE;
+            LOG_WARNING("Could not get window title from config file.");
         }
 
         return windowTitle;
@@ -40,6 +41,7 @@ private:
             };
         } catch (...) {
             windowSize = DEFAULT_WINDOW_SIZE;
+            LOG_WARNING("Could not get window size from config file.");
         }
 
         return windowSize;
@@ -52,6 +54,7 @@ private:
             filePath = config["scenes"]["defaultScene"];
         } catch (...) {
             filePath = DEFAULT_SCENE_FILE_PATH;
+            LOG_WARNING("Could not get default scenes from config file.");
         }
 
         return Path(filePath);
@@ -59,6 +62,10 @@ private:
 
     json readConfigFile(FilePath filepath) {
         std::ifstream configFile (filepath.value);
+        if (!configFile.is_open()) {
+            LOG_ERROR("Could not open 'config.json' file.");
+            return nlohmann::json();
+        }
         json config;
         configFile >> config;
         configFile.close();
@@ -68,7 +75,6 @@ private:
 public:
     Config() {
         json config = readConfigFile(Path(CONFIG_PATH));
-
         mWindowTitle = readWindowTitle(config);
         mWindowSize = readWindowSize(config);
         mDefaultScene = readDefaultScene(config);
