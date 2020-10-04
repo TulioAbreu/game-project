@@ -17,7 +17,6 @@ class Game {
     Entities::Container* mEntities;
     Scene* mScene;
     Keyboard* mKeyboard;
-    Graphics::Camera* mCamera;
     Console* mConsole;
     Graphics::Window* mWindow;
     std::string mGameWindowTitle;
@@ -30,7 +29,6 @@ public:
         mScene = nullptr;
         mEntities = Entities::Container::getInstance();
         mKeyboard = Keyboard::getInstance();
-        mCamera = Graphics::Camera::getInstance();
         mConsole = Console::getInstance();
         mWindow = nullptr;
     }
@@ -71,11 +69,12 @@ private:
         if (!mWindow->isOpen()) {
             return;
         }
-
         mWindow->clear();
+
         const Vector2f halfContextSize = mGameWindowSize * .5f;
-        mWindow->drawScene(mScene, mCamera, halfContextSize);
+        mWindow->drawScene(mScene, halfContextSize);
         mConsole->render();
+
         mWindow->display();
     }
 };

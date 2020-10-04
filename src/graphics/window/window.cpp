@@ -123,7 +123,8 @@ Vector2f Graphics::Window::getWindowSize() const {
     };
 }
 
-void Graphics::Window::drawScene(Scene* scene, Camera* camera, Vector2f halfContextSize) {
+void Graphics::Window::drawScene(Scene* scene, Vector2f halfContextSize) {
+    Camera* camera = scene->getCamera();
     const auto entities = scene->getEntities();
     for (size_t i = 0; i < entities->size(); ++i) {
         auto entity = entities->at(i);

@@ -36,6 +36,7 @@ public:
     Scene(FilePath filePath, bool fullLoad);
     void load();
     void update();
+    Graphics::Camera* getCamera();
     Entities::Container* getEntities();
 };
 

@@ -114,3 +114,7 @@ void Scene::loadPrefabs() {
 Entities::Container* Scene::getEntities() {
     return mRefEntities;
 }
+
+Graphics::Camera* Scene::getCamera() {
+    return mCamera;
+}
