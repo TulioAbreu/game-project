@@ -122,3 +122,16 @@ Vector2f Graphics::Window::getWindowSize() const {
         (float) sfmlSize.y
     };
 }
+
+void Graphics::Window::drawScene(Scene* scene, Camera* camera, Vector2f halfContextSize) {
+    const auto entities = scene->getEntities();
+    for (size_t i = 0; i < entities->size(); ++i) {
+        auto entity = entities->at(i);
+
+        // FIXME: (currentRect, visionRect) doesnt work
+        Rectangle currentEntityRect = entity.getHitbox();
+        if (intersects(camera->getVisionRectangle(getWindowSize()), currentEntityRect)) {
+            drawSprite(entity.getSpriteId(), camera->getRelativeRectangle(currentEntityRect, halfContextSize));
+        }
+    }
+}

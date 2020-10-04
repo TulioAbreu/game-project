@@ -7,6 +7,7 @@ bool readSceneFromFile(FilePath filePath, SceneFile& sceneFile) {
         return false;
     }
 
+    sceneFile.camera.fixedTo = sceneJson["camera"]["fixedTo"];
     for (auto fileEntry : sceneJson["entries"]) {
         Entry newEntry;
         newEntry.name = fileEntry["name"];

@@ -15,6 +15,7 @@
 class Game {
     Config* mConfig;
     Entities::Container* mEntities;
+    Scene* mScene;
     Keyboard* mKeyboard;
     Graphics::Camera* mCamera;
     Console* mConsole;
@@ -26,6 +27,7 @@ class Game {
 public:
     Game() {
         mConfig = Config::getInstance();
+        mScene = nullptr;
         mEntities = Entities::Container::getInstance();
         mKeyboard = Keyboard::getInstance();
         mCamera = Graphics::Camera::getInstance();
@@ -50,15 +52,12 @@ public:
         mGameWindowTitle = mConfig->getWindowTitle();
         mGameWindowSize = mConfig->getWindowSize();
         mWindow = new Graphics::Window(mGameWindowSize.x, mGameWindowSize.y, mGameWindowTitle);
-
-        Scene scene (mConfig->getDefaultScene(), true);
-        mCamera->setGlobalPosition(mGameWindowSize*.5f);
+        mScene = new Scene(mConfig->getDefaultScene(), true);
         // TODO: Camera should be inside Scene (class&file), and there it should be attached to some script or entity
-        mCamera->fixToEntity(mEntities->getEntityByName("player"));
 
         while (getIsRunning() && mWindow->isOpen()) {
             handleEvents();
-            update();
+            mScene->update();
             render();
         }
     }
@@ -68,27 +67,14 @@ private:
         mWindow->handleWindowEvents(mGameWindowSize);
     }
 
-    void update() {
-        for (size_t i = 0; i < mEntities->size(); ++i) {
-            mEntities->at(i).update();
-        }
-    }
-
     void render() {
         if (!mWindow->isOpen()) {
             return;
         }
 
         mWindow->clear();
-        const Vector2f halfScreen = mGameWindowSize * .5f;
-        for (size_t i = 0; i < mEntities->size(); ++i) {
-            Entity entity = mEntities->at(i);
-            Rectangle currentEntityRect = entity.getHitbox();
-            // FIXME: (currentRect, visionRect) doesnt work
-            if (intersects(mCamera->getVisionRectangle(mWindow->getWindowSize()), currentEntityRect)) {
-                mWindow->drawSprite(entity.getSpriteId(), mCamera->getRelativeRectangle(currentEntityRect, halfScreen));
-            }
-        }
+        const Vector2f halfContextSize = mGameWindowSize * .5f;
+        mWindow->drawScene(mScene, mCamera, halfContextSize);
         mConsole->render();
         mWindow->display();
     }

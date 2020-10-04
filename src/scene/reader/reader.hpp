@@ -14,7 +14,12 @@ struct Entry {
     std::vector<std::string> scripts;
 };
 
+struct SceneReaderCamera {
+    std::string fixedTo;
+};
+
 struct SceneFile {
+    SceneReaderCamera camera;
     std::vector<Entry> entries;
 };
 
