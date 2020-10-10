@@ -6,24 +6,30 @@ function player_OnStart(id)
 end
 
 function player_OnUpdate(id)
-    local position = {
-        x = getEntityPositionX(id),
-        y = getEntityPositionY(id)
+    pos = getEntityPosition(id)
+    movement = {
+        x = 0,
+        y = 0
     }
 
-    if getIsKeyPressed('UP') then
-        setEntityPositionY(id, position.y-PLAYER_SPEED)
+    if getIsKeyPressed("UP") then
+        movement["y"] = -PLAYER_SPEED
     end
 
-    if getIsKeyPressed('DOWN') then
-        setEntityPositionY(id, position.y+PLAYER_SPEED)
+    if getIsKeyPressed("DOWN") then
+        movement["y"] = PLAYER_SPEED
     end
 
-    if getIsKeyPressed('LEFT') then
-        setEntityPositionX(id, position.x-PLAYER_SPEED)
+    if getIsKeyPressed("LEFT") then
+        movement["x"] = -PLAYER_SPEED
     end
 
-    if getIsKeyPressed('RIGHT') then
-        setEntityPositionX(id, position.x+PLAYER_SPEED)
+    if getIsKeyPressed("RIGHT") then
+        movement["x"] = PLAYER_SPEED
     end
+
+    pos["x"] = pos["x"] + movement["x"]
+    pos["y"] = pos["y"] + movement["y"]
+
+    setEntityPosition(id, pos)
 end

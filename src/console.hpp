@@ -20,10 +20,14 @@ private:
         mCommandLog += message + "\n";
     }
 
-    std::string runCommand(std::string commandStr) {
-        commandStr = "buffer = " + commandStr;
-        luaL_dostring(Script::mLuaState, commandStr.c_str());
-        return "Finish!";
+    std::string runCommand(const std::string commandStr) {
+        const int result = luaL_dostring(Script::mLuaState, commandStr.c_str());
+        if (result == 0) {
+            return "Finish!";
+        } else {
+            const auto errorMessage = lua_tostring(Script::mLuaState, -1);
+            return errorMessage;
+        }
     }
 
     void cleanCommandBuffer() {
