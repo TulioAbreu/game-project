@@ -1,35 +1,35 @@
-local PLAYER_SPEED = 10
+PLAYER_SPEED = 10;
 
 function player_OnStart(id)
-    log('Player started!')
-    return 1
+    log('Player started!');
+    return 1;
 end
 
 function player_OnUpdate(id)
-    pos = getEntityPosition(id)
-    movement = {
+    local pos = getEntityPosition(id);
+    local movement = {
         x = 0,
         y = 0
-    }
+    };
 
     if getIsKeyPressed("UP") then
-        movement["y"] = -PLAYER_SPEED
+        movement.y = -PLAYER_SPEED;
     end
 
     if getIsKeyPressed("DOWN") then
-        movement["y"] = PLAYER_SPEED
+        movement.y = PLAYER_SPEED;
     end
 
     if getIsKeyPressed("LEFT") then
-        movement["x"] = -PLAYER_SPEED
+        movement.x = -PLAYER_SPEED;
     end
 
     if getIsKeyPressed("RIGHT") then
-        movement["x"] = PLAYER_SPEED
+        movement.x = PLAYER_SPEED;
     end
 
-    pos["x"] = pos["x"] + movement["x"]
-    pos["y"] = pos["y"] + movement["y"]
+    pos.x = pos.x + movement.x;
+    pos.y = pos.y + movement.y;
 
-    setEntityPosition(id, pos)
+    setEntityPosition(id, pos);
 end
