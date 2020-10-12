@@ -1,46 +1,19 @@
 cmake_minimum_required (VERSION 3.7)
 project (gameProject)
-add_executable (gameProject 
-    src/scene/scene.hpp src/scene/scene.cpp
-    src/scene/reader/reader.hpp src/scene/reader/reader.cpp
-    src/graphics/camera/camera.hpp src/graphics/camera/camera.cpp
-    src/sprites/manager.hpp src/sprites/manager.cpp
-    src/sprites/reader/reader.hpp src/sprites/reader/reader.cpp
-    src/json.hpp src/json.cpp
-    src/config.hpp
-    src/script-manager.hpp
-    src/entities/container/container.hpp src/entities/container/container.cpp
-    src/script-library.cpp
-    src/entity.hpp
-    src/singleton.hpp
-    src/console.hpp
-    src/main.cpp
-    src/graphics/window/window.hpp
-    src/keyboard.hpp
-    src/utils/filepath/filepath.hpp src/utils/filepath/filepath.cpp
-    src/entities/prefab/prefab.hpp src/entities/prefab/prefab.cpp
-    src/utils/log/log.hpp
-    src/utils/rectangle/rectangle.hpp src/utils/rectangle/rectangle.cpp
-    src/entity.cpp
-    src/script-library.hpp
-    src/script-manager.cpp
-    src/graphics/window/window.cpp
-    src/utils/vector2/vector2.hpp
-    third-party/imgui_demo.cpp
-    third-party/imgui.h
-    third-party/imgui-SFML.h
-    third-party/imgui-SFML_export.h
-    third-party/imgui_widgets.cpp
-    third-party/json.hpp
-    third-party/imgui_internal.h
-    third-party/imgui-SFML.cpp
-    third-party/imconfig.h
-    third-party/imstb_truetype.h
-    third-party/imstb_rectpack.h
-    third-party/imstb_textedit.h
-    third-party/imconfig-SFML.h
-    third-party/imgui_draw.cpp
-    third-party/imgui.cpp)
+
+file (GLOB_RECURSE gameProjectSrc
+    "src/*.hpp"
+    "src/*.cpp"
+)
+file (GLOB thirdPartySrc
+    "third-party/*.hpp"
+    "third-party/*.cpp"
+)
+
+add_executable (gameProject
+    ${gameProjectSrc}
+    ${thirdPartySrc}
+)
 
 set_property(TARGET gameProject PROPERTY CXX_STANDARD 20)
 
