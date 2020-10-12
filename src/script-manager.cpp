@@ -94,10 +94,3 @@ void Script::onDestroy(int entityID) {
 std::string Script::getName() {
     return this->mName;
 }
-
-void Script::runScriptFromString(std::string codeStr) {
-    std::string wrapperFunction = "function buffer()\n" + codeStr + "\nend";
-    lua_getglobal(mLuaState, wrapperFunction.c_str());
-    loadFunction("buffer");
-    lua_executeFunction(0);
-}
