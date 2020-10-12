@@ -9,8 +9,8 @@
 #include "entity.hpp"
 #include "scene/scene.hpp"
 #include "entities/container/container.hpp"
-#include "console.hpp"
 #include "../third-party/json.hpp"
+#include "console/core.hpp"
 
 class Game {
     Config* mConfig;
@@ -18,7 +18,7 @@ class Game {
     Scene* mScene;
     Keyboard* mKeyboard;
     Graphics::Camera* mCamera;
-    Console* mConsole;
+    Console::Core* mConsole;
     Graphics::Window* mWindow;
     std::string mGameWindowTitle;
     Vector2f mGameWindowSize;
@@ -31,12 +31,13 @@ public:
         mEntities = Entities::Container::getInstance();
         mKeyboard = Keyboard::getInstance();
         mCamera = Graphics::Camera::getInstance();
-        mConsole = Console::getInstance();
+        mConsole = new Console::Core();
         mWindow = nullptr;
     }
 
     ~Game() {
         delete mWindow;
+        delete mConsole;
     }
 
     void setIsRunning(const bool value) {
@@ -57,6 +58,7 @@ public:
 
         while (getIsRunning() && mWindow->isOpen()) {
             handleEvents();
+            mConsole->update();
             mScene->update();
             render();
         }
