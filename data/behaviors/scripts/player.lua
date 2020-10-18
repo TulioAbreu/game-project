@@ -1,11 +1,11 @@
 PLAYER_SPEED = 10;
 
-function player_OnStart(id)
+function OnStart(id)
     log('Player started!');
     return 1;
 end
 
-function player_OnUpdate(id)
+function OnUpdate(id)
     local pos = getEntityPosition(id);
     local movement = {
         x = 0,

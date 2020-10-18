@@ -14,6 +14,7 @@ public:
 private:
     Console* mConsolePtr;
     Window* mConsoleWindow;
+    Script* mScriptEnv;
     std::string executeCommand(const std::string commandStr);
     bool shouldExecuteCommand() const;
 };

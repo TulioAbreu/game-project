@@ -2,59 +2,59 @@
 #include "entities/container/container.hpp"
 #include "utils/log/log.hpp"
 
-lua_State* Script::mLuaState = luaL_newstate();
-bool Script::mIsLibLoaded = false;
+void Script::loadLuaLibraries(lua_State* luaState)
+{
+    luaL_openlibs(luaState);
 
-void Script::loadLuaLibraries(lua_State* luaState) {
-    luaL_openlibs(mLuaState);
-
-    lua_register(mLuaState, "log", lua_log);
-    lua_register(mLuaState, "logWarning", lua_logWarning);
-    lua_register(mLuaState, "logError", lua_logError);
+    lua_register(luaState, "log", lua_log);
+    lua_register(luaState, "logWarning", lua_logWarning);
+    lua_register(luaState, "logError", lua_logError);
     // Position
-    lua_register(mLuaState, "getEntityPosition", lua_getEntityPosition);
-    lua_register(mLuaState, "setEntityPosition", lua_setEntityPosition);
+    lua_register(luaState, "getEntityPosition", lua_getEntityPosition);
+    lua_register(luaState, "setEntityPosition", lua_setEntityPosition);
     // Size
-    lua_register(mLuaState, "getEntitySize", lua_getEntitySize);
-    lua_register(mLuaState, "setEntitySize", lua_setEntitySize);
+    lua_register(luaState, "getEntitySize", lua_getEntitySize);
+    lua_register(luaState, "setEntitySize", lua_setEntitySize);
     // Keyboard
-    lua_register(mLuaState, "getIsKeyPressed", lua_getIsKeyPressed);
+    lua_register(luaState, "getIsKeyPressed", lua_getIsKeyPressed);
 }
 
-void Script::registerFunction(lua_State* luaState, std::string functionName, lua_CFunction f) {
+void Script::registerFunction(lua_State* luaState, std::string functionName, lua_CFunction f)
+{
     lua_register(luaState, functionName.c_str(), f);
 }
 
-bool Script::loadFile() {
+bool Script::loadFile()
+{
     if (luaL_loadfile(mLuaState, mFilePath.c_str())) {
-        LOG_WARNING("Failed to load script \"" << mFilePath  << "\"");
+        LOG_WARNING("Failed to load script \"" << mFilePath << "\"");
         return false;
     }
     return true;
 }
 
-bool Script::runFile() {
+bool Script::runFile()
+{
     if (lua_pcall(mLuaState, 0, LUA_MULTRET, 0)) {
-        LOG_WARNING("Failed to run script \"" << mFilePath  << "\"");
+        LOG_WARNING("Failed to run script \"" << mFilePath << "\"");
         return false;
     }
     return true;
 }
 
-Script::Script(std::string filePath, std::string name) {
-    if (!mIsLibLoaded) {
-        loadLuaLibraries(mLuaState);
-        mIsLibLoaded = true;
-    }
+Script::Script(std::string filePath, std::string name)
+{
+    mLuaState = luaL_newstate();
+    loadLuaLibraries(mLuaState);
 
     mFilePath = filePath;
     mName = name;
 
-    if (! this->loadFile()) {
+    if (!loadFile()) {
         mIsReady = false;
         return;
     }
-    if (! this->runFile()) {
+    if (!this->runFile()) {
         mIsReady = false;
         return;
     }
@@ -62,33 +62,46 @@ Script::Script(std::string filePath, std::string name) {
     mIsReady = true;
 }
 
-void Script::loadFunction(std::string functionName) {
+void Script::loadFunction(std::string functionName)
+{
     lua_getglobal(mLuaState, functionName.c_str());
 }
 
-void Script::lua_executeFunction(int argsLen) {
+void Script::lua_executeFunction(int argsLen)
+{
     lua_pcall(mLuaState, argsLen, 1, 0);
     lua_pop(mLuaState, 1);
 }
 
-void Script::onStart(int entityID) {
-    loadFunction(mName + "_OnStart");
+void Script::onStart(int entityID)
+{
+    loadFunction("OnStart");
     lua_pushnumber(mLuaState, entityID);
     lua_executeFunction(1);
 }
 
-void Script::onUpdate(int entityID) {
-    loadFunction(mName + "_OnUpdate");
+void Script::onUpdate(int entityID)
+{
+    loadFunction("OnUpdate");
     lua_pushnumber(mLuaState, entityID);
     lua_executeFunction(1);
 }
 
-void Script::onDestroy(int entityID) {
-    loadFunction(mName + "_OnDestroy");
+void Script::onDestroy(int entityID)
+{
+    loadFunction("OnDestroy");
     lua_pushnumber(mLuaState, entityID);
     lua_executeFunction(1);
 }
 
-std::string Script::getName() {
+std::string Script::getName()
+{
     return this->mName;
+}
+
+bool Script::doString(std::string commandStr)
+{
+    if (commandStr.size() == 0) return false;
+    const int result = luaL_dostring(mLuaState, commandStr.c_str());
+    return (result != 0);
 }

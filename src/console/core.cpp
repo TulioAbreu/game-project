@@ -3,6 +3,7 @@
 Console::Core::Core() {
     mConsoleWindow = new Window();
     mConsolePtr = Console::getInstance();
+    mScriptEnv = new Script("", "consoleEnv");
 }
 
 void Console::Core::update() {
@@ -28,9 +29,7 @@ bool Console::Core::shouldExecuteCommand() const {
 }
 
 std::string Console::Core::executeCommand(const std::string commandStr) {
-    if (commandStr.size() == 0) return "";
-    const int result = luaL_dostring(Script::mLuaState, commandStr.c_str());
-    return (result == 0)
-        ? ""
-        : std::string(lua_tostring(Script::mLuaState, -1));
+    mScriptEnv->doString(commandStr);
+    // TODO: Try to return a result or something like that
+    return "";
 }

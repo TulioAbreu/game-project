@@ -1,21 +1,33 @@
-local isWalkingLeft = true
+MONSTER_SPEED = 3;
+speed = nil;
 
-function monster_OnStart(id)
-    setEntityPositionY(id, -100)
+entities = {}
+-- TODO: One environment per script, so variables dont collide
+function OnStart(id)
+    log("Monster started!!");
+    entities.id = {
+        ["speed"] = {
+            ["x"] = MONSTER_SPEED * id,
+            ["y"] = 0
+        }
+    };
 end
 
-function monster_OnUpdate(id)
-    local posY = getEntityPositionY(id)
-    if isWalkingLeft then
-        setEntityPositionY(id, (posY + 30))
+function OnUpdate(id)
+    local position = getEntityPosition(id);
 
-        if posY > 300 then
-            isWalkingLeft = false
-        end
-    else
-        setEntityPositionY(id, (posY - 30))
-        if posY < -300 then
-            isWalkingLeft = true
+    position.x = position.x + speed.x;
+    position.y = position.y + speed.y;
+
+    if position.x < -300 or position.x > 300 then
+        entities.id.speed.x = entities.id.speed.x * -1;
+
+        if position.x > 300 then
+            position.x = 300
+        elseif position.x < -300 then
+            position.x = -300
         end
     end
+
+    setEntityPosition(id, position);
 end
