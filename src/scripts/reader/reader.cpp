@@ -12,7 +12,7 @@ bool ScriptSummary::readFromFile(FilePath filePath, std::vector<ScriptEntry>& sc
         const auto path = std::string(scriptEntry["path"]);
 
         if (name.size() <= 0 || path.size() <= 0) {
-            LOG_WARNING("Invalid entry at 'behaviours.json'. [name = " << name << ", path = " << path << "]");
+            LOG_WARNING("Invalid entry at 'behaviors.json'. [name = " << name << ", path = " << path << "]");
             continue;
         }
         scriptSummaryEntries.push_back(ScriptEntry(name, path));
