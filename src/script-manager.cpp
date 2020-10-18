@@ -1,8 +1,6 @@
 #include "script-manager.hpp"
 #include "entities/container/container.hpp"
 #include "utils/log/log.hpp"
-#include "script-library.hpp"
-
 
 lua_State* Script::mLuaState = luaL_newstate();
 bool Script::mIsLibLoaded = false;
@@ -18,7 +16,7 @@ void Script::loadLuaLibraries(lua_State* luaState) {
     lua_register(mLuaState, "setEntityPosition", lua_setEntityPosition);
     // Size
     lua_register(mLuaState, "getEntitySize", lua_getEntitySize);
-    lua_register(mLuaState, "setEntityState", lua_setEntitySize);
+    // lua_register(mLuaState, "setEntityState", lua_setEntitySize);
     // Keyboard
     lua_register(mLuaState, "getIsKeyPressed", lua_getIsKeyPressed);
 }
