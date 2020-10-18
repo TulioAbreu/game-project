@@ -38,7 +38,7 @@ int lua_setEntitySize(lua_State* L)
         return 0;
     }
 
-    entity->setHitboxSize(newSize.x, newSize.y);
+    entity->setHitboxSize(newSize);
 
     return 1;
 }
