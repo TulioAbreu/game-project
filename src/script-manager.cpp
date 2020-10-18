@@ -9,25 +9,22 @@ bool Script::mIsLibLoaded = false;
 
 void Script::loadLuaLibraries(lua_State* luaState) {
     luaL_openlibs(mLuaState);
-    registerFunction(mLuaState, "log", lua_log);
-    registerFunction(mLuaState, "logWarning", lua_logWarning);
-    registerFunction(mLuaState, "logError", lua_logError);
-    // Width
-    registerFunction(mLuaState, "setEntityWidth", lua_setEntityWidth);
-    registerFunction(mLuaState, "getEntityWidth", lua_getEntityWidth);
-    // Position X
-    registerFunction(mLuaState, "setEntityPositionX", lua_setEntityPositionX);
-    registerFunction(mLuaState, "getEntityPositionX", lua_getEntityPositionX);
-    // Position Y
-    registerFunction(mLuaState, "setEntityPositionY", lua_setEntityPositionY);
-    registerFunction(mLuaState, "getEntityPositionY", lua_getEntityPositionY);
+
+    lua_register(mLuaState, "log", lua_log);
+    lua_register(mLuaState, "logWarning", lua_logWarning);
+    lua_register(mLuaState, "logError", lua_logError);
+    // Position
+    lua_register(mLuaState, "getEntityPosition", lua_getEntityPosition);
+    lua_register(mLuaState, "setEntityPosition", lua_setEntityPosition);
+    // Size
+    lua_register(mLuaState, "getEntitySize", lua_getEntitySize);
+    lua_register(mLuaState, "setEntityState", lua_setEntitySize);
     // Keyboard
-    registerFunction(mLuaState, "getIsKeyPressed", lua_getIsKeyPressed);
+    lua_register(mLuaState, "getIsKeyPressed", lua_getIsKeyPressed);
 }
 
 void Script::registerFunction(lua_State* luaState, std::string functionName, lua_CFunction f) {
-    lua_pushcfunction(luaState, f);
-    lua_setglobal(luaState, functionName.c_str());
+    lua_register(luaState, functionName.c_str(), f);
 }
 
 bool Script::loadFile() {
@@ -96,11 +93,4 @@ void Script::onDestroy(int entityID) {
 
 std::string Script::getName() {
     return this->mName;
-}
-
-void Script::runScriptFromString(std::string codeStr) {
-    std::string wrapperFunction = "function buffer()\n" + codeStr + "\nend";
-    lua_getglobal(mLuaState, wrapperFunction.c_str());
-    loadFunction("buffer");
-    lua_executeFunction(0);
 }

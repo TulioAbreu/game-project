@@ -8,7 +8,6 @@ extern "C" {
     #include <lua5.1/lualib.h>
 };
 
-
 class Script {
     private:
     static bool mIsLibLoaded;
@@ -26,7 +25,6 @@ class Script {
     std::string getName();
     void loadFunction(std::string functionName);
     void lua_executeFunction(int argsLen);
-    void runScriptFromString(std::string codeStr);
     void onStart(int entityID);
     void onUpdate(int entityID);
     void onDestroy(int entityID);
